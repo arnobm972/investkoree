@@ -5,7 +5,7 @@ import {
   } from "react-router-dom";
   import Main from './../Layout/Main';
 import Dashboard from "../Pages/Dashboard";
-import Login from "../Pages/Login";
+import Login from "../Pages/Investor/InvestorLogin";
 import Signup from "../Pages/Signup";
 import Services from "../Pages/Services";
 import ServicesAdd from "../Pages/ServicesAdd";
@@ -19,11 +19,16 @@ import Riders from "../Pages/Riders";
 import SubAdmin from "../Pages/SubAdmin";
 import SubAdminPermission from "../Pages/SubAdminPermission";
 import SubAdminAdd from "../Pages/SubAdminAdd";
+import Home from "../Pages/Home";
    export const router = createBrowserRouter([
     {
       path: "/",
       element: <Main></Main>,
       children: [
+        {
+          path :"/",
+          element:<Home></Home>
+        },
         {
             path: "/dashboard",
             element: <Dashboard></Dashboard>,
