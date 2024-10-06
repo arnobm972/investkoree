@@ -9,10 +9,10 @@ function Footer() {
           <h6 className="footer-title opacity-100">Contact Us</h6>
           <ul className="list-none"> 
             <li className="hover:text-white transition-colors duration-200"> 
-              <a className="link link-hover opacity-90" href="#">Shamibag</a> {/* Add href="#" for proper link behavior */}
+              <a className="link link-hover opacity-90 " href="#">Motijheel</a> {/* Add href="#" for proper link behavior */}
             </li>
             <li className="hover:text-white transition-colors duration-200">
-              <a className="link link-hover opacity-90" href="#">017238388448</a>
+              <a className="link link-hover opacity-90 " href="#">01326709096</a>
             </li>
             <li className="hover:text-white transition-colors duration-200">
               <a className="link link-hover opacity-90" href="#">investkoree@gmail.com</a>
@@ -26,7 +26,7 @@ function Footer() {
             <li className="hover:text-white transition-colors duration-200">
               <a className="link link-hover opacity-90" href="#">Overview</a>
             </li>
-            <li className=" hover:text-white transition-colors duration-200">
+            <li className=" hover:text-white  transition-colors duration-200">
               <a className="link link-hover opacity-90" href="#">Who we are</a>
             </li>
             <li className="hover:text-white transition-colors duration-200">
@@ -54,6 +54,9 @@ function Footer() {
         </nav>
       </footer>
       <section className='bg-salmon text-slate-800 text-center font-bold'>Copyright &copy; InvestKoree.com. All Rights Reserved.</section>
+      <style jsx>
+      
+      </style>
     </div>
   );
 }

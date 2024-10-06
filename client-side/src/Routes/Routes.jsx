@@ -1,94 +1,98 @@
-import {
-
-    createBrowserRouter,
-
-  } from "react-router-dom";
-  import Main from './../Layout/Main';
+import { createBrowserRouter } from "react-router-dom";
+import Main from "./../Layout/Main";
 import Dashboard from "../Pages/Dashboard";
 import Login from "../Pages/Investor/InvestorLogin";
 import Signup from "../Pages/Signup";
-import Services from "../Pages/Services";
-import ServicesAdd from "../Pages/ServicesAdd";
-import Category from "../Pages/Category";
-import CategoryAdd from "../Pages/CategoryAdd";
-import Orders from "../Pages/Orders";
-import OrderDetail from "../Pages/OrderDetail";
-import ShopKippers from "../Pages/ShopKippers";
-import Users from "../Pages/Users";
-import Riders from "../Pages/Riders";
-import SubAdmin from "../Pages/SubAdmin";
-import SubAdminPermission from "../Pages/SubAdminPermission";
-import SubAdminAdd from "../Pages/SubAdminAdd";
 import Home from "../Pages/Home";
-   export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Main></Main>,
-      children: [
-        {
-          path :"/",
-          element:<Home></Home>
-        },
-        {
-            path: "/dashboard",
-            element: <Dashboard></Dashboard>,
-          },
-          {
-           path: "/login",
-           element: <Login></Login>,
-          },
-          {
-            path: "/signup",
-            element: <Signup></Signup>,
-           },
-           {
-            path :"/services",
-            element: <Services></Services>,
-            },
-            {
-            path: "/servicesadd",
-            element: <ServicesAdd></ServicesAdd>,
-          }, 
-          {
-            path :"/category",
-            element: <Category></Category>,
-            },
-            {
-            path: "/categoryadd",
-            element: <CategoryAdd></CategoryAdd>,
-          }, 
-          {
-            path: "/orders",
-            element: <Orders></Orders>,
-          },
-          {
-            path: "/orderdetail",
-            element: <OrderDetail></OrderDetail>,
-          },
-          {
-            path: "/shopkippers",
-            element: <ShopKippers></ShopKippers>,
-          },
-        {
-          path: "/users",
-          element: <Users></Users>,
-          },
-          {
-        path: "/riders",
-        element: <Riders></Riders>,
-         },
-         {
-          path: "/subadmin",
-          element: <SubAdmin></SubAdmin>,
-           },
-           {
-            path: "/subadminadd",
-            element: <SubAdminAdd></SubAdminAdd>,
-             },
-           {
-            path: "/subadminpermission",
-            element: <SubAdminPermission></SubAdminPermission>,
-             },             
-      ]
-    },
-  ]);
+import AdminLogin from "../Pages/AdminPanel/AdminLogin";
+import FounderLogin from "../Pages/Founder/FounderLogin";
+import InvestorLogin from "../Pages/Investor/InvestorLogin";
+import AdminDashborad from "../Pages/AdminPanel/AdminDashborad";
+// import PrivateRoutes from "./PrivateRoutes";
+import ErrorPage from "../Pages/ErrorPage";
+import PendingProjects from "../Pages/AdminPanel/PendingProjects";
+import InvestorDashboard from "../Pages/Investor/InvestorDashboard";
+import ProfitSharing from "../Pages/ProfitSharing";
+import Debt from "../Pages/Debt";
+import Stocks from "../Pages/Stocks";
+import GetFunded from "../Pages/GetFunded";
+import FounderDashboard from "../Pages/Founder/FounderDashboard";
+import FounderPost from "../Pages/Founder/FounderPost";
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main></Main>,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        path: "/",
+        element: <Home></Home>,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/signup",
+        element: <Signup></Signup>,
+      },
+      {
+        path: "/adminlogin",
+        element: <AdminLogin></AdminLogin>,
+      },
+      {
+        path: "/founderlogin",
+        element: <FounderLogin></FounderLogin>,
+      },
+      {
+        path: "/investorlogin",
+        element: <InvestorLogin></InvestorLogin>,
+      },
+      {
+        path: "/admindashboard",
+        element: <AdminDashborad></AdminDashborad>,
+        // private
+      },
+      {
+        path: "/pendingprojects",
+        element: <PendingProjects></PendingProjects>,
+        // private
+      },
+      {
+        path: "/investordashboard",
+        element: <InvestorDashboard></InvestorDashboard>,
+        // private
+      },
+      {
+        path: "/profitsharing",
+        element: <ProfitSharing></ProfitSharing>,
+      },
+      {
+        path: "/debt",
+        element: <Debt></Debt>,
+      },
+      {
+        path: "/stocks",
+        element: <Stocks></Stocks>,
+      },
+      {
+        path: "/founderlogin",
+        element: <GetFunded></GetFunded>,
+      },
+      {
+        path: "/founderdashboard",
+        element: <FounderDashboard></FounderDashboard>,
+        // private
+      },
+      {
+        path: "/founderpost",
+        element: <FounderPost></FounderPost>,
+        // private
+      },
+    ],
+  },
+]);

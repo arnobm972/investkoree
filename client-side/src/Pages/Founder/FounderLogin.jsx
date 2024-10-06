@@ -16,7 +16,7 @@ const FounderLogin = () => {
       <div className="forms-container">
         <div className="signin-signup">
           <form action="" method="post" className="sign-in-form">
-            <h2 className="title"> investor Sign in</h2>
+            <h2 className="title"> Founder Sign in</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
               <input type="text" placeholder="Email Address" name="u_signin_email" required />
@@ -28,7 +28,7 @@ const FounderLogin = () => {
             <input type="submit" value="Login" name="investor_signin" className="login-btn solid" />
           </form>
           <form action="" className="sign-up-form" method="post">
-            <h2 className="title"> investor Sign up</h2>
+            <h2 className="title">Founder  Sign up</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
               <input type="text" placeholder="Full Name" name="u_signup_name" required />
