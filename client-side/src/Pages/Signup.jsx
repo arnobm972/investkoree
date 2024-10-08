@@ -1,38 +1,39 @@
-import { useState } from 'react';
-import loginlogo from '../assets/logo.png'
-import loginimg from '../assets/login-img.png'
-import '@fortawesome/fontawesome-free/css/all.css';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import loginlogo from "../assets/logo.png";
+import loginimg from "../assets/login-img.png";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { Link } from "react-router-dom";
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const[name,setName]=useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log("Email:", email);
+    console.log("Password:", password);
   };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-};
-
+  };
 
   return (
-   
-      <div className="gap-56 flex ">
+    <div className="gap-56 flex ">
       <div className="w-[600px]">
         <img src={loginimg} alt="Login Image" className="login-img" />
       </div>
-      <div className='flex flex-col justify-center'>
+      <div className="flex flex-col justify-center">
         <div>
           <img src={loginlogo} alt="" />
         </div>
         <h2 className="text-2xl text-black font-bold mt-4 mb-4">Log In</h2>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
-             Full Name
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Full Name
             </label>
             <input
               type="text"
@@ -44,7 +45,10 @@ const Signup = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Email
             </label>
             <input
@@ -64,7 +68,7 @@ const Signup = () => {
               Password
             </label>
             <input
-             type={showPassword ? "text" : "password"}
+              type={showPassword ? "text" : "password"}
               id="password"
               required
               value={password}
@@ -73,45 +77,44 @@ const Signup = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <input
-              type="checkbox"
-              id="remember"
-              className="mr-2"
-            />
-            <button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 top-44 left-[1195px] flex items-center pr-3 focus:outline-none">
-                        {showPassword ? (
-                            <i className="fas fa-eye"></i>
-                        ) : (
-                            <i className="fas fa-eye-slash"></i>
-                        )}
-                    </button>
+            <input type="checkbox" id="remember" className="mr-2" />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute inset-y-0 top-44 left-[1195px] flex items-center pr-3 focus:outline-none"
+            >
+              {showPassword ? (
+                <i className="fas fa-eye"></i>
+              ) : (
+                <i className="fas fa-eye-slash"></i>
+              )}
+            </button>
             <label htmlFor="remember" className="text-col text-sm">
               Remember me
             </label>
-           
           </div>
           <div className="flex items-center justify-between">
-          <Link to={'/dashboard'} ><button
-              type="submit"
-              className="login-btn hover:bg-blue-700 text-white font-bold py-2 px-4 w-[400px]  rounded focus:outline-none focus:shadow-outline"
-            >
-              Sign up
-            </button></Link>
+            <Link to={"/dashboard"}>
+              <button
+                type="submit"
+                className="login-btn hover:bg-blue-700 text-white font-bold py-2 px-4 w-[400px]  rounded focus:outline-none focus:shadow-outline"
+              >
+                Sign up
+              </button>
+            </Link>
           </div>
         </form>
         <div className="mt-4 text-center">
           <p className="text-gray-600 text-sm">
-           Already have an account?{' '}
+            Already have an account?{" "}
             <a href="/login" className="text-blue-500 hover:text-blue-700">
-             Login here
+              Login here
             </a>
           </p>
         </div>
-        <div className="mt-4 text-center">
-      
-        </div>
+        <div className="mt-4 text-center"></div>
       </div>
-      </div>
+    </div>
   );
 };
 

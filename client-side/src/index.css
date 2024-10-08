@@ -235,7 +235,47 @@ body {
     }
     
     
-    .login-btn {
+    .google-login-btn {
+        width: 380px;
+       background-color: ghostwhite;
+        border: none;
+        outline: none;
+        height: 49px;
+        border-radius: 0.3rem;
+        /* display: block; */
+        color: #1F2937;
+        font-weight: 600;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+    
+    /* .tooltip-container {
+        position: relative;
+      }
+      
+       .tooltip {
+        visibility: hidden;
+        background-color: #f9f9f9;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        top:78px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        white-space: nowrap;
+        font-size: 14px;
+      }
+      
+      .tooltip-container:hover .tooltip {
+        visibility: visible;
+      } */
+      .logout-container{
+        background-color: white !important;
+      }
+      .login-btn {
         width: 380px;
        background-color: salmon;
         border: none;
@@ -250,9 +290,6 @@ body {
         cursor: pointer;
         transition: 0.5s;
     }
-    
-    
-    
     .login-btn:hover {
         background-color: #1F2937;
         color: white;

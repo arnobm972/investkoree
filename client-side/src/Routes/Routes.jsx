@@ -8,7 +8,6 @@ import AdminLogin from "../Pages/AdminPanel/AdminLogin";
 import FounderLogin from "../Pages/Founder/FounderLogin";
 import InvestorLogin from "../Pages/Investor/InvestorLogin";
 import AdminDashborad from "../Pages/AdminPanel/AdminDashborad";
-// import PrivateRoutes from "./PrivateRoutes";
 import ErrorPage from "../Pages/ErrorPage";
 import PendingProjects from "../Pages/AdminPanel/PendingProjects";
 import InvestorDashboard from "../Pages/Investor/InvestorDashboard";
@@ -18,6 +17,10 @@ import Stocks from "../Pages/Stocks";
 import GetFunded from "../Pages/GetFunded";
 import FounderDashboard from "../Pages/Founder/FounderDashboard";
 import FounderPost from "../Pages/Founder/FounderPost";
+import PrivateInvestorRoute from "./PrivateInvestorRoute";
+import PrivateFounderRoute from "./PrivateFounderRoute";
+import PrivateAdminRoute from "./PrivateAdminRoute";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -54,18 +57,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/admindashboard",
-        element: <AdminDashborad></AdminDashborad>,
-        // private
+        element: (
+          <PrivateAdminRoute>
+            <AdminDashborad></AdminDashborad>
+          </PrivateAdminRoute>
+        ),
       },
       {
         path: "/pendingprojects",
-        element: <PendingProjects></PendingProjects>,
-        // private
+        element: (
+          <PrivateAdminRoute>
+            <PendingProjects></PendingProjects>
+          </PrivateAdminRoute>
+        ),
       },
       {
         path: "/investordashboard",
-        element: <InvestorDashboard></InvestorDashboard>,
-        // private
+        element: (
+          <PrivateInvestorRoute>
+            <InvestorDashboard></InvestorDashboard>
+          </PrivateInvestorRoute>
+        ),
       },
       {
         path: "/profitsharing",
@@ -80,18 +92,24 @@ export const router = createBrowserRouter([
         element: <Stocks></Stocks>,
       },
       {
-        path: "/founderlogin",
+        path: "/getfunded",
         element: <GetFunded></GetFunded>,
       },
       {
         path: "/founderdashboard",
-        element: <FounderDashboard></FounderDashboard>,
-        // private
+        element: (
+          <PrivateFounderRoute>
+            <FounderDashboard></FounderDashboard>
+          </PrivateFounderRoute>
+        ),
       },
       {
         path: "/founderpost",
-        element: <FounderPost></FounderPost>,
-        // private
+        element: (
+          <PrivateFounderRoute>
+            <FounderPost></FounderPost>
+          </PrivateFounderRoute>
+        ),
       },
     ],
   },
