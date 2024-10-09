@@ -11,14 +11,14 @@ import AdminDashborad from "../Pages/AdminPanel/AdminDashborad";
 import ErrorPage from "../Pages/ErrorPage";
 import PendingProjects from "../Pages/AdminPanel/PendingProjects";
 import InvestorDashboard from "../Pages/Investor/InvestorDashboard";
-import ProfitSharing from "../Pages/ProfitSharing";
-import Debt from "../Pages/Debt";
+import Shariah from "../Pages/Shariah";
+import FixedReturn from "../Pages/FixedReturn";
 import Stocks from "../Pages/Stocks";
 import GetFunded from "../Pages/GetFunded";
 import FounderDashboard from "../Pages/Founder/FounderDashboard";
 import FounderPost from "../Pages/Founder/FounderPost";
 import PrivateInvestorRoute from "./PrivateInvestorRoute";
-import PrivateFounderRoute from "./PrivateFounderRoute";
+// import PrivateFounderRoute from "./PrivateFounderRoute";
 import PrivateAdminRoute from "./PrivateAdminRoute";
 
 export const router = createBrowserRouter([
@@ -74,18 +74,19 @@ export const router = createBrowserRouter([
       {
         path: "/investordashboard",
         element: (
-          <PrivateInvestorRoute>
-            <InvestorDashboard></InvestorDashboard>
-          </PrivateInvestorRoute>
+          // <PrivateInvestorRoute>
+          //   <InvestorDashboard></InvestorDashboard>
+          // </PrivateInvestorRoute>
+          <InvestorDashboard></InvestorDashboard>
         ),
       },
       {
-        path: "/profitsharing",
-        element: <ProfitSharing></ProfitSharing>,
+        path: "/shariah",
+        element: <Shariah></Shariah>,
       },
       {
-        path: "/debt",
-        element: <Debt></Debt>,
+        path: "/fixedreturn",
+        element: <FixedReturn></FixedReturn>,
       },
       {
         path: "/stocks",
@@ -98,17 +99,19 @@ export const router = createBrowserRouter([
       {
         path: "/founderdashboard",
         element: (
-          <PrivateFounderRoute>
-            <FounderDashboard></FounderDashboard>
-          </PrivateFounderRoute>
+          // <PrivateFounderRoute>
+          //   <FounderDashboard></FounderDashboard>
+          // </PrivateFounderRoute>
+          <FounderDashboard></FounderDashboard>
         ),
       },
       {
         path: "/founderpost",
         element: (
-          <PrivateFounderRoute>
-            <FounderPost></FounderPost>
-          </PrivateFounderRoute>
+          // <PrivateFounderRoute>
+          //   <FounderPost></FounderPost>
+          // </PrivateFounderRoute>
+          <FounderPost></FounderPost>
         ),
       },
     ],

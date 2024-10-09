@@ -50,11 +50,11 @@ const Navbar = () => {
                 <ul className="bg-base-100  rounded-t-none p-2">
                   <li>
                     <NavLink
-                      to="/profitsharing"
+                      to="/shariah"
                       className="hover:bg-salmon transition  mb-2  hover:text-white p-2 rounded"
                       activeclassname="active"
                     >
-                      Profit Sharing
+                      Shariah
                     </NavLink>
                   </li>
                   <li>
@@ -68,11 +68,11 @@ const Navbar = () => {
                   </li>
                   <li>
                     <NavLink
-                      to="/debt"
+                      to="/fixedreturn"
                       className="hover:bg-salmon  transition hover:text-white p-2 rounded"
                       activeclassname="active"
                     >
-                      Debt
+                      Fixed Return
                     </NavLink>
                   </li>
                 </ul>

@@ -1,6 +1,6 @@
 import banner from "../assets/s2.jpg";
 
-const Stocks = () => {
+const FixedRetrun = () => {
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -8,7 +8,7 @@ const Stocks = () => {
         <div className="drawer-content flex flex-col p-10">
           <p className="text-3xl font-bold mt-12 text-center">
             {" "}
-            Stocks Bussiness{" "}
+            Fixed Return Bussiness{" "}
           </p>
           <div className="flex flex-row my-24 gap-14 items-center justify-center px-20">
             <div className="bg-white h-[420px] w-[320px] rounded-2xl shadow-md overflow-hidden">
@@ -396,4 +396,4 @@ const Stocks = () => {
   );
 };
 
-export default Stocks;
+export default FixedRetrun;

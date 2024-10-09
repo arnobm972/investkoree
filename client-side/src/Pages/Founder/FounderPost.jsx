@@ -120,9 +120,9 @@ const FounderPost = () => {
             <option disabled selected>
               Pick a Category
             </option>
-            <option>Profit Sharing</option>
+            <option>Shariah</option>
             <option>Stocks</option>
-            <option>Debt</option>
+            <option>Fixed Retun</option>
           </select>
         </label>
         <label className="form-control my-3 w-full max-w-xs">
@@ -138,6 +138,19 @@ const FounderPost = () => {
             <option>Clothing</option>
             <option>Financial</option>
             <option>Retail</option>
+          </select>
+        </label>
+        <label className="form-control my-3 w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Investment Duration</span>
+          </div>
+          <select className="select select-warning w-full max-w-xs " required>
+            <option disabled selected>
+              Pick a Duration
+            </option>
+            <option>Short term(1 week to 1 month)</option>
+            <option>Mid term(1 month to 3 months)</option>
+            <option>Long term(3 months+)</option>
           </select>
         </label>
         <label className="form-control my-3 w-full max-w-xs">

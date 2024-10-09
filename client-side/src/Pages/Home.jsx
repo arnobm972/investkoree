@@ -1,7 +1,16 @@
-import banner from "../assets/s2.jpg";
 import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
+import { useEffect, useState } from "react";
+import LatestPost from "./LatestPost";
 const Home = () => {
+  const [latestpost, setLatestPost] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5000/ProjectCol")
+      .then((res) => res.json())
+      .then((data) => {
+        setLatestPost(data);
+      });
+  });
   return (
     <div>
       <div className="hero banner-img bg-salmon ">
@@ -24,129 +33,9 @@ const Home = () => {
         Currently Running Investments
       </h5>
       <div className="flex flex-row gap-14 items-center justify-center px-20">
-        <div className="bg-white h-[450px] my-24 w-[320px] rounded-2xl shadow-md overflow-hidden">
-          <img
-            src={banner} // Replace with actual image URL
-            alt="Fundraiser"
-            className="w-full h-48 object-cover "
-          />
-          <div className="p-4">
-            <div className="text-xs font-medium text-gray-500 mb-2">
-              <span className="inline-block bg-teal-100 text-teal-800 rounded-full px-3 py-1 text-sm font-semibold mr-2">
-                Health
-              </span>
-              <span>
-                <i className="fas fa-map-marker-alt mr-1"></i> South Africa
-              </span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">
-              Providing health food for the children
-            </h3>
-            <div className="flex flex-row  my-4 justify-between">
-              <p className=" ">Funded 40%</p>
-              <p className="">Left 60%</p>
-            </div>
-            <div className="mb-4">
-              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div
-                  className="bg-teal-500 h-2.5 rounded-full"
-                  style={{ width: "40.5%" }} // Dynamically set width
-                ></div>
-              </div>
-              <div className="flex justify-between text-sm">
-                <div>
-                  <i className="fas fa-box mr-1"></i> Rasied: $34,000
-                </div>
-                <div>
-                  <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
-                </div>
-              </div>
-            </div>
-            {/* Add a button or call to action here */}
-          </div>
-        </div>
-        <div className="bg-white h-[450px] my-24 w-[320px] rounded-2xl shadow-md overflow-hidden">
-          <img
-            src={banner} // Replace with actual image URL
-            alt="Fundraiser"
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-4">
-            <div className="text-xs font-medium text-gray-500 mb-2">
-              <span className="inline-block bg-teal-100 text-teal-800 rounded-full px-3 py-1 text-sm font-semibold mr-2">
-                Health
-              </span>
-              <span>
-                <i className="fas fa-map-marker-alt mr-1"></i> South Africa
-              </span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">
-              Providing health food for the children
-            </h3>
-            <div className="flex flex-row  my-4 justify-between">
-              <p className=" ">Funded 40%</p>
-              <p className="">Left 60%</p>
-            </div>
-            <div className="mb-4">
-              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div
-                  className="bg-teal-500 h-2.5 rounded-full"
-                  style={{ width: "40.5%" }} // Dynamically set width
-                ></div>
-              </div>
-              <div className="flex justify-between text-sm">
-                <div>
-                  <i className="fas fa-box mr-1"></i> Rasied: $34,000
-                </div>
-                <div>
-                  <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
-                </div>
-              </div>
-            </div>
-            {/* Add a button or call to action here */}
-          </div>
-        </div>
-        <div className="bg-white h-[450px] my-24 w-[320px] rounded-2xl shadow-md overflow-hidden">
-          <img
-            src={banner} // Replace with actual image URL
-            alt="Fundraiser"
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-4">
-            <div className="text-xs font-medium text-gray-500 mb-2">
-              <span className="inline-block bg-teal-100 text-teal-800 rounded-full px-3 py-1 text-sm font-semibold mr-2">
-                Health
-              </span>
-              <span>
-                <i className="fas fa-map-marker-alt mr-1"></i> South Africa
-              </span>
-            </div>
-            <h3 className="text-lg  font-semibold mb-2">
-              Providing health food for the children
-            </h3>
-            <div className="flex flex-row  my-4 justify-between">
-              <p className=" ">Funded 40%</p>
-              <p className="">Left 60%</p>
-            </div>
-            <div className="mb-4">
-              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div
-                  className="bg-teal-500 h-2.5 rounded-full"
-                  style={{ width: "40.5%" }} // Dynamically set width
-                ></div>
-              </div>
-              <div className="flex justify-between text-sm">
-                <div>
-                  <i className="fas fa-box mr-1"></i> Rasied: $34,000
-                </div>
-                <div>
-                  <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
-                </div>
-              </div>
-            </div>
-            {/* Add a button or call to action here */}
-          </div>
-        </div>
+        {latestpost.map((item) => (
+          <LatestPost key={item._id} item={item}></LatestPost>
+        ))}
       </div>
       <div className="mission-section  my-20 flex gap-10 justify-center flex-row">
         <div className="flex flex-row gap-8">
