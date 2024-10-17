@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Base API slice configuration
-const baseQuery = fetchBaseQuery({ baseUrl: 'http://localhost:5000/api' }); // Ensure the base URL is correct
+const baseQuery = fetchBaseQuery({ baseUrl: 'investkoree-server-side.vercel.app'
+ }); // Ensure the base URL is correct
 
 export const apiSlice = createApi({
   baseQuery,
