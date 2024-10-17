@@ -1,120 +1,118 @@
-import { useContext, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { AuthContext } from "../../Providers/AuthProvider";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { app } from "../../Firebase/firebase.config";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useLoginMutation,
+  useRegisterMutation,
+} from "../../slices/userApiSlice";
+import { setCredentials } from "../../slices/authslice";
+import Loader from "../../shared/Loader";
 
 const InvestorLogin = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
-  const [showPassword3, setShowPassword3] = useState(false);
-  const { createUser, signIn } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [showPassword, setShowPassword] = useState({
+    login: false,
+    register: false,
+    confirm: false,
+  });
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [error, setError] = useState(null);
-  const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const from = location.state?.from?.pathname || "/";
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
+  const { userInfo } = useSelector((state) => state.auth);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    const password = form.get("u_signin_pass");
-    const email = form.get("u_signin_email");
-
-    signIn(email, password, "investor").then((result) => {
-      const user = result.user;
-      console.log(user);
-      toast.success("Successfully Logged In");
-      navigate(from, { replace: true });
-      navigate("/investordashboard", { replace: true });
-    });
-  };
-  const handleGoogleSignin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      toast.success("Successfully Logged In");
+  useEffect(() => {
+    if (userInfo) {
       navigate("/investordashboard");
-    } catch (error) {
-      console.error(error);
-      toast.error("Google sign-in failed. Please try again.");
     }
-  };
+  }, [navigate, userInfo]);
 
-  const handleSignUpClick = () => {
-    setIsSignUpMode(true);
-  };
+  // Reset errors when switching between login and signup modes
+  useEffect(() => {
+    setError(null);
+  }, [isSignUpMode]);
 
-  const handleSignInClick = () => {
-    setIsSignUpMode(false);
+  const togglePasswordVisibility = (field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError(null);
+
     const form = new FormData(e.currentTarget);
     const name = form.get("u_signup_name");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
     const email = form.get("u_signup_email");
+    const role = "Investor";
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-    const uppercaseRegex = /[A-Z]/;
-    const lowercaseRegex = /[a-z]/;
-    const minLength = 6;
+    const passwordValidations = [
+      {
+        regex: /[A-Z]/,
+        message: "Password must contain at least one uppercase letter",
+      },
+      {
+        regex: /[a-z]/,
+        message: "Password must contain at least one lowercase letter",
+      },
+      {
+        regex: /.{6,}/,
+        message: "Password must be at least 6 characters long",
+      },
+    ];
 
-    if (!uppercaseRegex.test(password)) {
-      setError("Password must contain at least one uppercase letter");
-      return;
-    }
-
-    if (!lowercaseRegex.test(password)) {
-      setError("Password must contain at least one lowercase letter");
-      return;
-    }
-
-    if (password.length < minLength) {
-      setError(`Password must be at least ${minLength} characters long`);
-      return;
+    for (const validation of passwordValidations) {
+      if (!validation.regex.test(password)) {
+        setError(validation.message);
+        return;
+      }
     }
 
     try {
-      await createUser(email, password, name, "investor");
-      toast.success("Successfully Registered");
-      navigate("/investordashboard", { replace: true });
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        toast.error("Email is already in use. Please try another one.");
-      } else {
-        console.error(error);
-        toast.error("Error registering user. Please try again.");
-      }
+      const res = await register({ email, password, name, role }).unwrap();
+      dispatch(setCredentials(res));
+      navigate("/investordashboard");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    setError(null);
+
+    const form = new FormData(e.currentTarget);
+    const email = form.get("u_signin_email");
+    const password = form.get("u_signin_pass");
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials(res));
+      console.log(res);
+      navigate("/investordashboard");
+      toast.success("Logged in Successfully");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
-  const togglePasswordVisibility2 = () => {
-    setShowPassword2(!showPassword2);
-  };
-  const togglePasswordVisibility3 = () => {
-    setShowPassword3(!showPassword3);
-  };
+
   return (
     <div className={`signcontainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
         <div className="signin-signup">
-          <form action="" onSubmit={handleLogin} className="sign-in-form">
+          <form onSubmit={handleLogin} className="sign-in-form">
             <h2 className="title">Investor Sign in</h2>
             {error && <p className="error-message">{error}</p>}
             <div className="input-field">
@@ -129,34 +127,33 @@ const InvestorLogin = () => {
             <div className="input-field relative">
               <i className="fas fa-lock"></i>
               <input
-                type={showPassword3 ? "text" : "password"}
+                type={showPassword.login ? "text" : "password"}
                 placeholder="Password"
                 name="u_signin_pass"
                 required
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility3}
+                onClick={() => togglePasswordVisibility("login")}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
               >
-                {showPassword3 ? (
+                {showPassword.login ? (
                   <i className="fas fa-eye"></i>
                 ) : (
                   <i className="fas fa-eye-slash"></i>
                 )}
               </button>
+              {isLoginLoading && <Loader />}
             </div>
-            <input type="submit" value="Login" className="login-btn solid" />
-            <button
-              type="button"
-              onClick={handleGoogleSignin}
-              className="google-login-btn  mt-4"
-            >
-              <i className="fab fa-google"></i> Sign in with Google
-            </button>
+            <input
+              type="submit"
+              value={isLoginLoading ? "Logging in..." : "Login"}
+              className="login-btn solid"
+              disabled={isLoginLoading}
+            />
           </form>
 
-          <form action="" className="sign-up-form" onSubmit={handleRegister}>
+          <form className="sign-up-form" onSubmit={handleRegister}>
             <h2 className="title">Investor Sign up</h2>
             {error && <p className="error-message">{error}</p>}
             <div className="input-field">
@@ -180,17 +177,17 @@ const InvestorLogin = () => {
             <div className="input-field relative">
               <i className="fas fa-lock"></i>
               <input
-                type={showPassword ? "text" : "password"}
+                type={showPassword.register ? "text" : "password"}
                 placeholder="Password"
                 name="u_signup_password"
                 required
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
+                onClick={() => togglePasswordVisibility("register")}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
               >
-                {showPassword ? (
+                {showPassword.register ? (
                   <i className="fas fa-eye"></i>
                 ) : (
                   <i className="fas fa-eye-slash"></i>
@@ -200,36 +197,42 @@ const InvestorLogin = () => {
             <div className="input-field relative">
               <i className="fas fa-lock"></i>
               <input
-                type={showPassword2 ? "text" : "password"}
+                type={showPassword.confirm ? "text" : "password"}
                 placeholder="Confirm Password"
                 name="u_signup_cpassword"
                 required
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility2}
+                onClick={() => togglePasswordVisibility("confirm")}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
               >
-                {showPassword2 ? (
+                {showPassword.confirm ? (
                   <i className="fas fa-eye"></i>
                 ) : (
                   <i className="fas fa-eye-slash"></i>
                 )}
               </button>
+              {isRegisterLoading && <Loader />}
             </div>
-            <input type="submit" className="login-btn" value="Sign up" />
+            <input
+              type="submit"
+              value={isRegisterLoading ? "Signing up..." : "Sign up"}
+              className="login-btn solid"
+              disabled={isRegisterLoading}
+            />
           </form>
         </div>
       </div>
+
       <div className="panels-container">
         <div className="panel left-panel">
           <div className="content">
-            <h3>New here ?</h3>
-            <p>Register now and start experiencing your new journey with us!</p>
+            <h3>New here?</h3>
+            <p>Sign up to access exclusive features!</p>
             <button
-              className="panel-btn transparent"
-              id="sign-up-btn"
-              onClick={handleSignUpClick}
+              className="login-btn2 transparent"
+              onClick={() => setIsSignUpMode(true)}
             >
               Sign up
             </button>
@@ -238,14 +241,13 @@ const InvestorLogin = () => {
         </div>
         <div className="panel right-panel">
           <div className="content">
-            <h3>One of us ?</h3>
-            <p>What are you waiting for? Login now!</p>
+            <h3>One of us?</h3>
+            <p>Log in to access your account.</p>
             <button
-              className="panel-btn transparent"
-              id="sign-in-btn"
-              onClick={handleSignInClick}
+              className="login-btn2  transparent"
+              onClick={() => setIsSignUpMode(false)}
             >
-              Sign in
+              Log in
             </button>
           </div>
           <img src="img/register.svg" className="image" alt="" />

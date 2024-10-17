@@ -79,6 +79,8 @@ const AuthProvider = ({ children }) => {
       } else {
         setUser(user);
       }
+      // console.log(user);
+
       return user;
     } catch (error) {
       setLoading(false);

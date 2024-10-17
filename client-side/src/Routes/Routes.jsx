@@ -18,8 +18,9 @@ import GetFunded from "../Pages/GetFunded";
 import FounderDashboard from "../Pages/Founder/FounderDashboard";
 import FounderPost from "../Pages/Founder/FounderPost";
 import PrivateInvestorRoute from "./PrivateInvestorRoute";
-// import PrivateFounderRoute from "./PrivateFounderRoute";
+import PrivateFounderRoute from "./PrivateFounderRoute";
 import PrivateAdminRoute from "./PrivateAdminRoute";
+import ProjectDetail from "../Pages/ProjectDetail";
 
 export const router = createBrowserRouter([
   {
@@ -57,18 +58,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/admindashboard",
-        element: (
-          <PrivateAdminRoute>
-            <AdminDashborad></AdminDashborad>
-          </PrivateAdminRoute>
-        ),
+        element: <AdminDashborad></AdminDashborad>,
+      },
+      {
+        path: "/projectdetail",
+        element: <ProjectDetail></ProjectDetail>,
       },
       {
         path: "/pendingprojects",
         element: (
-          <PrivateAdminRoute>
-            <PendingProjects></PendingProjects>
-          </PrivateAdminRoute>
+          // <PrivateAdminRoute>
+          //   <PendingProjects></PendingProjects>
+          // </PrivateAdminRoute>
+          <PendingProjects></PendingProjects>
         ),
       },
       {

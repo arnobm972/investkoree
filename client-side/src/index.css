@@ -295,6 +295,26 @@ body {
         color: white;
     
     }
+    .login-btn2 {
+        width: 380px;
+       background-color: white;
+        border: none;
+        outline: none;
+        height: 49px;
+        border-radius: 0.3rem;
+        /* display: block; */
+        color: black;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+    .login-btn2:hover {
+        background-color: #1F2937;
+        color: white;
+    
+    }
     .post-btn {
         width: 120px;
        background-color: salmon;

@@ -4,14 +4,16 @@ import PropTypes from "prop-types";
 import { Navigate, useLocation } from "react-router-dom";
 
 const PrivateFounderRoute = ({ children }) => {
-  const { user, loading, userType } = useContext(AuthContext);
-  const location = useLocation();
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null;
+  console.log(userInfo);
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
-  if (user && userType === "founder") {
+  if (userInfo && userInfo.role === "founder") {
     return children;
   }
 

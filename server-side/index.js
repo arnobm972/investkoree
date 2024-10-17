@@ -1,56 +1,65 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const port = process.env.PORT || 5000;
-require('dotenv').config();
 
-app.use(cors());
-app.use(express.json());
+import express from 'express';
+import dotenv from 'dotenv';
+import connectDB from './config/db.js';
+import userRoutes from './routes/userRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import investmentRoutes from './routes/investmentRoutes.js'; 
+import fs from 'fs';
+import founderPostRoutes from './routes/founderPostRoutes.js'; // fixed path
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@investkoreecluster.dd7wz.mongodb.net/?retryWrites=true&w=majority&appName=InvestkoreeCluster`;
+dotenv.config();
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+// Create __filename and __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-async function run() {
-  try {
-    // Connect the client to the server (optional starting in v4.7)
-    await client.connect();
-    const projectCollection = client.db("InvestkoreeDB").collection("ProjectCol");
-
-    // Fetch projects sorted by insertion order and limit to 3
-    app.get('/ProjectCol', async (req, res) => {
-      try {
-        // const result = await projectCollection.find({}).sort({ $natural: -1 }).limit(3).toArray();
-        const result = await projectCollection.find().toArray();
-        res.send(result);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-        res.status(500).send("Failed to fetch projects.");
-      }
-    });
-
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-  }
+// Ensure upload directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-run().catch(console.dir);
+// Load environment variables and connect to the database
+connectDB();
 
-app.get('/', (req, res) => {
-  res.send('API is running');
-});
+const app = express();
 
+// Serve static files from the uploads directory
+app.use("/uploads", express.static(uploadDir));
+
+// Enable CORS with credentials
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.use('/api/investments', investmentRoutes);
+// Middleware for parsing JSON, URL-encoded data, and cookies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// User routes
+app.use('/api/users', userRoutes);
+
+// Founder post routes
+app.use("/api/founderposts", founderPostRoutes); // Changed to a more specific route
+
+// Error handling middleware
+app.use(notFound);
+app.use(errorHandler);
+
+// Root route
+app.get('/', (req, res) => res.send('Server is ready'));
+
+// Start the server
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
