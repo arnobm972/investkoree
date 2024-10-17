@@ -14,7 +14,11 @@ import founderPostRoutes from './routes/founderPostRoutes.js'; // fixed path
 
 dotenv.config();
 
-// Create __filename and __dirname equivalent for ES modules
+
+// Load environment variables and connect to the database
+connectDB();
+
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -23,11 +27,14 @@ const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-
-// Load environment variables and connect to the database
-connectDB();
-
-const app = express();
+if (process.env.NODE_ENV ==='production'){
+  const __dirname=path.resolve();
+  app.use(express.static(path.join(__dirname,'../client-side/dist')));
+  app.get('*',(req,res)=>res.sendFile(path.resolve(__dirname,'client-side','dist','index.html')))
+}
+else{
+  app.get('/', (req, res) => res.send('Server is ready'));
+}
 
 // Serve static files from the uploads directory
 app.use("/uploads", express.static(uploadDir));
@@ -56,7 +63,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Root route
-app.get('/', (req, res) => res.send('Server is ready'));
+
 
 // Start the server
 const port = process.env.PORT || 5000;
