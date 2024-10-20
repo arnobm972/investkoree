@@ -16,7 +16,7 @@ const LatestPost = ({ item }) => {
   const fundingPercentage = (raised / required_funding) * 100;
 
   return (
-    <div>
+    <div className="mx-auto">
       <div
         className="bg-white h-[450px] my-24 w-[320px] rounded-2xl shadow-md overflow-hidden
         transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"

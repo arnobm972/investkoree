@@ -1,3 +1,4 @@
+import { useState } from "react";
 import logo from "../assets/ll.png";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
@@ -5,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../slices/authslice"; // Import your logout action from Redux
 import { useLogoutMutation } from "../slices/userApiSlice";
 import { toast } from "react-toastify";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hamburger and close icons
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth); // Use userInfo from Redux
-
+  const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
   const [logoutApiCall] = useLogoutMutation();
   const navigate = useNavigate();
 
@@ -23,14 +26,32 @@ const Navbar = () => {
     }
   };
 
+  // Toggle hamburger menu
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="sticky top-0 z-50">
-      <div className="navbar px-12 bg-base-100 shadow-lg">
-        <div className="flex-1">
-          <img className="h-20 w-44" src={logo} alt="logo" />
+    <div className="sticky top-0 z-50 bg-white shadow-lg">
+      <div className="navbar px-6 py-3 flex justify-between items-center">
+        <div className="flex items-center">
+          <img className="h-16 w-36" src={logo} alt="logo" />
         </div>
-        <div className="flex-none">
-          <ul className="font-bold text-lg menu menu-horizontal gap-8 px-1 flex justify-center">
+
+        {/* Hamburger Icon for Small Screens */}
+        <div className="lg:hidden block">
+          <button onClick={toggleMenu} className="text-2xl">
+            {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+          </button>
+        </div>
+
+        {/* Full Navbar for Larger Screens */}
+        <div
+          className={`hidden lg:flex flex-1 justify-center items-center ${
+            isOpen ? "block" : "hidden"
+          }`}
+        >
+          <ul className="font-bold text-lg menu menu-horizontal gap-8 px-1 flex">
             <li>
               <NavLink
                 to="/"
@@ -85,10 +106,9 @@ const Navbar = () => {
                 </ul>
               </details>
             </li>
-
             <li>
               {userInfo ? (
-                <div className="flex justify-center logout-container">
+                <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
                     {userInfo.name} {/* Display user’s name from Redux */}
                   </span>
@@ -129,18 +149,113 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-      </div>
 
-      <style jsx>
-        {`
-          .transition {
-            transition: transform 0.3s ease-in-out;
-          }
-          .transition:hover {
-            transform: translateX(8px);
-          }
-        `}
-      </style>
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="lg:hidden flex flex-col items-start p-4 bg-white shadow-lg">
+            <ul className="font-bold text-lg gap-4">
+              <li>
+                <NavLink
+                  to="/"
+                  onClick={toggleMenu}
+                  className="hover:bg-salmon transition p-2 rounded"
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/founderlogin"
+                  onClick={toggleMenu}
+                  className="hover:bg-salmon transition p-2 rounded"
+                >
+                  Get Funded
+                </NavLink>
+              </li>
+              <li>
+                <details>
+                  <summary className="hover:bg-salmon transition p-2 rounded">
+                    Category
+                  </summary>
+                  <ul className="bg-base-100 p-2">
+                    <li>
+                      <NavLink
+                        to="/shariah"
+                        onClick={toggleMenu}
+                        className="hover:bg-salmon transition p-2 rounded"
+                      >
+                        Shariah
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/stocks"
+                        onClick={toggleMenu}
+                        className="hover:bg-salmon transition p-2 rounded"
+                      >
+                        Stocks
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/fixedreturn"
+                        onClick={toggleMenu}
+                        className="hover:bg-salmon transition p-2 rounded"
+                      >
+                        Fixed Return
+                      </NavLink>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+              <li>
+                {userInfo ? (
+                  <div className="flex items-center">
+                    <span className="mr-2 hover:bg-salmon transition p-2 rounded">
+                      {userInfo.name}
+                    </span>
+                    <div
+                      onClick={() => {
+                        handleSignOut();
+                        toggleMenu();
+                      }}
+                      className="hover:bg-salmon transition p-2 rounded cursor-pointer"
+                    >
+                      Log Out
+                    </div>
+                  </div>
+                ) : (
+                  <details>
+                    <summary className="hover:bg-salmon transition p-2 rounded">
+                      Login
+                    </summary>
+                    <ul className="bg-base-100 p-2">
+                      <li>
+                        <NavLink
+                          to="/investorlogin"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition p-2 rounded"
+                        >
+                          Investor
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/founderlogin"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition p-2 rounded"
+                        >
+                          Founder
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </details>
+                )}
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

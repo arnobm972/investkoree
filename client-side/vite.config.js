@@ -13,7 +13,7 @@ export default defineConfig({
     port:3000,
     proxy :{
       '/api':{
-        target:'https://investkoree-client-side.vercel.app/',
+        target:'https://localhost:5000',
         changeOrigin:true,
       },
     },

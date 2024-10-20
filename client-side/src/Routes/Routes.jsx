@@ -17,9 +17,9 @@ import Stocks from "../Pages/Stocks";
 import GetFunded from "../Pages/GetFunded";
 import FounderDashboard from "../Pages/Founder/FounderDashboard";
 import FounderPost from "../Pages/Founder/FounderPost";
-import PrivateInvestorRoute from "./PrivateInvestorRoute";
-import PrivateFounderRoute from "./PrivateFounderRoute";
-import PrivateAdminRoute from "./PrivateAdminRoute";
+// import PrivateInvestorRoute from "./PrivateInvestorRoute";
+// import PrivateFounderRoute from "./PrivateFounderRoute";
+// import PrivateAdminRoute from "./PrivateAdminRoute";
 import ProjectDetail from "../Pages/ProjectDetail";
 
 export const router = createBrowserRouter([

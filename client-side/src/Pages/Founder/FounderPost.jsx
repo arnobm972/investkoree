@@ -86,7 +86,7 @@ const FounderPost = () => {
     postData.append("financialFile", financialFile);
 
     try {
-      const response = await fetch("/api/founderpost", {
+      const response = await fetch("/founderpost", {
         method: "POST",
         body: postData,
       });
