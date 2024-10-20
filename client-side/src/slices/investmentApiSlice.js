@@ -1,15 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 
 // Base API slice configuration
-const baseQuery = fetchBaseQuery({ baseUrl: '' }); // Ensure the base URL is correct
-
-export const apiSlice = createApi({
-  baseQuery,
-  tagTypes: ['Investment'], // Change to 'Investment' if you want to manage investment data
-  endpoints: (builder) => ({}), // Add your endpoints here
-});
-
-const INVESTMENT_URL = '/investments';
+const INVESTMENT_URL = '/investments'; // Should be relative to /api
 
 export const investmentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

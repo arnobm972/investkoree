@@ -31,16 +31,27 @@ app.use("/uploads", express.static(uploadDir));
 
 // Enable CORS with credentials, dynamically setting the origin based on environment
 const allowedOrigins = [
-  'http://localhost:5000',
-  'https://investkoree-client-side.vercel.app/' // Add your frontend Vercel deployment URL here
+  'https://investkoree-client-side.vercel.app', // Vercel frontend
+  'http://localhost:3000', // Local development
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow credentials (cookies, headers, etc.)
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // Middleware for parsing JSON, URL-encoded data, and cookies
 app.use(bodyParser.json()); app.use(bodyParser.urlencoded({ extended: true }));
