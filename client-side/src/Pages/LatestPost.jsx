@@ -18,7 +18,7 @@ const LatestPost = ({ item }) => {
   return (
     <div className="mx-auto">
       <div
-        className="bg-white h-[450px] my-24 w-[320px] rounded-2xl shadow-md overflow-hidden
+        className="bg-white h-[450px] lg:my-24  w-[320px] rounded-2xl shadow-md overflow-hidden
         transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
       >
         <img

@@ -112,7 +112,10 @@ const InvestorLogin = () => {
     <div className={`signcontainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
         <div className="signin-signup">
-          <form onSubmit={handleLogin} className="sign-in-form">
+          <form
+            onSubmit={handleLogin}
+            className="sign-in-form sm:mr-4 xs:mr-4 xxs:mr-4"
+          >
             <h2 className="lg:text-4xl text-black mb-2  md:text-2xl sm:text-lg  xxs:text-lg xs:text-lg">
               Investor Sign in
             </h2>
@@ -155,7 +158,10 @@ const InvestorLogin = () => {
             />
           </form>
 
-          <form className="sign-up-form" onSubmit={handleRegister}>
+          <form
+            className="sign-up-form xs:ml-4 sm:ml-4 xxs:ml-4"
+            onSubmit={handleRegister}
+          >
             <h2 className="lg:text-4xl text-black mb-2  md:text-2xl sm:text-lg xxs:text-lg xs:text-lg">
               Investor Sign up
             </h2>
@@ -230,7 +236,7 @@ const InvestorLogin = () => {
       </div>
 
       <div className="panels-container">
-        <div className="panel left-panel">
+        <div className="panel left-panel sm:mr-6 xs:mr-6 xxs:mr-6">
           <div className="content">
             <h3>New here?</h3>
             <p>Sign up to access exclusive features!</p>
@@ -243,7 +249,7 @@ const InvestorLogin = () => {
           </div>
           <img src="img/log.svg" className="image" alt="" />
         </div>
-        <div className="panel right-panel">
+        <div className="panel right-panel sm:ml-6 xs:ml-6 xxs:ml-6">
           <div className="content">
             <h3>One of us?</h3>
             <p>Log in to access your account.</p>

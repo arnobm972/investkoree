@@ -1,6 +1,7 @@
 import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
 import LatestPost from "./LatestPost";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // Hardcoded data for latest posts
@@ -57,9 +58,11 @@ const Home = () => {
             <p className="py-6 text-lg sm:text-2xl">
               It's Easy and Fast to Invest. Get Profit Faster Here.
             </p>
-            <button className="btn btn-active banner-btn btn-neutral">
-              Get Started
-            </button>
+            <Link to="/shariah">
+              <button className="btn btn-active banner-btn btn-neutral">
+                Get Started
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -68,7 +71,7 @@ const Home = () => {
       <h5 className="text-center mt-20 text-3xl sm:text-5xl font-bold">
         Currently Running Investments
       </h5>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto gap-6 px-6 lg:px-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto gap-6 px-6 lg:px-20 cursor-pointer">
         {latestPosts.map((item) => (
           <LatestPost key={item._id} item={item} />
         ))}
@@ -106,7 +109,7 @@ const Home = () => {
         <p className="text-center text-3xl sm:text-5xl mb-16">
           What people say about us
         </p>
-        <div className="flex flex-col sm:flex-row gap-6 items-center justify-center">
+        <div className="flex flex-col sm:flex-row  sm:mx-4 xs:mx-4 xxs:mx-4 gap-6 items-center justify-center">
           {/* Sample Testimonial 1 */}
           <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg shadow-md p-6 group">
             <div className="flex items-center">
