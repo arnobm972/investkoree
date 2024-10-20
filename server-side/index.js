@@ -27,7 +27,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Serve static files from the uploads directory
-app.use("/uploads", express.static(uploadDir));
+// app.use("/uploads", express.static(uploadDir));
 
 // Enable CORS with credentials, dynamically setting the origin based on environment
 const allowedOrigins = [
