@@ -113,7 +113,7 @@ const InvestorLogin = () => {
       <div className="forms-container">
         <div className="signin-signup">
           <form onSubmit={handleLogin} className="sign-in-form">
-            <h2 className="lg:text-4xl text-black mb-2  md:text-2xl sm:text-lg  xs:text-lg">
+            <h2 className="lg:text-4xl text-black mb-2  md:text-2xl sm:text-lg  xxs:text-lg xs:text-lg">
               Investor Sign in
             </h2>
             {error && <p className="error-message">{error}</p>}
@@ -150,13 +150,13 @@ const InvestorLogin = () => {
             <input
               type="submit"
               value={isLoginLoading ? "Logging in..." : "Login"}
-              className="login-btn solid lg:w-96 sm:w-36 xs:w-32 md:w-80"
+              className="login-btn solid lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80"
               disabled={isLoginLoading}
             />
           </form>
 
           <form className="sign-up-form" onSubmit={handleRegister}>
-            <h2 className="lg:text-4xl text-black mb-2  md:text-2xl sm:text-lg xs:text-lg">
+            <h2 className="lg:text-4xl text-black mb-2  md:text-2xl sm:text-lg xxs:text-lg xs:text-lg">
               Investor Sign up
             </h2>
             {error && <p className="error-message">{error}</p>}
@@ -222,7 +222,7 @@ const InvestorLogin = () => {
             <input
               type="submit"
               value={isRegisterLoading ? "Signing up..." : "Sign up"}
-              className="login-btn   lg:w-96 sm:w-36 xs:w-32 md:w-80 solid"
+              className="login-btn   lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80 solid"
               disabled={isRegisterLoading}
             />
           </form>
@@ -235,7 +235,7 @@ const InvestorLogin = () => {
             <h3>New here?</h3>
             <p>Sign up to access exclusive features!</p>
             <button
-              className="login-btn2  lg:w-96 sm:w-36 xs:w-32 md:w-80 transparent"
+              className="login-btn2  lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80 transparent"
               onClick={() => setIsSignUpMode(true)}
             >
               Sign up
@@ -248,7 +248,7 @@ const InvestorLogin = () => {
             <h3>One of us?</h3>
             <p>Log in to access your account.</p>
             <button
-              className="login-btn2 lg:w-96 sm:w-36 xs:w-32 md:w-80  transparent"
+              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80  transparent"
               onClick={() => setIsSignUpMode(false)}
             >
               Log in
