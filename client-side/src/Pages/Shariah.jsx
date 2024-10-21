@@ -15,7 +15,6 @@ const Shariah = () => {
             </label>
           </div>
           <p className="lg:text-3xl md:text-2xl sm:text-xl xs:text-xl xxs:text-xl md:mb-2 xs:mb-2 xxs:mb-2 sm:mb-2  font-bold lg:mt-12  md:mt-12 text-center">
-            {" "}
             Shariah Bussiness{" "}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] sm:gap-4 xs:gap-4  xs:mx-auto xxs:mx-auto  xs:mt-2 xxs:mt-2 xxs:gap-4 lg:ml-1  sm:mx-auto lg:gap-64 lg:mt-8  cursor-pointer">

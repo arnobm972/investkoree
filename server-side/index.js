@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import investmentRoutes from './routes/investmentRoutes.js'; 
 import fs from 'fs';
 import founderPostRoutes from './routes/founderPostRoutes.js'; // fixed path
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use(cors(corsOptions));
 
 // Handle preflight requests
 app.options('*', cors(corsOptions));
+
 
 // Middleware for parsing JSON, URL-encoded data, and cookies
 app.use(bodyParser.json()); app.use(bodyParser.urlencoded({ extended: true }));

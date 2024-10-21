@@ -1,8 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "./../Layout/Main";
-import Dashboard from "../Pages/Dashboard";
-import Login from "../Pages/Investor/InvestorLogin";
-import Signup from "../Pages/Signup";
 import Home from "../Pages/Home";
 import AdminLogin from "../Pages/AdminPanel/AdminLogin";
 import FounderLogin from "../Pages/Founder/FounderLogin";
@@ -31,18 +28,6 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-      },
-      {
-        path: "/dashboard",
-        element: <Dashboard></Dashboard>,
-      },
-      {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/signup",
-        element: <Signup></Signup>,
       },
       {
         path: "/adminlogin",

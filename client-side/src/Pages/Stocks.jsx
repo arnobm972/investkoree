@@ -15,10 +15,9 @@ const Stocks = () => {
             </label>
           </div>
           <p className="lg:text-3xl md:text-2xl sm:text-xl xs:text-xl xxs:text-xl md:mb-2 xs:mb-2 xxs:mb-2 sm:mb-2  font-bold lg:mt-12  md:mt-12 text-center">
-            {" "}
             Stocks Bussiness{" "}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] sm:gap-4 xs:gap-4 xxs:gap-4 lg:ml-1  sm:mx-auto lg:gap-64 lg:mt-8  cursor-pointer">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] sm:gap-4 xs:gap-4  xs:mx-auto xxs:mx-auto  xs:mt-2 xxs:mt-2 xxs:gap-4 lg:ml-1  sm:mx-auto lg:gap-64 lg:mt-8  cursor-pointer">
             <div className="bg-white h-[420px] lg:w-[320px]  rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner} // Replace with actual image URL
@@ -184,7 +183,7 @@ const Stocks = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] lg:ml-1  sm:gap-4 xs:gap-4 xxs:gap-4 sm:mt-4  xs:mt-4 xxs:mt-4 sm:mx-auto lg:gap-64  lg:mt-8  cursor-pointer">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] lg:ml-1  sm:gap-4 xs:gap-4  xs:mx-auto xxs:mx-auto xxs:gap-4 sm:mt-4  xs:mt-4 xxs:mt-4 sm:mx-auto lg:gap-64  lg:mt-8  cursor-pointer">
             <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner} // Replace with actual image URL

@@ -77,7 +77,6 @@ const FounderDashboard = () => {
               </div>
             </div>
             <div>
-              {" "}
               <Link to="/founderpost">
                 <input
                   type="submit"
@@ -89,7 +88,6 @@ const FounderDashboard = () => {
             </div>
           </div>
           <p className="text-3xl font-bold mb-12 mt-16">
-            {" "}
             Invested Project List
           </p>
           <div className="overflow-x-auto ">

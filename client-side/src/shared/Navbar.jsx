@@ -75,11 +75,11 @@ const Navbar = () => {
                 <summary className="hover:bg-salmon mt-2 hover:text-white transition p-2 rounded">
                   Category
                 </summary>
-                <ul className="bg-base-100 rounded-t-none p-2">
+                <ul className="bg-base-100 rounded-t-none  p-2">
                   <li>
                     <NavLink
                       to="/shariah"
-                      className="hover:bg-salmon transition mb-2 hover:text-white p-2 rounded"
+                      className="hover:bg-salmon transition  sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
                       activeclassname="active"
                     >
                       Shariah
@@ -88,7 +88,7 @@ const Navbar = () => {
                   <li>
                     <NavLink
                       to="/stocks"
-                      className="hover:bg-salmon transition mb-2 hover:text-white p-2 rounded"
+                      className="hover:bg-salmon transition   sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
                       activeclassname="active"
                     >
                       Stocks
@@ -110,7 +110,7 @@ const Navbar = () => {
               {userInfo ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {userInfo.name} {/* Display user’s name from Redux */}
+                    {userInfo.name}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -128,7 +128,7 @@ const Navbar = () => {
                     <li>
                       <NavLink
                         to="/investorlogin"
-                        className="hover:bg-salmon transition hover:text-white p-2 mb-2 rounded"
+                        className="hover:bg-salmon transition hover:text-white p-2  lg:mb-2 sm:mb-2 xs:mb-2 xxs:mb-2 rounded"
                         activeclassname="active"
                       >
                         Investor
@@ -163,7 +163,7 @@ const Navbar = () => {
                   Home
                 </NavLink>
               </li>
-              <li>
+              <li className="xxs:mt-2 xs:mt-2 sm-mt-2">
                 <NavLink
                   to="/founderlogin"
                   onClick={toggleMenu}
@@ -187,7 +187,7 @@ const Navbar = () => {
                         Shariah
                       </NavLink>
                     </li>
-                    <li>
+                    <li className="xxs:mt-4 xs:mt-4 sm-mt-4">
                       <NavLink
                         to="/stocks"
                         onClick={toggleMenu}
@@ -196,7 +196,7 @@ const Navbar = () => {
                         Stocks
                       </NavLink>
                     </li>
-                    <li>
+                    <li className="xxs:mt-4 xs:mt-4 sm-mt-4">
                       <NavLink
                         to="/fixedreturn"
                         onClick={toggleMenu}
@@ -239,11 +239,11 @@ const Navbar = () => {
                           Investor
                         </NavLink>
                       </li>
-                      <li>
+                      <li className="xxs:mt-4 xs:mt-4 sm-mt-4">
                         <NavLink
                           to="/founderlogin"
                           onClick={toggleMenu}
-                          className="hover:bg-salmon transition p-2 rounded"
+                          className="hover:bg-salmon transition p-2 xxs:mt-4 xs:mt-4 rounded"
                         >
                           Founder
                         </NavLink>

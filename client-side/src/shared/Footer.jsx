@@ -4,11 +4,9 @@ import { SocialIcon } from "react-social-icons";
 function Footer() {
   return (
     <div>
-      <footer className=" bg-slate-800 text-lg  text-salmon py-10 px-6 md:px-24">
-        <div className="flex flex-col lg:flex-row lg:justify-around space-y-6 lg:space-y-0">
-          {" "}
-          {/* Updated flex for larger screens */}
-          <nav className="mb-6 lg:mb-0">
+      <footer className=" bg-slate-800 text-lg  text-salmon py-10 px-6 md:px-24 sm:text-center xs:text-center xxs:text-center ">
+        <div className="flex flex-col lg:flex-row lg:justify-around space-y-6  lg:space-y-0">
+          <nav className="mb-6 lg:mb-0 ">
             <h6 className="footer-title opacity-100">Contact Us</h6>
             <ul className="list-none">
               <li className="hover:text-white transition-colors duration-200">
@@ -48,7 +46,7 @@ function Footer() {
               </li>
             </ul>
           </nav>
-          <nav>
+          <nav className="sm:mx-auto xxs:mx-auto xs:mx-auto">
             <h6 className="footer-title opacity-100">Social</h6>
             <div className="flex flex-row gap-2">
               <a href="https://www.facebook.com">
