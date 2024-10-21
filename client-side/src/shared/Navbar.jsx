@@ -202,7 +202,7 @@ const Navbar = () => {
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
-                        Fixed Return
+                        FixedReturn
                       </NavLink>
                     </li>
                   </ul>
