@@ -46,7 +46,7 @@ function Footer() {
               </li>
             </ul>
           </nav>
-          <nav className="">
+          <nav className="xxs:mx-auto xs:mx-auto sm-mx-auto">
             <h6 className="footer-title opacity-100">Social</h6>
             <div className="flex flex-row gap-2">
               <a href="https://www.facebook.com">
