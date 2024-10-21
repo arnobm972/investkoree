@@ -18,7 +18,7 @@ const Stocks = () => {
             Stocks Bussiness
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] sm:gap-6 xs:gap-6  xs:mx-auto xxs:mx-auto  xs:mt-2 xxs:mt-2 xxs:gap-6 lg:ml-1  sm:mx-auto lg:gap-64 lg:mt-8  cursor-pointer">
-            <div className="bg-white h-[420px] lg:w-[320px]  rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px]  rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -47,18 +47,20 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -87,18 +89,20 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -127,18 +131,20 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -167,12 +173,14 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
@@ -180,7 +188,7 @@ const Stocks = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:w-[1200px] lg:ml-1  sm:gap-6 xs:gap-6  xs:mx-auto xxs:mx-auto xxs:gap-6 sm:mt-6  xs:mt-6 xxs:mt-6 sm:mx-auto lg:gap-64  lg:mt-8  cursor-pointer">
-            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -209,18 +217,20 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -249,18 +259,20 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[290px] xs:w-[290px] xxs:w-[290px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] rounded-2xl shadow-md sm:w-[270px] xs:w-[270px] xxs:w-[270px] overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -289,18 +301,20 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white h-[420px] lg:w-[320px] sm:w-[290px] xs:w-[290px] xxs:w-[290px]  rounded-2xl shadow-md overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
+            <div className="bg-white h-[420px] lg:w-[320px] sm:w-[270px] xs:w-[270px] xxs:w-[270px]  rounded-2xl shadow-md overflow-hidden transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105">
               <img
                 src={banner}
                 alt="Fundraiser"
@@ -329,12 +343,14 @@ const Stocks = () => {
                       style={{ width: "40.5%" }}
                     ></div>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex lg:justify-between xxs:justify-between xs:justify-between sm-justify-between  text-sm">
                     <div>
-                      <i className="fas fa-box mr-1"></i> Rasied: $34,000
+                      <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Rasied: $34,000
                     </div>
                     <div>
-                      <i className="fas fa-bullseye mr-1"></i> Goal: $40,500
+                      <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs "></i>
+                      Goal:$40,500
                     </div>
                   </div>
                 </div>
