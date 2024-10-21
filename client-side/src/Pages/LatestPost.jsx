@@ -18,7 +18,7 @@ const LatestPost = ({ item }) => {
   return (
     <div className="mx-auto">
       <div
-        className="bg-white h-[450px] lg:my-24  w-[320px] rounded-2xl shadow-md overflow-hidden
+        className="bg-white h-[450px] lg:my-24  lg:w-[320px] sm:w-[290px] xs:w-[290px] xxs:w-[290px]  rounded-2xl shadow-md overflow-hidden
         transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
       >
         <img
@@ -44,7 +44,7 @@ const LatestPost = ({ item }) => {
             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
               <div
                 className="bg-salmon h-2.5 rounded-full"
-                style={{ width: `${fundingPercentage}%` }} // Dynamically set width
+                style={{ width: `${fundingPercentage}%` }}
               ></div>
             </div>
             <div className="flex justify-between text-sm">
@@ -52,7 +52,7 @@ const LatestPost = ({ item }) => {
                 <i className="fas fa-box mr-1"></i> Raised: {raised} taka
               </div>
               <div>
-                <i className="fas fa-bullseye mr-1"></i> Goal:{" "}
+                <i className="fas fa-bullseye mr-1"></i> Goal:
                 {required_funding} taka
               </div>
             </div>

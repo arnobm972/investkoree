@@ -153,7 +153,7 @@ const FounderLogin = () => {
             <input
               type="submit"
               value={isLoginLoading ? "Logging in..." : "Login"}
-              className="login-btn solid lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80"
+              className="login-btn solid lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80"
               disabled={isLoginLoading}
             />
           </form>
@@ -228,7 +228,7 @@ const FounderLogin = () => {
             <input
               type="submit"
               value={isRegisterLoading ? "Signing up..." : "Sign up"}
-              className="login-btn   lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80 solid"
+              className="login-btn   lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 solid"
               disabled={isRegisterLoading}
             />
           </form>
@@ -241,7 +241,7 @@ const FounderLogin = () => {
             <h3>New here?</h3>
             <p>Sign up to access exclusive features!</p>
             <button
-              className="login-btn2  lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80 transparent"
+              className="login-btn2  lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
               onClick={() => setIsSignUpMode(true)}
             >
               Sign up
@@ -254,7 +254,7 @@ const FounderLogin = () => {
             <h3>One of us?</h3>
             <p>Log in to access your account.</p>
             <button
-              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:w-80  transparent"
+              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80  transparent"
               onClick={() => setIsSignUpMode(false)}
             >
               Log in

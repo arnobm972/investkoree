@@ -26,7 +26,7 @@ function Footer() {
               </li>
             </ul>
           </nav>
-          <nav className="mb-6 lg:mb-0">
+          <nav className=" lg:mb-0">
             <h6 className="footer-title opacity-100">About Us</h6>
             <ul className="list-none">
               <li className="hover:text-white transition-colors duration-200">
@@ -46,7 +46,7 @@ function Footer() {
               </li>
             </ul>
           </nav>
-          <nav className="sm:mx-auto xxs:mx-auto xs:mx-auto">
+          <nav className="">
             <h6 className="footer-title opacity-100">Social</h6>
             <div className="flex flex-row gap-2">
               <a href="https://www.facebook.com">
@@ -65,7 +65,7 @@ function Footer() {
           </nav>
         </div>
       </footer>
-      <section className="bg-salmon text-slate-800 h-12 items-center text-center font-bold py-4">
+      <section className="bg-salmon text-slate-800 lg:h-12 sm:flex-col xs:flex-col xxs:flex-col items-center text-center sm:text-sm xs:text-sm xxs:text-sm font-bold py-4">
         Copyright &copy; InvestKoree.com. All Rights Reserved.
       </section>
     </div>

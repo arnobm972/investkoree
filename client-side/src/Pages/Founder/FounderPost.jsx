@@ -103,7 +103,9 @@ const FounderPost = () => {
   return (
     <div>
       <form className="mb-10" onSubmit={handleSubmit}>
-        <p className="text-2xl font-bold my-10">For Business Investment</p>
+        <p className="lg:text-2xl xs:text-lg xxs:text-lg sm:text-lg  font-bold my-10">
+          For Business Investment
+        </p>
 
         {/* Business Name */}
         <label className="form-control my-3 w-full max-w-xs">

@@ -43,10 +43,20 @@ const FounderDashboard = () => {
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col p-10">
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-row gap-16 my-10">
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-3xl font-bold ">Total Invested Amount</p>
+          <div className="fixed top-[100px] left-[5px] ">
+            <label
+              htmlFor="my-drawer-2"
+              className="btn bg-salmon text-white sticky lg:hidden drawer-button transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
+            >
+              <i className="fas fa-bars text-lg"></i>
+            </label>
+          </div>
+          <div className="flex lg:flex-row lg:justify-between sm:flex-col xs:flex-col xxs:flex-col">
+            <div className="flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col gap-16 my-10">
+              <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
+                <p className="lg:text-3xl font-bold sm:mx-auto  sm:text-lg xs:text-lg xxs:text-lg ">
+                  Total Invested Amount
+                </p>
                 <div
                   className="radial-progress text-primary mt-4"
                   style={{ "--value": 70 }}
@@ -55,8 +65,10 @@ const FounderDashboard = () => {
                   70%
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-3xl font-bold ">Left for Investment </p>
+              <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
+                <p className="lg:text-3xl font-bold sm:mx-auto  sm:text-lg xs:text-lg xxs:text-lg ">
+                  Left for Investment
+                </p>
                 <div
                   className="radial-progress text-secondary mt-4"
                   style={{ "--value": 30 }}
@@ -65,8 +77,10 @@ const FounderDashboard = () => {
                   30%
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-3xl font-bold ">Asking Investment Amount</p>
+              <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
+                <p className="lg:text-3xl font-bold sm:mx-auto  sm:text-lg xs:text-lg xxs:text-lg ">
+                  Asking Investment Amount
+                </p>
                 <div
                   className="radial-progress text-accent mt-4"
                   style={{ "--value": 70 }}
@@ -80,14 +94,14 @@ const FounderDashboard = () => {
               <Link to="/founderpost">
                 <input
                   type="submit"
-                  className="  post-btn"
+                  className="  post-btn lg:h-[25%] lg:w-[100px] sm:h-[60%] xs:h-[60%] xxs:h-[60%] sm:w-[30%] xs:w-[30%] xxs:w-[30%]"
                   name="founder-post"
                   value="Post"
                 />
               </Link>
             </div>
           </div>
-          <p className="text-3xl font-bold mb-12 mt-16">
+          <p className="lg:text-3xl font-bold sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-lg xs:text-lg xxs:text-lg mb-12 mt-16">
             Invested Project List
           </p>
           <div className="overflow-x-auto ">
@@ -152,21 +166,14 @@ const FounderDashboard = () => {
               </tbody>
             </table>
           </div>
-
-          <label
-            htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button lg:hidden"
-          >
-            Open drawer
-          </label>
         </div>
-        <div className="drawer-side">
+        <div className="drawer-side z-50">
           <label
             htmlFor="my-drawer-2"
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+          <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
             {/* Sidebar content here */}
             <li className="font-extrabold text-salmon  hover:text-white text-lg mb-2 rounded-lg ">
               <a>Founder</a>

@@ -44,22 +44,22 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <div className="hero banner-img bg-salmon">
-        <div className="hero-content flex-col gap-8 lg:flex-row-reverse lg:gap-24 text-slate-800">
+      <div className="hero banner-img bg-salmon ">
+        <div className="hero-content xs:w-[90%] xxs:w-[90%] sm:w-[90%] xs:mx-auto xxs:mx-auto sm:mx-auto  flex-col gap-8 lg:flex-row-reverse lg:gap-24 text-slate-800">
           <img
             src={bannerpic}
-            className="w-full sm:w-[500px] lg:w-[800px] rounded-2xl shadow-2xl"
+            className="w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%]      lg:w-[800px] rounded-2xl shadow-2xl"
             alt="Banner"
           />
-          <div className="text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+          <div className="xs:text-center xxs:text-center sm:text-center  lg:text-left">
+            <h1 className="text-4xl xs:text-2xl  xxs:text-2xl  sm:text-2xl   font-bold leading-tight">
               Welcome to <br /> InvestKoree.com
             </h1>
-            <p className="py-6 text-lg sm:text-2xl">
+            <p className="py-6 lg:text-lg xs:text-sm xxs:text-sm sm:text-sm ">
               It's Easy and Fast to Invest. Get Profit Faster Here.
             </p>
             <Link to="/shariah">
-              <button className="btn btn-active banner-btn btn-neutral">
+              <button className="btn btn-active sm:w-[250px] xs:w-[250px] xxs:w-[250px]  banner-btn btn-neutral">
                 Get Started
               </button>
             </Link>
@@ -68,34 +68,38 @@ const Home = () => {
       </div>
 
       {/* Currently Running Investments Section */}
-      <h5 className="text-center mt-20 text-3xl sm:text-5xl font-bold">
+      <h5 className="text-center lg:mt-20 lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16     font-bold">
         Currently Running Investments
       </h5>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto gap-6 px-6 lg:px-20 cursor-pointer">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 xxs:gap-8 sm:gap-8    px-6 lg:px-20 cursor-pointer">
         {latestPosts.map((item) => (
           <LatestPost key={item._id} item={item} />
         ))}
       </div>
 
       {/* Mission Section */}
-      <div className="mission-section my-20 flex flex-col lg:flex-row gap-10 justify-center items-center">
+      <div className="mission-section my-20 flex flex-col lg:flex-row gap-10 justify-center lg:h-full items-center">
         <div className="flex flex-col lg:flex-row gap-8">
           <img
-            className="rounded-xl w-full sm:w-[250px] lg:w-[300px]"
+            className="rounded-xl  sm:w-[250px]  lg:h-[550px] lg:w-[300px]"
             src={mission1}
             alt=""
           />
           <img
-            className="rounded-xl w-full sm:w-[250px] lg:w-[300px] mt-8 lg:mt-0"
+            className="rounded-xl  sm:w-[250px] lg:w-[300px] lg:h-[550px] lg:mt-8"
             src={mission1}
             alt=""
           />
         </div>
         <div className="flex flex-col text-center lg:text-left">
-          <h2 className="text-4xl sm:text-5xl">Why we are here</h2>
-          <p className="mt-4 text-lg sm:text-xl mb-10">Our Mission</p>
-          <p className="text-3xl mb-6">Our services</p>
-          <ul className="text-lg sm:text-xl">
+          <h2 className=" lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl ">
+            Why we are here
+          </h2>
+          <p className="mt-4  lg:text-xl mb-10">Our Mission</p>
+          <p className="lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl mb-6">
+            Our services
+          </p>
+          <ul className="lg:text-xl">
             <li>Easy to Invest</li>
             <li>Fastest Transaction</li>
             <li>High Return on Investment</li>
@@ -105,8 +109,10 @@ const Home = () => {
 
       {/* Testimonial Section */}
       <section className="customer-review my-32">
-        <p className="text-center text-xl sm:text-2xl mb-4">Testimonial</p>
-        <p className="text-center text-3xl sm:text-5xl mb-16">
+        <p className=" lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl text-center mb-4">
+          Testimonial
+        </p>
+        <p className="text-center lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl lg:text-bold  sm:text-bold  xs:text-bold  xxs:text-bold mb-16">
           What people say about us
         </p>
         <div className="flex flex-col sm:flex-row  sm:mx-4 xs:mx-4 xxs:mx-4 gap-6 items-center justify-center">
