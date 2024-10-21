@@ -118,7 +118,7 @@ const Home = () => {
         <div className="flex flex-col sm:flex-row  sm:mx-4 xs:mx-4 xxs:mx-4 gap-6 items-center justify-center">
           {/* Sample Testimonial 1 */}
           <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg shadow-md p-6 group">
-            <div className="flex items-center xxs:ml-16 xs:ml-16 sm-ml-16">
+            <div className="flex items-center">
               <img
                 className="w-12 h-12 rounded-full mr-4"
                 src="https://via.placeholder.com/150"
@@ -144,17 +144,17 @@ const Home = () => {
 
           {/* Sample Testimonial 2 */}
           <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg shadow-md p-6 group">
-            <div className="flex items-center  xxs:ml-16 xs:ml-16 sm-ml-16">
+            <div className="flex items-center ">
               <img
-                className="w-12 h-12 rounded-full    mr-4"
+                className="w-12 h-12 rounded-full mr-4"
                 src="https://via.placeholder.com/150"
                 alt="Profile"
               />
               <div>
-                <h4 className="text-lg font-medium text-gray-900   group-hover:text-white">
+                <h4 className="text-lg font-medium text-gray-900 group-hover:text-white">
                   Dianne Russell
                 </h4>
-                <p className="text-sm text-gray-500  group-hover:text-white">
+                <p className="text-sm text-gray-500 group-hover:text-white">
                   Founder
                 </p>
               </div>
