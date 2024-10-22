@@ -9,7 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import investmentRoutes from './routes/investmentRoutes.js'; 
 import fs from 'fs';
-import founderPostRoutes from './routes/founderPostRoutes.js'; // fixed path
+import founderPostRoutes from './routes/founderPostRoutes.js';
 import bodyParser from 'body-parser';
 
 dotenv.config();
@@ -26,9 +26,6 @@ const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-
-// Serve static files from the uploads directory
-// app.use("/uploads", express.static(uploadDir));
 
 // Enable CORS with credentials, dynamically setting the origin based on environment
 const allowedOrigins = [
@@ -54,9 +51,9 @@ app.use(cors(corsOptions));
 // Handle preflight requests
 app.options('*', cors(corsOptions));
 
-
 // Middleware for parsing JSON, URL-encoded data, and cookies
-app.use(bodyParser.json()); app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
@@ -69,24 +66,18 @@ app.use(express.static('build'));
 app.use(notFound);
 app.use(errorHandler);
 
-// // Serve frontend in production mode
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, '../client-side/dist')));
-
-//   // Fallback for all non-API routes to serve the frontend
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, '../client-side', 'dist', 'index.html'))
-//   );
-// } else {
-//   // Development mode root route
-//   app.get('/', (req, res) => res.send('API is running...'));
-// }
+// Serve frontend in production mode
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Start the server
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-});
+// Start the server only if not in a serverless environment (like Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+  });
+}
+
+// Export the Express app for serverless deployment (e.g., Vercel)
+export default app;
