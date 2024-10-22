@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import investmentRoutes from './routes/investmentRoutes.js'; 
+import investmentRoutes from './routes/investmentRoutes.js';
 import fs from 'fs';
 import founderPostRoutes from './routes/founderPostRoutes.js';
 import bodyParser from 'body-parser';

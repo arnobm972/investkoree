@@ -49,10 +49,12 @@ const LatestPost = ({ item }) => {
             </div>
             <div className="flex justify-between text-sm">
               <div>
-                <i className="fas fa-box mr-1"></i> Raised: {raised} taka
+                <i className="fas fa-box lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs"></i>{" "}
+                Raised: {raised} taka
               </div>
               <div>
-                <i className="fas fa-bullseye mr-1"></i> Goal:
+                <i className="fas fa-bullseye lg:mr-1 xxs:text-xs xs:text-xs sm-text-xs"></i>{" "}
+                Goal:
                 {required_funding} taka
               </div>
             </div>
