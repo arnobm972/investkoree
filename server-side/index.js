@@ -63,23 +63,27 @@ app.use(cookieParser());
 app.use('/api/investments', investmentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/founderposts', founderPostRoutes);
+app.use(express.static('build'));
 
 // Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
-// Serve frontend in production mode
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client-side/dist')));
+// // Serve frontend in production mode
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '../client-side/dist')));
 
-  // Fallback for all non-API routes to serve the frontend
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, '../client-side', 'dist', 'index.html'))
-  );
-} else {
-  // Development mode root route
-  app.get('/', (req, res) => res.send('API is running...'));
-}
+//   // Fallback for all non-API routes to serve the frontend
+//   app.get('*', (req, res) =>
+//     res.sendFile(path.resolve(__dirname, '../client-side', 'dist', 'index.html'))
+//   );
+// } else {
+//   // Development mode root route
+//   app.get('/', (req, res) => res.send('API is running...'));
+// }
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Start the server
 const port = process.env.PORT || 5000;
