@@ -40,23 +40,35 @@ const AuthProvider = ({ children }) => {
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
-      // Create user with email and password
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-
-      // Update the user profile with the display name
       await updateProfile(user, { displayName: name });
-
-      // Update the user state with the newly updated user information
       setUser(user);
+      const token = await user.getIdToken(); // Get the Firebase token
 
-      // Stop loading and set the user as authenticated
+      // Send the token to the backend for JWT creation
+      const response = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Attach Firebase token
+        },
+        body: JSON.stringify({
+          email,
+          username: name,
+          role: "investor", // Or dynamically set the role based on your logic
+        }),
+      });
+
+      const data = await response.json();
+      // Set user state with JWT token and user details
+      setUser({ ...user, jwt: data.token });
+
       setLoading(false);
       setIsAuthenticated(true);
-
       return user;
     } catch (error) {
       setLoading(false);
