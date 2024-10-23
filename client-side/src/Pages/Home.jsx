@@ -52,10 +52,10 @@ const Home = () => {
             alt="Banner"
           />
           <div className="xs:text-center xxs:text-center sm:text-center  lg:text-left">
-            <h1 className="text-4xl xs:text-2xl  xxs:text-2xl  sm:text-2xl   font-bold leading-tight">
+            <h1 className=" xs:text-2xl  xxs:text-2xl  sm:text-2xl lg:text-4xl text-white   font-bold ">
               Welcome to <br /> InvestKoree.com
             </h1>
-            <p className="py-6 lg:text-lg xs:text-sm xxs:text-sm sm:text-sm ">
+            <p className="py-6 lg:text-lg xs:text-sm xxs:text-sm sm:text-sm  text-white ">
               It's Easy and Fast to Invest. Get Profit Faster Here.
             </p>
             <Link to="/shariah">

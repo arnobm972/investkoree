@@ -1,28 +1,22 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import logo from "../assets/ll.png";
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../slices/authslice"; // Import your logout action from Redux
-import { useLogoutMutation } from "../slices/userApiSlice";
+import { useNavigate, NavLink } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider"; // Import AuthContext
 import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hamburger and close icons
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.auth); // Use userInfo from Redux
+  const { user, logOut } = useContext(AuthContext); // Use AuthContext to get user and logOut
   const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
-  const [logoutApiCall] = useLogoutMutation();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
-      await logoutApiCall().unwrap();
-      dispatch(logout()); // Dispatch logout action from Redux
+      await logOut(); // Call logOut from AuthContext
       toast.success("Logged out successfully");
-      navigate("/");
+      navigate("/"); // Redirect to home after logout
     } catch (err) {
-      toast.error(err);
+      toast.error(err.message || "Logout failed");
     }
   };
 
@@ -75,11 +69,11 @@ const Navbar = () => {
                 <summary className="hover:bg-salmon mt-2 hover:text-white transition p-2 rounded">
                   Category
                 </summary>
-                <ul className="bg-base-100 rounded-t-none  p-2">
+                <ul className="bg-base-100 rounded-t-none p-2">
                   <li>
                     <NavLink
                       to="/shariah"
-                      className="hover:bg-salmon transition  sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
+                      className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
                       activeclassname="active"
                     >
                       Shariah
@@ -88,7 +82,7 @@ const Navbar = () => {
                   <li>
                     <NavLink
                       to="/stocks"
-                      className="hover:bg-salmon transition   sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
+                      className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
                       activeclassname="active"
                     >
                       Stocks
@@ -107,10 +101,11 @@ const Navbar = () => {
               </details>
             </li>
             <li>
-              {userInfo ? (
+              {user ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {userInfo.name}
+                    {user.displayName || user.email}{" "}
+                    {/* Display user's name or email */}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -128,7 +123,7 @@ const Navbar = () => {
                     <li>
                       <NavLink
                         to="/investorlogin"
-                        className="hover:bg-salmon transition hover:text-white p-2  lg:mb-2 sm:mb-2 xs:mb-2 xxs:mb-2 rounded"
+                        className="hover:bg-salmon transition hover:text-white p-2 lg:mb-2 sm:mb-2 xs:mb-2 xxs:mb-2 rounded"
                         activeclassname="active"
                       >
                         Investor
@@ -209,10 +204,11 @@ const Navbar = () => {
                 </details>
               </li>
               <li>
-                {userInfo ? (
+                {user ? (
                   <div className="flex items-center">
                     <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {userInfo.name}
+                      {user.displayName || user.email}{" "}
+                      {/* Display user's name or email */}
                     </span>
                     <div
                       onClick={() => {

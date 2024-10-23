@@ -19,7 +19,6 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -37,7 +36,8 @@ const AuthProvider = ({ children }) => {
       unsubscribe();
     };
   }, []);
-  const createUser = async (email, password, name, userType) => {
+
+  const createUser = async (email, password, name) => {
     setLoading(true);
     try {
       // Create user with email and password
@@ -51,11 +51,7 @@ const AuthProvider = ({ children }) => {
       await updateProfile(user, { displayName: name });
 
       // Update the user state with the newly updated user information
-      if (userType) {
-        setUser({ ...user, displayName: name, userType });
-      } else {
-        setUser({ ...user, displayName: name });
-      }
+      setUser(user);
 
       // Stop loading and set the user as authenticated
       setLoading(false);
@@ -68,17 +64,13 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const signIn = async (email, password, userType) => {
+  const signIn = async (email, password) => {
     setLoading(true);
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
       setLoading(false);
       setIsAuthenticated(true);
-      if (userType) {
-        setUser({ ...user, userType });
-      } else {
-        setUser(user);
-      }
+      setUser(user);
       return user;
     } catch (error) {
       setLoading(false);
@@ -86,6 +78,7 @@ const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+
   const logOut = async () => {
     setLoading(true);
     try {
@@ -108,7 +101,6 @@ const AuthProvider = ({ children }) => {
     isAuthenticated,
     setUser,
     signIn,
-    userType,
   };
 
   return (
