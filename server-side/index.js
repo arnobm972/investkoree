@@ -16,7 +16,7 @@ connectDB();
 
 const allowedOrigins = [
   'http://localhost:3000', // Local development
-   'https://luminous-caramel-715e81.netlify.app/' // Add your production frontend URL here
+   'https://luminous-caramel-715e81.netlify.app' // Add your production frontend URL here
 ];
 
 const corsOptions = {
