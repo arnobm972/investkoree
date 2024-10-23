@@ -17,7 +17,7 @@ const InvestorLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
   useEffect(() => {
     // Redirect to dashboard if user is logged in
@@ -102,7 +102,7 @@ const InvestorLogin = () => {
       setUser({ ...userData }); // Store user info in context
 
       // Send user details to your API
-      await fetch(`${API_URL}/users`, {
+      const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,11 +110,18 @@ const InvestorLogin = () => {
         body: JSON.stringify({ email, username, role: "investor" }),
       });
 
+      // Error handling for the fetch request
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || "Failed to register");
+      }
+
       toast.success("Registration successful");
       navigate("/investordashboard");
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Registration error");
-      setError(err?.response?.data?.message || "Registration error");
+      console.error("Registration error:", err);
+      toast.error(err.message || "Registration error");
+      setError(err.message || "Registration error");
     } finally {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
