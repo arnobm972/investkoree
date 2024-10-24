@@ -24,7 +24,7 @@ export default defineConfig({
     proxy: {
       '/api/users': {
         // Replace this with your actual Vercel deployment URL after deployment
-        target: isProduction ? 'https://investkoree-server-side.vercel.app/' : 'http://localhost:5000',
+        target: isProduction ? 'https://investkoree-server-side.vercel.app' : 'http://localhost:5000',
         changeOrigin: true,
         secure: false,  // Optional, helps with some proxy issues
       },
