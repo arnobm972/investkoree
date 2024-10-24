@@ -28,7 +28,7 @@ const verifyToken = async (req, res, next) => {
 };
 
 // Route to register a user
-router.post('/', async (req, res) => {
+router.post('/users', async (req, res) => {
   const { email, username, password, role } = req.body;
 
  
