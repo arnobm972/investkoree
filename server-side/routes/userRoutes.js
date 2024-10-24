@@ -1,14 +1,14 @@
 import express from 'express';
-import User from '../models/userModel.js';
+import User from '../models/userModel';
 import jwt from 'jsonwebtoken';
 import admin from 'firebase-admin';
-import bcrypt from 'bcrypt'; // Import bcrypt
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
-// Initialize Firebase Admin SDK
+
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(), // or use your service account
+  credential: admin.credential.applicationDefault(), 
 });
 
 // Middleware to verify Firebase token
@@ -29,21 +29,26 @@ const verifyToken = async (req, res, next) => {
 
 // Route to register a user
 router.post('/', async (req, res) => {
-  const { email, username, password, role } = req.body; // Include password
+  const { email, username, password, role } = req.body;
+
+ 
+  if (!email || !username || !password || !role) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
 
   try {
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10); // Adjust the salt rounds if needed
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       email,
       name: username,
-      password: hashedPassword, // Use the hashed password
+      password: hashedPassword, 
       role,
     });
     await newUser.save();
 
-    // Create JWT token
+   
     const jwtToken = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({ token: jwtToken, user: newUser });
@@ -52,7 +57,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Example of a protected route
+
 router.get('/protected', verifyToken, (req, res) => {
   res.status(200).json({ message: 'Protected content', user: req.user });
 });

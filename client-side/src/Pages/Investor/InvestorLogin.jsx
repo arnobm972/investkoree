@@ -17,7 +17,7 @@ const InvestorLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
   useEffect(() => {
     // Redirect to dashboard if user is logged in
@@ -32,27 +32,46 @@ const InvestorLogin = () => {
 
   // Handle Login Submission
   const handleLogin = async (e) => {
-    setIsLoading(true);
-    try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      const token = await user.getIdToken(); // Get the Firebase token
+    e.preventDefault();
+    setIsLoading((prev) => ({ ...prev, login: true }));
+    setError(null);
 
-      // Fetch user details from your API using the JWT token
+    const form = new FormData(e.currentTarget);
+    const email = form.get("u_signin_email");
+    const password = form.get("u_signin_pass");
+
+    try {
+      const loggedInUser = await signIn(email, password);
+      const token = await loggedInUser.getIdToken();
+
       const response = await fetch(`${API_URL}/users?email=${email}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Send the token to the backend
+          Authorization: `Bearer ${token}`,
         },
       });
 
       const userDetails = await response.json();
-      setUser({ ...user, ...userDetails }); // Store user info in context
-      setIsLoading(false);
-      setIsAuthenticated(true);
-      return user;
+      setUser({ ...loggedInUser, ...userDetails });
+      toast.success("Login successful");
     } catch (error) {
-      setIsLoading(false);
-      toast.error("Error signing in: " + error.message);
-      throw error;
+      let errorMessage;
+      switch (error.code) {
+        case "auth/wrong-password":
+          errorMessage = "Invalid password. Please try again.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "No user found with this email.";
+          break;
+        case "auth/email-already-in-use":
+          errorMessage = "This email is already in use.";
+          break;
+        default:
+          errorMessage = "An error occurred. Please try again.";
+      }
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
 
@@ -67,6 +86,15 @@ const InvestorLogin = () => {
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
+
+    // Log form values to check if they are captured correctly
+    console.log("Form values:", { username, email, password, confirmPassword });
+
+    if (!username || !email || !password || !confirmPassword) {
+      setError("All fields are required");
+      setIsLoading((prev) => ({ ...prev, register: false }));
+      return;
+    }
 
     const passwordValidations = [
       {
@@ -99,7 +127,7 @@ const InvestorLogin = () => {
 
     try {
       const userData = await createUser(email, password, username);
-      setUser({ ...userData }); // Store user info in context
+      setUser({ ...userData });
 
       // Send user details to your API
       const response = await fetch(`${API_URL}/users`, {
@@ -107,17 +135,15 @@ const InvestorLogin = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, username, role: "investor" }),
+        body: JSON.stringify({ email, username, password, role: "investor" }),
       });
 
-      // Error handling for the fetch request
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || "Failed to register");
       }
 
       toast.success("Registration successful");
-      navigate("/investordashboard");
     } catch (err) {
       console.error("Registration error:", err);
       toast.error(err.message || "Registration error");

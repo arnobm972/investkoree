@@ -288,6 +288,7 @@ const FounderLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
   useEffect(() => {
     // Redirect to dashboard if user is logged in
@@ -303,22 +304,43 @@ const FounderLogin = () => {
   // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null);
     setIsLoading((prev) => ({ ...prev, login: true }));
+    setError(null);
 
     const form = new FormData(e.currentTarget);
     const email = form.get("u_signin_email");
     const password = form.get("u_signin_pass");
-    const role = "founder"; // Set the role
 
     try {
-      const userData = await signIn(email, password); // Use signIn without userType
-      setUser({ ...userData, role }); // Store user info in context
-      toast.success("Logged in Successfully");
-      navigate("/founderdashboard");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Login error");
-      setError(err?.response?.data?.message || "Login error");
+      const loggedInUser = await signIn(email, password);
+      const token = await loggedInUser.getIdToken();
+
+      const response = await fetch(`${API_URL}/users?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const userDetails = await response.json();
+      setUser({ ...loggedInUser, ...userDetails });
+      toast.success("Login successful");
+    } catch (error) {
+      let errorMessage;
+      switch (error.code) {
+        case "auth/wrong-password":
+          errorMessage = "Invalid password. Please try again.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "No user found with this email.";
+          break;
+        case "auth/email-already-in-use":
+          errorMessage = "This email is already in use.";
+          break;
+        default:
+          errorMessage = "An error occurred. Please try again.";
+      }
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
@@ -335,9 +357,16 @@ const FounderLogin = () => {
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
-    const role = "founder"; // Set the role
 
-    // Password Validation
+    // Log form values to check if they are captured correctly
+    console.log("Form values:", { username, email, password, confirmPassword });
+
+    if (!username || !email || !password || !confirmPassword) {
+      setError("All fields are required");
+      setIsLoading((prev) => ({ ...prev, register: false }));
+      return;
+    }
+
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -368,13 +397,28 @@ const FounderLogin = () => {
     }
 
     try {
-      const userData = await createUser(email, password, username); // Pass username
-      setUser({ ...userData, role }); // Store user info in context
+      const userData = await createUser(email, password, username);
+      setUser({ ...userData });
+
+      // Send user details to your API
+      const response = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username, password, role: "founder" }),
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || "Failed to register");
+      }
+
       toast.success("Registration successful");
-      navigate("/founderdashboard");
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Registration error");
-      setError(err?.response?.data?.message || "Registration error");
+      console.error("Registration error:", err);
+      toast.error(err.message || "Registration error");
+      setError(err.message || "Registration error");
     } finally {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
