@@ -1,5 +1,5 @@
 import express from 'express';
-import User from '../models/userModel';
+import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import admin from 'firebase-admin';
 import bcrypt from 'bcrypt';
