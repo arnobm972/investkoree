@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: true, // Enable sourcemaps for easier debugging
+    sourcemap: true, 
     rollupOptions: {
       output: {
         manualChunks: id => {
@@ -22,8 +22,7 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api/users': {
-        // Replace this with your actual Vercel deployment URL after deployment
+      '/api': {
         target: isProduction ? 'https://investkoree-server-side.vercel.app' : 'http://localhost:5000',
         changeOrigin: true,
         secure: false,  // Optional, helps with some proxy issues
