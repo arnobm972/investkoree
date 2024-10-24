@@ -17,7 +17,8 @@ const InvestorLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000/api/users";
 
   useEffect(() => {
     // Redirect to dashboard if user is logged in
