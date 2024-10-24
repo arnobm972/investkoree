@@ -23,9 +23,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api/users': {
-        // Use the correct target for production, you'll replace this with your Vercel deployment URL after deployment
+        // Replace this with your actual Vercel deployment URL after deployment
         target: isProduction ? 'https://investkoree-server-side.vercel.app/' : 'http://localhost:5000',
         changeOrigin: true,
+        secure: false,  // Optional, helps with some proxy issues
       },
     },
   },
