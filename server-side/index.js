@@ -72,8 +72,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from '../server-side/config/db.js';
-import userRoutes from '../server-side/routes/userRoutes.js';
+import connectDB from './config/db.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -110,7 +110,6 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
-
 
 // Error handling middleware
 app.use((err, req, res, next) => {
