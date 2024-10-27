@@ -34,16 +34,17 @@ const InvestorLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
-    setError(null);
+    setError(null); // Reset error before login attempt
 
     const form = new FormData(e.currentTarget);
     const email = form.get("u_signin_email");
     const password = form.get("u_signin_pass");
 
     try {
-      const loggedInUser = await signIn(email, password);
-      const token = await loggedInUser.getIdToken();
+      const loggedInUser = await signIn(email, password); // Try to sign in
+      const token = await loggedInUser.getIdToken(); // Get the ID token
 
+      // Fetch user details using the token
       const response = await fetch(`${API_URL}/users?email=${email}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -51,8 +52,14 @@ const InvestorLogin = () => {
       });
 
       const userDetails = await response.json();
-      setUser({ ...loggedInUser, ...userDetails });
-      toast.success("Login successful");
+      if (response.ok) {
+        // Only set the user if the response is ok
+        setUser({ ...loggedInUser, ...userDetails });
+        toast.success("Login successful");
+      } else {
+        // Handle error response from the API
+        throw new Error(userDetails.message || "Failed to fetch user details");
+      }
     } catch (error) {
       let errorMessage;
       switch (error.code) {
@@ -68,8 +75,14 @@ const InvestorLogin = () => {
         default:
           errorMessage = "An error occurred. Please try again.";
       }
-      setError(errorMessage);
-      toast.error(errorMessage);
+
+      // Set the error message only if it's a known error
+      if (errorMessage) {
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } else {
+        console.error("Login error:", error); // Log unexpected errors for debugging
+      }
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }

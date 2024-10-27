@@ -78,7 +78,6 @@ const AuthProvider = ({ children }) => {
       throw error;
     }
   };
-
   const signIn = async (email, password) => {
     setLoading(true);
     try {
@@ -92,16 +91,21 @@ const AuthProvider = ({ children }) => {
         },
       });
 
+      if (!response.ok) {
+        // Handle non-2xx responses here
+        throw new Error("Failed to fetch user details");
+      }
+
       const data = await response.json();
       setUser({ ...user, jwt: data.token });
-
       setLoading(false);
       setIsAuthenticated(true);
       return user;
     } catch (error) {
       setLoading(false);
       toast.error("Error signing in: " + error.message);
-      throw error;
+      console.error("SignIn Error:", error); // For better debugging
+      throw error; // Ensure to throw so it can be caught by the component
     }
   };
 
