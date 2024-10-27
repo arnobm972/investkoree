@@ -1,11 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import connectDB from '../../config/db.js';
-import { notFound, errorHandler } from '../../middleware/errorMiddleware.js';
-import cookieParser from 'cookie-parser';
+import connectDB from './config/db.js';
+// import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+// import cookieParser from 'cookie-parser';
 // import cors from 'cors';
-import bodyParser from 'body-parser';
-import userRoutes from '../../routes/userRoutes.js'; 
+// import bodyParser from 'body-parser';
+import userRoutes from './routes/userRoutes.js'; 
 
 dotenv.config();
 
@@ -44,12 +44,12 @@ connectDB();
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+// app.use(cookieParser());
 
-app.use('/api/users', userRoutes);
+app.use('/users', userRoutes);
 
-app.use(notFound);
-app.use(errorHandler);
+// app.use(notFound);
+// app.use(errorHandler);
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const port = process.env.PORT || 5000;
