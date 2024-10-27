@@ -41,13 +41,11 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const loggedInUser = await signIn(email, password); // signIn should return user and token
-      const token = loggedInUser.token; // Get the JWT token
+      // Sign in user and get Firebase ID token
+      const loggedInUser = await signIn(email, password); // signIn should return user and ID token
+      const token = await loggedInUser.user.getIdToken(); // Get Firebase ID token
 
-      // Store JWT token in localStorage
-      localStorage.setItem("jwt", token);
-
-      // Fetch user details using the token
+      // Fetch user details using the Firebase ID token
       const userResponse = await fetch(`${API_URL}/users/details`, {
         headers: {
           Authorization: `Bearer ${token}`, // Ensure the token is sent for user details
@@ -62,7 +60,7 @@ const InvestorLogin = () => {
       }
 
       const userDetails = await userResponse.json();
-      const userData = { ...loggedInUser.user, ...userDetails };
+      const userData = { firebaseUID: loggedInUser.user.uid, ...userDetails };
 
       // Update user in context
       setUser(userData);
@@ -125,15 +123,18 @@ const InvestorLogin = () => {
     }
 
     try {
+      // Create user in Firebase
       const userData = await createUser(email, password, username);
-      setUser({ ...userData });
-      localStorage.setItem("jwt", userData.jwt);
+      const token = await userData.user.getIdToken(); // Get Firebase ID token
 
       // Send user details to your API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password, role: "investor" }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use Firebase token for authorization
+        },
+        body: JSON.stringify({ email, username, password, role: "investor" }), // Send password for backend storage
       });
 
       if (!response.ok) {
@@ -272,21 +273,24 @@ const InvestorLogin = () => {
             </div>
             <input
               type="submit"
-              value={isLoading.register ? "Signing up..." : "Sign up"}
-              className="login-btn lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 solid"
+              value={isLoading.register ? "Registering..." : "Sign up"}
+              className="login-btn solid lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80"
               disabled={isLoading.register}
             />
           </form>
         </div>
       </div>
-
       <div className="panels-container">
-        <div className="panel left-panel sm:mr-6 xs:mr-6 xxs:mr-6">
+        <div className="panel left-panel">
           <div className="content">
-            <h3>New here?</h3>
-            <p>Sign up to access exclusive features!</p>
+            <h3>New Here?</h3>
+            <p>
+              Sign up to create an account and access exclusive features for
+              investors.
+            </p>
             <button
-              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
+              className="login-btn transparent"
+              id="sign-up-btn"
               onClick={() => setIsSignUpMode(true)}
             >
               Sign up
@@ -294,15 +298,19 @@ const InvestorLogin = () => {
           </div>
           <img src="img/log.svg" className="image" alt="" />
         </div>
-        <div className="panel right-panel sm:ml-6 xs:ml-6 xxs:ml-6">
+        <div className="panel right-panel">
           <div className="content">
             <h3>One of us?</h3>
-            <p>Log in to access your account.</p>
+            <p>
+              If you already have an account, log in to access your dashboard
+              and investment details.
+            </p>
             <button
-              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
+              className="login-btn transparent"
+              id="sign-in-btn"
               onClick={() => setIsSignUpMode(false)}
             >
-              Log in
+              Sign in
             </button>
           </div>
           <img src="img/register.svg" className="image" alt="" />

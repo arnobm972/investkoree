@@ -1,9 +1,9 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import admin from '../firebaseAdmin.js';
 import User from '../models/userModel.js';
 import dotenv from 'dotenv';
+import { body, validationResult } from 'express-validator';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ const verifyToken = async (req, res, next) => {
     if (!decodedToken || !decodedToken.uid) {
       throw new Error('Invalid token structure');
     }
-    req.user = { id: decodedToken.uid, ...decodedToken };
+    req.user = { id: decodedToken.uid, ...decodedToken }; // Store user info in req.user
     next();
   } catch (error) {
     console.error("Token verification error:", error.message);
@@ -29,47 +29,57 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-// Route to register a user
-router.post('/', async (req, res) => {
-  const { email, username, password, role } = req.body;
-
-  if (!email || !username || !password || !role) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-
-  try {
-    // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+// Registration Route
+router.post(
+  '/',
+  [
+    body('email').isEmail().withMessage('Invalid email format'),
+    body('username').notEmpty().withMessage('Username is required'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+    body('role').notEmpty().withMessage('Role is required'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { email, username, password, role } = req.body;
 
-    const newUser = new User({
-      email,
-      name: username,
-      password: hashedPassword,
-      role,
-    });
-    await newUser.save();
+    try {
+      // Check if the user already exists
+      const existingUser  = await User.findOne({ email });
+      if (existingUser ) {
+        return res.status(400).json({ message: 'User  already exists' });
+      }
 
-    // Create a JWT token
-    const jwtToken = jwt.sign(
-      { id: newUser._id, role: newUser.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+      // Create user in Firebase and get UID
+      const userRecord = await admin.auth().createUser ({
+        email,
+        password,
+        displayName: username,
+      });
 
-    res.status(201).json({ token: jwtToken, user: newUser });
-  } catch (error) {
-    console.error("Registration error:", error.message);
-    res.status(500).json({ message: 'Registration failed' });
+      // Create a new user in MongoDB
+      const newUser  = new User({
+        name: username,
+        email,
+        password: await bcrypt.hash(password, 10), // Hash the password
+        firebaseUID: userRecord.uid, // Store Firebase UID
+        role,
+      });
+
+      await newUser .save();
+
+      res.status(201).json({ user: newUser  });
+    } catch (error) {
+      console.error("Registration error:", error.message);
+      res.status(500).json({ message: 'Registration failed' });
+    }
   }
-});
+);
 
-// Route for user login
+// Login Route
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -90,14 +100,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // Create a JWT token
-    const jwtToken = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    // Create a Firebase token
+    const firebaseToken = await admin.auth().createCustomToken(user.firebaseUID);
 
-    res.status(200).json({ token: jwtToken, user });
+    res.status(200).json({ user: { ...user.toObject(), password: undefined }, firebaseToken });
   } catch (error) {
     console.error("Login error:", error.message);
     res.status(500).json({ message: 'Login failed' });
@@ -107,11 +113,11 @@ router.post('/login', async (req, res) => {
 // Protected route to get user details
 router.get('/details', verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password'); // Exclude password from response
+    const user = await User.findOne({ firebaseUID: req.user.id }).select('-password'); // Exclude password from response
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User  not found' });
     }
-    res.status(200).json(user);
+    res.status( 200).json(user);
   } catch (error) {
     console.error("Error fetching user details:", error.message);
     res.status(500).json({ message: 'Failed to fetch user details' });

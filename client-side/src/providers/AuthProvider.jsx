@@ -22,12 +22,6 @@ const AuthProvider = ({ children }) => {
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt && !user) {
-      // Fetch user details with JWT
-      fetchUserDetails(jwt);
-    }
-
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser || null);
       setIsAuthenticated(!!currentUser);
@@ -35,23 +29,6 @@ const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, []);
-
-  const fetchUserDetails = async (token) => {
-    try {
-      const response = await fetch(`${API_URL}/users/details`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.ok) {
-        const userDetails = await response.json();
-        setUser({ ...user, ...userDetails });
-        setIsAuthenticated(true);
-      } else {
-        localStorage.removeItem("jwt"); // Clean up if token is invalid
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
 
   const createUser = async (email, password, name) => {
     setLoading(true);
@@ -62,15 +39,21 @@ const AuthProvider = ({ children }) => {
         password
       );
       await updateProfile(user, { displayName: name });
-      const token = await user.getIdToken();
+      const token = await user.getIdToken(); // Get Firebase ID token
 
+      // Send the ID token to the backend
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Use Firebase token
         },
-        body: JSON.stringify({ email, username: name, role: "investor" }),
+        body: JSON.stringify({
+          email,
+          username: name,
+          password,
+          role: "investor",
+        }), // Send password to backend
       });
 
       if (!response.ok) {
@@ -79,12 +62,10 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("jwt", data.token);
-      setUser({ ...user, jwt: data.token });
+      setUser({ ...user, firebaseUID: user.uid, ...data.user }); // Include firebaseUID
       setIsAuthenticated(true);
     } catch (error) {
       toast.error("Error creating user: " + error.message);
-      signOut(auth); // Clean up Firebase user on failure
     } finally {
       setLoading(false);
     }
@@ -93,10 +74,22 @@ const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     setLoading(true);
     try {
+      // Sign in with Firebase
+      const { user: firebaseUser } = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const token = await firebaseUser.getIdToken(); // Get Firebase ID token
+
+      // Check the local MongoDB user by email and password
       const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use Firebase token
+        },
+        body: JSON.stringify({ email, password }), // Send email and password for local validation
       });
 
       if (!response.ok) {
@@ -105,8 +98,7 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("jwt", data.token);
-      setUser({ ...data.user, jwt: data.token });
+      setUser({ firebaseUID: firebaseUser.uid, ...data.user }); // Include firebaseUID
       setIsAuthenticated(true);
     } catch (error) {
       toast.error("Error signing in: " + error.message);
@@ -114,12 +106,10 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
   const logOut = async () => {
     setLoading(true);
     try {
       await signOut(auth);
-      localStorage.removeItem("jwt");
       setUser(null);
       setIsAuthenticated(false);
     } catch (error) {
