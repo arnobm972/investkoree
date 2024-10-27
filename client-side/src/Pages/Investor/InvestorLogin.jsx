@@ -62,6 +62,7 @@ const InvestorLogin = () => {
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
+      console.log(error);
       if (error) {
         switch (error.code) {
           case "auth/wrong-password":
