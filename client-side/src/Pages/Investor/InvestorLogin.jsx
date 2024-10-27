@@ -77,7 +77,7 @@ const InvestorLogin = () => {
       setUser({ ...loggedInUser.user, ...userDetails }); // Make sure to merge the user data correctly
       toast.success("Login successful");
     } catch (error) {
-      // let errorMessage = "An error occurred. Please try again.";
+      let errorMessage = "An error occurred. Please try again.";
       if (error) {
         switch (error.message) {
           case "Invalid email or password":
@@ -89,7 +89,7 @@ const InvestorLogin = () => {
       }
       setError(errorMessage);
       toast.error(errorMessage);
-      console.log(eerrorMessage);
+      console.log(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
