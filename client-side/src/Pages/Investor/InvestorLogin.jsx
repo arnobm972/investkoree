@@ -53,11 +53,14 @@ const InvestorLogin = () => {
       localStorage.setItem("jwt", token);
 
       // Fetch user details using the token
-      const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const userResponse = await fetch(
+        `${API_URL}/users/login?email=${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!userResponse.ok) {
         throw new Error("Failed to fetch user details");
