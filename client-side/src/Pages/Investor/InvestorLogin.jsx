@@ -74,6 +74,7 @@ const InvestorLogin = () => {
   };
 
   // Handle Registration Submission
+  // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
@@ -84,6 +85,14 @@ const InvestorLogin = () => {
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
+
+    // Log the values for debugging
+    console.log("Registration Values:", {
+      username,
+      email,
+      password,
+      confirmPassword,
+    });
 
     // Verify all fields have values
     if (!username || !email || !password || !confirmPassword) {
