@@ -24,6 +24,13 @@ const AuthProvider = ({ children }) => {
     "https://investkoree-backend.onrender.com/api";
 
   useEffect(() => {
+    // Check for JWT in localStorage and set user state accordingly
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      setIsAuthenticated(true);
+      setUser({ jwt }); // Optionally fetch user details from your API
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);

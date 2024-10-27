@@ -31,6 +31,7 @@ const InvestorLogin = () => {
   };
 
   // Handle Login Submission
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -41,10 +42,7 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      // Call signIn from AuthContext to handle the API request
-      const loggedInUser = await signIn(email, password); // Assuming signIn handles fetching the JWT
-
-      // Assuming signIn returns the user data and token
+      const loggedInUser = await signIn(email, password); // signIn should return user and token
       const token = loggedInUser.token; // Get the JWT token
 
       // Store JWT token in localStorage
@@ -67,23 +65,13 @@ const InvestorLogin = () => {
       const userDetails = await userResponse.json();
       const userData = { ...loggedInUser.user, ...userDetails };
 
-      // Update user in context (optional if signIn does this)
+      // Update user in context
       setUser(userData);
 
       toast.success("Login successful");
     } catch (error) {
-      if (error) {
-        switch (error.message) {
-          case "Invalid email or password":
-            errorMessage = "Invalid email or password. Please try again.";
-            break;
-          default:
-            break;
-        }
-      }
-      setError(errorMessage);
-      // toast.error(errorMessage);
-      console.log(error);
+      console.error("Login error:", error);
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
