@@ -32,6 +32,7 @@ const InvestorLogin = () => {
 
   // Handle Login Submissi
   // Handle Login Submission
+  // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -42,25 +43,11 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      // Make a request to the login route
-      const response = await fetch(`${API_URL}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // Use the signIn method from AuthContext
+      const loggedInUser = await signIn(email, password); // signIn will handle the API request
 
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Failed to log in");
-      }
-
-      const loggedInUser = await response.json();
-      const token = loggedInUser.token; // Get the JWT token
-
-      // Store JWT token in localStorage
-      localStorage.setItem("jwt", token);
+      // Fetch user details using the JWT token from the signIn response
+      const token = loggedInUser.jwt; // Assuming signIn returns the user with the JWT token
 
       // Fetch user details using the token
       const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
@@ -74,7 +61,7 @@ const InvestorLogin = () => {
       }
 
       const userDetails = await userResponse.json();
-      setUser({ ...loggedInUser.user, ...userDetails }); // Make sure to merge the user data correctly
+      setUser({ ...loggedInUser, ...userDetails }); // Merge user data correctly
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
@@ -93,7 +80,6 @@ const InvestorLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-
   // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
