@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 // import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 // import cookieParser from 'cookie-parser';
-// import cors from 'cors';
+import cors from 'cors';
 // import bodyParser from 'body-parser';
 import userRoutes from './routes/userRoutes.js'; 
 
@@ -12,7 +12,14 @@ dotenv.config();
 const app = express();
 
 connectDB();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
+
+
+var whitelist = ["http://localhost:3000", "https://investkoree-1.netlify.app"];
+var corsOptions = { origin: whitelist, credentials: true };
+app.use(cors(corsOptions))
 // Define allowed origins
 // const allowedOrigins = [
 //   'http://localhost:3000',
