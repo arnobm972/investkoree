@@ -32,6 +32,7 @@ const InvestorLogin = () => {
 
   // Handle Login Submissi
   // Handle Login Submission
+  // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -42,21 +43,10 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      // Make a request to the login route
-      const response = await fetch(`${API_URL}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // Call signIn from AuthContext to handle the API request
+      const loggedInUser = await signIn(email, password); // Assuming signIn handles fetching the JWT
 
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Failed to log in");
-      }
-
-      const loggedInUser = await response.json();
+      // Assuming signIn returns the user data and token
       const token = loggedInUser.token; // Get the JWT token
 
       // Store JWT token in localStorage
@@ -74,7 +64,11 @@ const InvestorLogin = () => {
       }
 
       const userDetails = await userResponse.json();
-      setUser({ ...loggedInUser.user, ...userDetails }); // Make sure to merge the user data correctly
+      const userData = { ...loggedInUser.user, ...userDetails };
+
+      // Update user in context (optional if signIn does this)
+      setUser(userData);
+
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
