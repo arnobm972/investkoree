@@ -10,16 +10,19 @@ import userRoutes from './routes/userRoutes.js';
 dotenv.config();
 
 const app = express();
+const port =process.env.PORT || 5000;
 
+
+app.use(cors());
 connectDB();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 
 
 
-var whitelist = ["http://localhost:3000", "https://investkoree-1.netlify.app"];
-var corsOptions = { origin: whitelist, credentials: true };
-app.use(cors(corsOptions))
+// var whitelist = ["http://localhost:3000", "https://investkoree-1.netlify.app"];
+// var corsOptions = { origin: whitelist, credentials: true };
+
 // Define allowed origins
 // const allowedOrigins = [
 //   'http://localhost:3000',
@@ -53,7 +56,7 @@ app.use(cors(corsOptions))
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
-app.use('/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 // app.use(notFound);
 // app.use(errorHandler);
