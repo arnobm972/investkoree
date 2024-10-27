@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   getAuth,
   onAuthStateChanged,
-  createUser WithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
@@ -16,7 +16,7 @@ export const AuthContext = createContext(null);
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser ] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const API_URL =
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("jwt");
     if (token) {
       // If token exists, fetch user details using the token
-      fetch(`${API_URL}/users/me`, { // Assuming you have an endpoint to get the user details
+      fetch(`${API_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
           return response.json();
         })
         .then((userData) => {
-          setUser (userData);
+          setUser(userData);
           setIsAuthenticated(true);
         })
         .catch((error) => {
@@ -54,16 +54,15 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser ) => {
-      if (currentUser ) {
-        setUser (currentUser );
-        setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
         setIsAuthenticated(true);
       } else {
-        setUser (null);
-        setLoading(false);
+        setUser(null);
         setIsAuthenticated(false);
       }
+      setLoading(false);
     });
 
     return () => {
@@ -71,16 +70,15 @@ const AuthProvider = ({ children }) => {
     };
   }, [API_URL]);
 
-  const createUser  = async (email, password, name) => {
+  const createUser = async (email, password, name) => {
     setLoading(true);
     try {
-      const { user } = await createUser WithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       await updateProfile(user, { displayName: name });
-      setUser (user);
       const token = await user.getIdToken(); // Get the Firebase token
 
       // Send the token to the backend for JWT creation
@@ -102,15 +100,13 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
-      setUser ({ ...user, jwt: data.token });
-
-      setLoading(false);
+      setUser({ ...user, jwt: data.token });
       setIsAuthenticated(true);
-      return user;
+      toast.success("User created successfully!");
     } catch (error) {
-      setLoading(false);
       toast.error("Error creating user: " + error.message);
-      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,22 +124,20 @@ const AuthProvider = ({ children }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error (errorData.message || "Failed to sign in");
+        throw new Error(errorData.message || "Failed to sign in");
       }
 
       const data = await response.json();
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
-      setUser ({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
-
-      setLoading(false);
+      setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
       setIsAuthenticated(true);
-      return data.user; // Return the user data
+      toast.success("Sign in successful!");
     } catch (error) {
-      setLoading(false);
       toast.error("Error signing in: " + error.message);
-      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -152,13 +146,13 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
-      setLoading(false);
-      setIsAuthenticated(false);
       setUser(null);
+      setIsAuthenticated(false);
+      toast.success("Signed out successfully!");
     } catch (error) {
-      setLoading(false);
       toast.error("Error signing out: " + error.message);
-      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
