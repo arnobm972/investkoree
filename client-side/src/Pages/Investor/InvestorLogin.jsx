@@ -89,6 +89,7 @@ const InvestorLogin = () => {
 
     // Log form values to check if they are captured correctly
     console.log("Form values:", { username, email, password, confirmPassword });
+    console.log("API_URL:", API_URL);
 
     if (!username || !email || !password || !confirmPassword) {
       setError("All fields are required");
