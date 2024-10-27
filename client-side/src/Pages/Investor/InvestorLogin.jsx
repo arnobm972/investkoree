@@ -62,7 +62,7 @@ const InvestorLogin = () => {
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
-      if (error instanceof FirebaseError) {
+      if (error) {
         switch (error.code) {
           case "auth/wrong-password":
             errorMessage = "Invalid password. Please try again.";
