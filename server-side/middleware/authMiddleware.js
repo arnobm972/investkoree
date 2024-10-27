@@ -1,16 +1,27 @@
 import admin from 'firebase-admin';
+import dotenv from 'dotenv';
 
-// Your Firebase Admin initialization here
-// firebaseAdmin.initializeApp();
+dotenv.config();
+
+// Initialize Firebase Admin SDK if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+  });
+}
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ message: "No token provided" });
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
 
   const token = authHeader.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Invalid token format" });
+  if (!token) {
+    return res.status(401).json({ message: "Invalid token format" });
+  }
 
-  firebaseAdmin.auth().verifyIdToken(token)
+  admin.auth().verifyIdToken(token)
     .then(decodedToken => {
       req.user = decodedToken;
       next();
@@ -21,4 +32,4 @@ const authMiddleware = (req, res, next) => {
     });
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

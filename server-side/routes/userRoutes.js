@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import admin from 'firebase-admin';
-import User from './models/User.js'; // Update with the correct path to your User model
+import User from '../models/userModel.js'; 
 import dotenv from 'dotenv';
 
 dotenv.config();
