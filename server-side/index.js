@@ -10,7 +10,7 @@ import userRoutes from './routes/userRoutes.js';
 dotenv.config();
 
 const app = express();
-const port =process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 
 app.use(cors());
@@ -61,11 +61,10 @@ app.use('/api/users', userRoutes);
 // app.use(notFound);
 // app.use(errorHandler);
 
-if (process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 5000;
-  app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-  });
-}
+
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
+
 
 export default app;
