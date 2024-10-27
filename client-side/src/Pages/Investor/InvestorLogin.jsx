@@ -77,6 +77,7 @@ const InvestorLogin = () => {
       setUser({ ...loggedInUser.user, ...userDetails }); // Make sure to merge the user data correctly
       toast.success("Login successful");
     } catch (error) {
+      console.log(error);
       let errorMessage = "An error occurred. Please try again.";
       if (error) {
         switch (error.message) {
