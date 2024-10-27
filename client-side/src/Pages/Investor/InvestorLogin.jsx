@@ -31,6 +31,7 @@ const InvestorLogin = () => {
   };
 
   // Handle Login Submissi
+  // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -41,35 +42,46 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const loggedInUser = await signIn(email, password); // This should return the user object
-      const token = loggedInUser.jwt; // Assuming the user object now contains the JWT token
+      // Make a request to the login route
+      const response = await fetch(`${API_URL}/api/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || "Failed to log in");
+      }
+
+      const loggedInUser = await response.json();
+      const token = loggedInUser.token; // Get the JWT token
 
       // Store JWT token in localStorage
       localStorage.setItem("jwt", token);
+
       // Fetch user details using the token
-      const response = await fetch(`${API_URL}/users?email=${email}`, {
+      const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (!response.ok) {
+      if (!userResponse.ok) {
         throw new Error("Failed to fetch user details");
       }
 
-      const userDetails = await response.json();
-      // Only set the user if the response is ok
-      setUser({ ...loggedInUser, ...userDetails });
+      const userDetails = await userResponse.json();
+      setUser({ ...loggedInUser.user, ...userDetails }); // Make sure to merge the user data correctly
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
       if (error) {
-        switch (error.code) {
-          case "auth/wrong-password":
-            errorMessage = "Invalid password. Please try again.";
-            break;
-          case "auth/user-not-found":
-            errorMessage = "No user found with this email.";
+        switch (error.message) {
+          case "Invalid email or password":
+            errorMessage = "Invalid email or password. Please try again.";
             break;
           default:
             break;
