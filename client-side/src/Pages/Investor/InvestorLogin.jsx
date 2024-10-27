@@ -30,8 +30,6 @@ const InvestorLogin = () => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // Handle Login Submissi
-  // Handle Login Submission
   // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -74,7 +72,6 @@ const InvestorLogin = () => {
 
       toast.success("Login successful");
     } catch (error) {
-      let errorMessage = "An error occurred. Please try again.";
       if (error) {
         switch (error.message) {
           case "Invalid email or password":
@@ -86,6 +83,7 @@ const InvestorLogin = () => {
       }
       setError(errorMessage);
       toast.error(errorMessage);
+      console.log(error);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
