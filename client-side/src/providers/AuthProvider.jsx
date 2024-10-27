@@ -67,6 +67,9 @@ const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
+      // Store JWT token in localStorage
+      localStorage.setItem("jwt", data.token);
+
       // Set user state with JWT token and user details
       setUser({ ...user, jwt: data.token });
 
@@ -75,9 +78,11 @@ const AuthProvider = ({ children }) => {
       return user;
     } catch (error) {
       setLoading(false);
+      toast.error("Error creating user: " + error.message);
       throw error;
     }
   };
+
   const signIn = async (email, password) => {
     setLoading(true);
     try {
@@ -96,6 +101,9 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      // Store JWT token in localStorage
+      localStorage.setItem("jwt", data.token);
+
       setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
 
       setLoading(false);
@@ -112,6 +120,7 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       await signOut(auth);
+      localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
       setLoading(false);
       setIsAuthenticated(false);
       setUser(null);

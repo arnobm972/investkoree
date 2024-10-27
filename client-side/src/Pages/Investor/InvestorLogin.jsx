@@ -30,7 +30,7 @@ const InvestorLogin = () => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // Handle Login Submission
+  // Handle Login Submissi
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -41,9 +41,11 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const loggedInUser = await signIn(email, password); // Try to sign in
-      const token = await loggedInUser.getIdToken(); // Get the ID token
+      const loggedInUser = await signIn(email, password); // This should return the user object
+      const token = loggedInUser.jwt; // Assuming the user object now contains the JWT token
 
+      // Store JWT token in localStorage
+      localStorage.setItem("jwt", token);
       // Fetch user details using the token
       const response = await fetch(`${API_URL}/users?email=${email}`, {
         headers: {
@@ -56,13 +58,11 @@ const InvestorLogin = () => {
       }
 
       const userDetails = await response.json();
-
       // Only set the user if the response is ok
       setUser({ ...loggedInUser, ...userDetails });
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
-      console.log(error);
       if (error) {
         switch (error.code) {
           case "auth/wrong-password":
@@ -136,6 +136,7 @@ const InvestorLogin = () => {
     try {
       const userData = await createUser(email, password, username);
       setUser({ ...userData });
+      localStorage.setItem("jwt", userData.jwt);
 
       // Send user details to your API
       const response = await fetch(`${API_URL}/users`, {

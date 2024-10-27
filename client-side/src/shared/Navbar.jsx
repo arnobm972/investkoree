@@ -14,6 +14,7 @@ const Navbar = () => {
     try {
       await logOut(); // Call logOut from AuthContext
       toast.success("Logged out successfully");
+      setIsOpen(false); // Close the mobile menu on logout
       navigate("/"); // Redirect to home after logout
     } catch (err) {
       toast.error(err.message || "Logout failed");
@@ -197,7 +198,7 @@ const Navbar = () => {
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
-                        FixedReturn
+                        Fixed Return
                       </NavLink>
                     </li>
                   </ul>
@@ -211,10 +212,7 @@ const Navbar = () => {
                       {/* Display user's name or email */}
                     </span>
                     <div
-                      onClick={() => {
-                        handleSignOut();
-                        toggleMenu();
-                      }}
+                      onClick={handleSignOut}
                       className="hover:bg-salmon transition p-2 rounded cursor-pointer"
                     >
                       Log Out
