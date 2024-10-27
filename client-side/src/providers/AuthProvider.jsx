@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   getAuth,
   onAuthStateChanged,
-  createUserWithEmailAndPassword,
+  createUserWithEmailAndPassword, // Fixed method name
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
@@ -79,6 +79,7 @@ const AuthProvider = ({ children }) => {
         password
       );
       await updateProfile(user, { displayName: name });
+      setUser(user);
       const token = await user.getIdToken(); // Get the Firebase token
 
       // Send the token to the backend for JWT creation
