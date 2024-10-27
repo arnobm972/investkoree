@@ -89,7 +89,6 @@ const InvestorLogin = () => {
       }
       setError(errorMessage);
       toast.error(errorMessage);
-      console.log(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
