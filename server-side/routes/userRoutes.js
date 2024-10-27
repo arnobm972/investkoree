@@ -9,16 +9,18 @@ dotenv.config();
 
 const router = express.Router();
 
-// Initialize Firebase Admin SDK
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-});
+// Firebase Admin initialization (ideally moved to a separate file to avoid reinitialization)
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+  });
+}
 
 // Middleware to verify Firebase token
 const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'No token provided' });
   }
 
   try {
@@ -27,7 +29,7 @@ const verifyToken = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Token verification error:", error);
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Unauthorized access' });
   }
 };
 
@@ -60,7 +62,8 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({ token: jwtToken, user: newUser });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Registration error:", error);
+    res.status(500).json({ message: 'Registration failed' });
   }
 });
 
@@ -94,7 +97,8 @@ router.post('/login', async (req, res) => {
 
     res.status(200).json({ token: jwtToken, user });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Login error:", error);
+    res.status(500).json({ message: 'Login failed' });
   }
 });
 
@@ -107,11 +111,12 @@ router.get('/details', verifyToken, async (req, res) => {
     }
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ message: 'Failed to fetch user details' });
   }
 });
 
-// Another example protected route
+// Example protected route
 router.get('/protected', verifyToken, (req, res) => {
   res.status(200).json({ message: 'Protected content', user: req.user });
 });
