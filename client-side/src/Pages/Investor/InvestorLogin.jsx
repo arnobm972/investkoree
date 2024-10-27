@@ -50,7 +50,7 @@ const InvestorLogin = () => {
       // Fetch user details using the token
       const userResponse = await fetch(`${API_URL}/users/details`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Ensure the token is sent for user details
         },
       });
 
@@ -66,11 +66,10 @@ const InvestorLogin = () => {
 
       // Update user in context
       setUser(userData);
-
       toast.success("Login successful");
     } catch (error) {
       console.error("Login error:", error);
-      setError("An error occurred. Please try again.");
+      setError("An error occurred. Please try again."); // More generic error message
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }

@@ -34,17 +34,14 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        setLoading(false);
         setIsAuthenticated(true);
       } else {
         setUser(null);
-        setLoading(false);
         setIsAuthenticated(false);
       }
+      setLoading(false);
     });
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const createUser = async (email, password, name) => {
@@ -56,7 +53,6 @@ const AuthProvider = ({ children }) => {
         password
       );
       await updateProfile(user, { displayName: name });
-      setUser(user);
       const token = await user.getIdToken(); // Get the Firebase token
 
       // Send the token to the backend for JWT creation
@@ -73,27 +69,29 @@ const AuthProvider = ({ children }) => {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create user");
+      }
+
       const data = await response.json();
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
       setUser({ ...user, jwt: data.token });
-
-      setLoading(false);
       setIsAuthenticated(true);
-      return user;
     } catch (error) {
-      setLoading(false);
       toast.error("Error creating user: " + error.message);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const signIn = async (email, password) => {
     setLoading(true);
     try {
-      // Fetch user credentials from backend
       const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
@@ -112,14 +110,12 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem("jwt", data.token);
 
       setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
-
-      setLoading(false);
       setIsAuthenticated(true);
-      return data.user; // Return the user data
     } catch (error) {
-      setLoading(false);
       toast.error("Error signing in: " + error.message);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,13 +124,13 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
-      setLoading(false);
       setIsAuthenticated(false);
       setUser(null);
     } catch (error) {
-      setLoading(false);
       toast.error("Error signing out: " + error.message);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
