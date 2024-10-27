@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
-
+// Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.applicationDefault(), 
 });
@@ -28,10 +28,9 @@ const verifyToken = async (req, res, next) => {
 };
 
 // Route to register a user
-router.post('/users', async (req, res) => {
+router.post('/', async (req, res) => {
   const { email, username, password, role } = req.body;
 
- 
   if (!email || !username || !password || !role) {
     return res.status(400).json({ message: 'All fields are required' });
   }
@@ -48,7 +47,7 @@ router.post('/users', async (req, res) => {
     });
     await newUser.save();
 
-   
+    // Create a JWT token
     const jwtToken = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({ token: jwtToken, user: newUser });
@@ -57,7 +56,7 @@ router.post('/users', async (req, res) => {
   }
 });
 
-
+// Example protected route
 router.get('/protected', verifyToken, (req, res) => {
   res.status(200).json({ message: 'Protected content', user: req.user });
 });
