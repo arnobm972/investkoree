@@ -31,7 +31,6 @@ const InvestorLogin = () => {
   };
 
   // Handle Login Submission
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -49,17 +48,17 @@ const InvestorLogin = () => {
       localStorage.setItem("jwt", token);
 
       // Fetch user details using the token
-      const userResponse = await fetch(
-        `${API_URL}/users/login?email=${email}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const userResponse = await fetch(`${API_URL}/users/details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!userResponse.ok) {
-        throw new Error("Failed to fetch user details");
+        const errorResponse = await userResponse.json();
+        throw new Error(
+          errorResponse.message || "Failed to fetch user details"
+        );
       }
 
       const userDetails = await userResponse.json();
