@@ -83,7 +83,7 @@ const port = process.env.PORT || 5000;
 // Define allowed origins, including your Render frontend URL
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://investkoree.onrender.com'  // Replace with your actual Render frontend URL
+  'https://investkoree.onrender.com', // Replace with your actual Render frontend URL
 ];
 
 // Set up CORS options to restrict origins
@@ -110,10 +110,12 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
+
+// Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Internal Server Error' });
-  });
+  console.error(err.stack);
+  res.status(500).json({ message: 'Internal Server Error' });
+});
 
 // Start the server
 app.listen(port, () => {
