@@ -19,7 +19,9 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://investkoree-backend.onrender.com/api";
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -81,9 +83,20 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const token = await user.getIdToken(); // Get Firebase token
+
+      // Fetch user details and JWT token from backend
+      const response = await fetch(`${API_URL}/users?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      setUser({ ...user, jwt: data.token });
+
       setLoading(false);
       setIsAuthenticated(true);
-      setUser(user);
       return user;
     } catch (error) {
       setLoading(false);
