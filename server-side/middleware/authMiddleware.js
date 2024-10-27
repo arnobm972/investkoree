@@ -1,14 +1,8 @@
-import admin from 'firebase-admin';
-import dotenv from 'dotenv';
+import admin from '../firebaseAdmin.js';
 
-dotenv.config();
 
-// Initialize Firebase Admin SDK if not already initialized
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-  });
-}
+
+
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;

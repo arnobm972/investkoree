@@ -87,16 +87,14 @@ const InvestorLogin = () => {
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
-    // Log form values to check if they are captured correctly
-    console.log("Form values:", { username, email, password, confirmPassword });
-    console.log("API_URL:", API_URL);
-
+    // Verify all fields have values
     if (!username || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
 
+    // Validate password
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -134,9 +132,7 @@ const InvestorLogin = () => {
       // Send user details to your API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username, password, role: "investor" }),
       });
 

@@ -1,20 +1,13 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import admin from 'firebase-admin';
-import User from '../models/userModel.js'; 
+import admin from '../firebaseAdmin.js';
+import User from '../models/userModel.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const router = express.Router();
-
-// Firebase Admin initialization (ideally moved to a separate file to avoid reinitialization)
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-  });
-}
 
 // Middleware to verify Firebase token
 const verifyToken = async (req, res, next) => {
@@ -25,10 +18,13 @@ const verifyToken = async (req, res, next) => {
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;
+    if (!decodedToken || !decodedToken.uid) {
+      throw new Error('Invalid token structure');
+    }
+    req.user = { id: decodedToken.uid, ...decodedToken };
     next();
   } catch (error) {
-    console.error("Token verification error:", error);
+    console.error("Token verification error:", error.message);
     return res.status(401).json({ message: 'Unauthorized access' });
   }
 };
@@ -42,6 +38,12 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -62,7 +64,7 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({ token: jwtToken, user: newUser });
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error("Registration error:", error.message);
     res.status(500).json({ message: 'Registration failed' });
   }
 });
@@ -97,7 +99,7 @@ router.post('/login', async (req, res) => {
 
     res.status(200).json({ token: jwtToken, user });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Login error:", error.message);
     res.status(500).json({ message: 'Login failed' });
   }
 });
@@ -111,7 +113,7 @@ router.get('/details', verifyToken, async (req, res) => {
     }
     res.status(200).json(user);
   } catch (error) {
-    console.error("Error fetching user details:", error);
+    console.error("Error fetching user details:", error.message);
     res.status(500).json({ message: 'Failed to fetch user details' });
   }
 });
