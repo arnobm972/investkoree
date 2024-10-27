@@ -51,38 +51,31 @@ const InvestorLogin = () => {
         },
       });
 
-      const userDetails = await response.json();
-      if (response.ok) {
-        // Only set the user if the response is ok
-        setUser({ ...loggedInUser, ...userDetails });
-        toast.success("Login successful");
-      } else {
-        // Handle error response from the API
-        throw new Error(userDetails.message || "Failed to fetch user details");
-      }
-    } catch (error) {
-      let errorMessage;
-      switch (error.code) {
-        case "auth/wrong-password":
-          errorMessage = "Invalid password. Please try again.";
-          break;
-        case "auth/user-not-found":
-          errorMessage = "No user found with this email.";
-          break;
-        case "auth/email-already-in-use":
-          errorMessage = "This email is already in use.";
-          break;
-        default:
-          errorMessage = "An error occurred. Please try again.";
+      if (!response.ok) {
+        throw new Error("Failed to fetch user details");
       }
 
-      // Set the error message only if it's a known error
-      if (errorMessage) {
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } else {
-        console.error("Login error:", error); // Log unexpected errors for debugging
+      const userDetails = await response.json();
+
+      // Only set the user if the response is ok
+      setUser({ ...loggedInUser, ...userDetails });
+      toast.success("Login successful");
+    } catch (error) {
+      let errorMessage = "An error occurred. Please try again.";
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/wrong-password":
+            errorMessage = "Invalid password. Please try again.";
+            break;
+          case "auth/user-not-found":
+            errorMessage = "No user found with this email.";
+            break;
+          default:
+            break;
+        }
       }
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }

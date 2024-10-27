@@ -81,31 +81,30 @@ const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     setLoading(true);
     try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      const token = await user.getIdToken(); // Get Firebase token
-
-      // Fetch user details and JWT token from backend
-      const response = await fetch(`${API_URL}/users?email=${email}`, {
+      // Fetch user credentials from backend
+      const response = await fetch(`${API_URL}/users/login`, {
+        method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ email, password }), // Send email and password to the backend
       });
 
       if (!response.ok) {
-        // Handle non-2xx responses here
-        throw new Error("Failed to fetch user details");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to sign in");
       }
 
       const data = await response.json();
-      setUser({ ...user, jwt: data.token });
+      setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
+
       setLoading(false);
       setIsAuthenticated(true);
-      return user;
+      return data.user; // Return the user data
     } catch (error) {
       setLoading(false);
       toast.error("Error signing in: " + error.message);
-      console.error("SignIn Error:", error); // For better debugging
-      throw error; // Ensure to throw so it can be caught by the component
+      throw error;
     }
   };
 
