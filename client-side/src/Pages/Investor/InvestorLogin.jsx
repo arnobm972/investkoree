@@ -89,16 +89,13 @@ const InvestorLogin = () => {
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
-    // Log form values to check if they are captured correctly
-    console.log("Form values:", { username, email, password, confirmPassword });
-    console.log("API_URL:", API_URL);
-
     if (!username || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
 
+    // Validate password
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -129,24 +126,8 @@ const InvestorLogin = () => {
     }
 
     try {
-      const userData = await createUser(email, password, username);
-      setUser({ ...userData });
-      localStorage.setItem("jwt", userData.jwt);
-
-      // Send user details to your API
-      const response = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, username, password, role: "investor" }),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Failed to register");
-      }
-
+      const userData = await createUser(email, password, username); // Ensure this returns user data with jwt
+      setUser(userData); // Set user data in context
       toast.success("Registration successful");
     } catch (err) {
       console.error("Registration error:", err);

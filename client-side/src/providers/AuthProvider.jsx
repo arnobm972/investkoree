@@ -73,44 +73,41 @@ const AuthProvider = ({ children }) => {
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await updateProfile(user, { displayName: name });
-      setUser(user);
-      const token = await user.getIdToken(); // Get the Firebase token
-
-      // Send the token to the backend for JWT creation
+      // Create user in your backend API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Attach Firebase token
         },
         body: JSON.stringify({
           email,
           username: name,
+          password, // Send password for backend storage
           role: "investor", // Or dynamically set the role based on your logic
         }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create user");
+      }
 
       const data = await response.json();
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
-      setUser({ ...user, jwt: data.token });
+      setUser({ ...data.user, jwt: data.token });
       setIsAuthenticated(true);
-      toast.success("User created successfully!");
+      toast.success("User  created successfully!");
+      return { ...data.user, jwt: data.token }; // Return user data including JWT
     } catch (error) {
       toast.error("Error creating user: " + error.message);
+      throw error; // Rethrow the error to handle it in the component
     } finally {
       setLoading(false);
     }
   };
-
   const signIn = async (email, password) => {
     setLoading(true);
     try {
