@@ -1,30 +1,24 @@
 import express from 'express';
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
-import admin from 'firebase-admin';
 import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
-// Initialize Firebase Admin SDK
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(), 
-});
-
-// Middleware to verify Firebase token
-const verifyToken = async (req, res, next) => {
+// Middleware to verify JWT token
+const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    req.user = decoded;
     next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
+  });
 };
 
 // Route to register a user
@@ -42,7 +36,7 @@ router.post('/', async (req, res) => {
     const newUser  = new User({
       email,
       name: username,
-      password: hashedPassword, 
+      password: hashedPassword,
       role,
     });
     await newUser .save();
@@ -91,7 +85,7 @@ router.get('/me', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User  not found' });
     }
     res.status(200).json(user);
   } catch (error) {

@@ -1,19 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import {
-  getAuth,
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-  signOut,
-} from "firebase/auth";
-import { app } from "../Firebase/firebase.config";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 
 export const AuthContext = createContext(null);
-
-const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -32,21 +21,6 @@ const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        setIsAuthenticated(true);
-      } else {
-        setUser(null);
-        setIsAuthenticated(false);
-      }
-      setLoading(false);
-    });
-
-    return () => {
-      unsubscribe();
-    };
   }, [API_URL]);
 
   const fetchUserData = async (token) => {
@@ -76,6 +50,7 @@ const AuthProvider = ({ children }) => {
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
+      // Create user in your backend API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
@@ -95,11 +70,13 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("jwt", data.token); // Store JWT token
+      // Store JWT token in localStorage
+      localStorage.setItem("jwt", data.token);
 
-      await fetchUserData(data.token); // Fetch user data immediately after registration
+      // Fetch user data after registration
+      await fetchUserData(data.token);
 
-      toast.success("User created successfully!");
+      toast.success("User  created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {
@@ -142,7 +119,6 @@ const AuthProvider = ({ children }) => {
   const logOut = async () => {
     setLoading(true);
     try {
-      await signOut(auth);
       localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
       setUser(null);
       setIsAuthenticated(false);
