@@ -7,15 +7,19 @@ const router = express.Router();
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
+    console.log("Authorization header missing or malformed");
+    return res.status(401).json({ message: "Unauthorized - Missing token" });
   }
 
+  const token = authHeader.split(" ")[1];
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      console.log("Token verification error:", err);
+      return res.status(401).json({ message: "Unauthorized - Invalid token" });
     }
+    console.log("Token decoded successfully:", decoded); // Log decoded payload
     req.user = decoded;
     next();
   });
@@ -75,7 +79,8 @@ router.post('/login', async (req, res) => {
     const jwtToken = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: "2h" } // Extended for testing
+   
     );
     res.status(200).json({ token: jwtToken, user });
   } catch (error) {
@@ -85,18 +90,17 @@ router.post('/login', async (req, res) => {
 
 // Route to get user details
 router.get('/me', verifyToken, async (req, res) => {
+  console.log("Decoded email in /me route:", req.user.email); // Log email from token
   try {
-    // Use req.user.email to find the user by email instead of ID
-    const user = await User.findOne({ email: req.user.email }).select('-password');
+    const user = await User.findOne({ email: req.user.email }).select("-password");
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 // Example protected route
 router.get('/protected', verifyToken, (req, res) => {
   res.status(200).json({ message: 'Protected content', user: req.user });
