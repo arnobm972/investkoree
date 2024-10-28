@@ -107,6 +107,10 @@ app.use(cors(corsOptions));
 // Other middleware
 connectDB();
 app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-eval';");
+  next();
+});
 
 // Routes
 app.use('/api/users', userRoutes);
