@@ -23,6 +23,7 @@ const InvestorLogin = () => {
       navigate("/investordashboard");
     }
   }, [navigate, user]);
+
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };

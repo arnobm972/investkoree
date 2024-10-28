@@ -13,8 +13,8 @@ const AuthProvider = ({ children }) => {
     "https://investkoree-backend.onrender.com/api";
 
   useEffect(() => {
-    // Check for JWT token in local storage
-    const token = localStorage.getItem("jwt");
+    // Check for session token in local storage
+    const token = localStorage.getItem("sessionToken");
     if (token) {
       // If token exists, fetch user details using the token
       fetchUserData(token);
@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await fetch(`${API_URL}/users/me`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Session ${token}`,
         },
       });
 
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      localStorage.removeItem("jwt"); // Remove invalid token
+      localStorage.removeItem("sessionToken"); // Remove invalid token
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
@@ -70,13 +70,13 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // Store JWT token in localStorage
-      localStorage.setItem("jwt", data.token);
+      // Store session token in localStorage
+      localStorage.setItem("sessionToken", data.sessionToken);
 
       // Fetch user data after registration
-      await fetchUserData(data.token);
+      await fetchUserData(data.sessionToken);
 
-      toast.success("User  created successfully!");
+      toast.success("User created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {
@@ -102,11 +102,11 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // Store JWT token in localStorage
-      localStorage.setItem("jwt", data.token);
+      // Store session token in localStorage
+      localStorage.setItem("sessionToken", data.sessionToken);
 
       // Fetch user data after login
-      await fetchUserData(data.token);
+      await fetchUserData(data.sessionToken);
 
       toast.success("Sign in successful!");
     } catch (error) {
@@ -119,7 +119,7 @@ const AuthProvider = ({ children }) => {
   const logOut = async () => {
     setLoading(true);
     try {
-      localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
+      localStorage.removeItem("sessionToken"); // Clear the session token from localStorage on logout
       setUser(null);
       setIsAuthenticated(false);
       toast.success("Signed out successfully!");

@@ -296,7 +296,6 @@ const FounderLogin = () => {
       navigate("/founderdashboard");
     }
   }, [navigate, user]);
-
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
