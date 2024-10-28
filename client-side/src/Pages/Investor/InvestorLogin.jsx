@@ -41,44 +41,39 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      // Use the signIn method from AuthContext
-      const loggedInUser = await signIn(email, password); // signIn should handle the API request
+      // Sign in user and get Firebase ID token
+      const loggedInUser = await signIn(email, password); // signIn should return user and ID token
+      const token = await loggedInUser.user.getIdToken(); // Get Firebase ID token
 
-      // Assuming signIn returns the user with the JWT token
-      const token = loggedInUser.jwt;
-
-      // Fetch user details using the token
-      const userResponse = await fetch(`${API_URL}/users/me`, {
+      // Fetch user details using the Firebase ID token
+      const userResponse = await fetch(`${API_URL}/users/details`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Ensure the token is sent for user details
         },
       });
 
       if (!userResponse.ok) {
-        throw new Error("Failed to fetch user details");
+        const errorResponse = await userResponse.json();
+        throw new Error(
+          errorResponse.message || "Failed to fetch user details"
+        );
       }
 
       const userDetails = await userResponse.json();
-      setUser({ ...loggedInUser, ...userDetails }); // Merge user data correctly
+      const userData = { firebaseUID: loggedInUser.user.uid, ...userDetails };
+
+      // Update user in context
+      setUser(userData);
       toast.success("Login successful");
     } catch (error) {
-      let errorMessage = "An error occurred. Please try again.";
-      if (error) {
-        switch (error.message) {
-          case "Invalid email or password":
-            errorMessage = "Invalid email or password. Please try again.";
-            break;
-          default:
-            break;
-        }
-      }
-      setError(errorMessage);
-      toast.error(errorMessage);
+      console.error("Login error:", error);
+      setError("An error occurred. Please try again."); // More generic error message
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
 
+  // Handle Registration Submission
   // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -91,15 +86,25 @@ const InvestorLogin = () => {
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
+    // Log the values for debugging
+    console.log("Registration Values:", {
+      username,
+      email,
+      password,
+      confirmPassword,
+    });
+
+    // Verify all fields have values
     if (!username || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
 
+    // Validate password
     const passwordValidations = [
       {
-        regex: /[ A-Z]/,
+        regex: /[A-Z]/,
         message: "Password must contain at least one uppercase letter",
       },
       {
@@ -127,17 +132,18 @@ const InvestorLogin = () => {
     }
 
     try {
+      // Create user in Firebase
       const userData = await createUser(email, password, username);
-      setUser({ ...userData });
-      localStorage.setItem("jwt", userData.jwt);
+      const token = await userData.user.getIdToken(); // Get Firebase ID token
 
       // Send user details to your API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use Firebase token for authorization
         },
-        body: JSON.stringify({ email, username, password, role: "investor" }),
+        body: JSON.stringify({ email, username, password, role: "investor" }), // Send password for backend storage
       });
 
       if (!response.ok) {
@@ -276,21 +282,24 @@ const InvestorLogin = () => {
             </div>
             <input
               type="submit"
-              value={isLoading.register ? "Signing up..." : "Sign up"}
-              className="login-btn lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 solid"
+              value={isLoading.register ? "Registering..." : "Sign up"}
+              className="login-btn solid lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80"
               disabled={isLoading.register}
             />
           </form>
         </div>
       </div>
-
       <div className="panels-container">
-        <div className="panel left-panel sm:mr-6 xs:mr-6 xxs:mr-6">
+        <div className="panel left-panel">
           <div className="content">
-            <h3>New here?</h3>
-            <p>Sign up to access exclusive features!</p>
+            <h3>New Here?</h3>
+            <p>
+              Sign up to create an account and access exclusive features for
+              investors.
+            </p>
             <button
-              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
+              className="login-btn transparent"
+              id="sign-up-btn"
               onClick={() => setIsSignUpMode(true)}
             >
               Sign up
@@ -298,15 +307,19 @@ const InvestorLogin = () => {
           </div>
           <img src="img/log.svg" className="image" alt="" />
         </div>
-        <div className="panel right-panel sm:ml-6 xs:ml-6 xxs:ml-6">
+        <div className="panel right-panel">
           <div className="content">
             <h3>One of us?</h3>
-            <p>Log in to access your account.</p>
+            <p>
+              If you already have an account, log in to access your dashboard
+              and investment details.
+            </p>
             <button
-              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
+              className="login-btn transparent"
+              id="sign-in-btn"
               onClick={() => setIsSignUpMode(false)}
             >
-              Log in
+              Sign in
             </button>
           </div>
           <img src="img/register.svg" className="image" alt="" />

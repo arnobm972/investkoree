@@ -24,68 +24,40 @@ const AuthProvider = ({ children }) => {
     "https://investkoree-backend.onrender.com/api";
 
   useEffect(() => {
-    // Check for JWT token in local storage
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      // If token exists, fetch user details using the token
-      fetch(`${API_URL}/users/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch user details");
-          }
-          return response.json();
-        })
-        .then((userData) => {
-          setUser(userData);
-          setIsAuthenticated(true);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          localStorage.removeItem("jwt"); // Remove invalid token
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        setLoading(false);
         setIsAuthenticated(true);
       } else {
         setUser(null);
+        setLoading(false);
         setIsAuthenticated(false);
       }
-      setLoading(false);
     });
-
     return () => {
       unsubscribe();
     };
-  }, [API_URL]);
+  }, []);
 
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
-      // Create user with Firebase
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       await updateProfile(user, { displayName: name });
+      setUser(user);
+      const token = await user.getIdToken(); // Get the Firebase token
 
-      // Send user data to backend to create JWT
+      // Send the token to the backend for JWT creation
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Attach Firebase token
         },
         body: JSON.stringify({
           email,
@@ -96,17 +68,18 @@ const AuthProvider = ({ children }) => {
 
       const data = await response.json();
       // Store JWT token in localStorage
-      console.log("Token received from backend:", data.token);
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
       setUser({ ...user, jwt: data.token });
-      setIsAuthenticated(true);
-      toast.success("User  created successfully!");
-    } catch (error) {
-      toast.error("Error creating user: " + error.message);
-    } finally {
+
       setLoading(false);
+      setIsAuthenticated(true);
+      return user;
+    } catch (error) {
+      setLoading(false);
+      toast.error("Error creating user: " + error.message);
+      throw error;
     }
   };
 
@@ -132,12 +105,14 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem("jwt", data.token);
 
       setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
-      setIsAuthenticated(true);
-      toast.success("Sign in successful!");
-    } catch (error) {
-      toast.error("Error signing in: " + error.message);
-    } finally {
+
       setLoading(false);
+      setIsAuthenticated(true);
+      return data.user; // Return the user data
+    } catch (error) {
+      setLoading(false);
+      toast.error("Error signing in: " + error.message);
+      throw error;
     }
   };
 
@@ -146,13 +121,13 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
-      setUser(null);
-      setIsAuthenticated(false);
-      toast.success("Signed out successfully!");
-    } catch (error) {
-      toast.error("Error signing out: " + error.message);
-    } finally {
       setLoading(false);
+      setIsAuthenticated(false);
+      setUser(null);
+    } catch (error) {
+      setLoading(false);
+      toast.error("Error signing out: " + error.message);
+      throw error;
     }
   };
 
