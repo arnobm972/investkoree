@@ -110,11 +110,8 @@ connectDB();
 app.use(express.json());
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "script-src": ["'self'", "example.com"],
-      },
-    },
+    contentSecurityPolicy: false,
+    xDownloadOptions: false,
   }),
 );
 
