@@ -108,13 +108,14 @@ app.use(cors(corsOptions));
 // Other middleware
 connectDB();
 app.use(express.json());
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-    xDownloadOptions: false,
-  }),
+server.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "https://investkoree-backend.onrender.com"],
+      "style-src": null,
+    },
+  })
 );
-
 
 // Routes
 app.use('/api/users', userRoutes);
