@@ -36,11 +36,11 @@ const AuthProvider = ({ children }) => {
       }
 
       const userData = await response.json();
-      setUser(userData);
+      setUser(userData); // This should update the user state
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      localStorage.removeItem("sessionToken"); // Remove invalid token
+      localStorage.removeItem("sessionToken");
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
@@ -85,7 +85,6 @@ const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     setLoading(true);
     try {
-      // Fetch user credentials from backend
       const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
@@ -100,11 +99,10 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // Store session token in localStorage
       localStorage.setItem("sessionToken", data.sessionToken);
 
       // Fetch user data after login
-      await fetchUserData(data.sessionToken);
+      await fetchUserData(data.sessionToken); // This should set the user state
 
       toast.success("Sign in successful!");
     } catch (error) {
