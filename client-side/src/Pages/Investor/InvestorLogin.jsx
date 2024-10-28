@@ -55,15 +55,16 @@ const InvestorLogin = () => {
 
     try {
       // Use the signIn method from AuthContext
-      const loggedInUser = await signIn(email, password); // signIn will handle the API request
+      const loggedInUser = await signIn(email, password);
 
       // Check if user data is returned
       if (loggedInUser && loggedInUser.jwt) {
-        const token = loggedInUser.jwt; // Get the JWT token
+        const token = loggedInUser.jwt;
 
         // Fetch user details using the fetchUser Details function
         const userDetails = await fetchUserDetails(email, token);
-        setUser({ ...loggedInUser, ...userDetails }); // Merge user data correctly
+        console.log(userDetails);
+        setUser({ ...loggedInUser, ...userDetails });
         toast.success("Login successful");
       } else {
         throw new Error("Login failed: No user data received");
