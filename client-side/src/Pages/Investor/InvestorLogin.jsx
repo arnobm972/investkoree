@@ -30,7 +30,6 @@ const InvestorLogin = () => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -41,24 +40,43 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      // Sign in user and get user data from your API
-      const response = await signIn(email, password); // signIn should return user data
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Failed to sign in");
+      // Use the signIn method from AuthContext
+      const loggedInUser = await signIn(email, password); // signIn will handle the API request
+
+      // Fetch user details using the JWT token from the signIn response
+      const token = loggedInUser.jwt; // Assuming signIn returns the user with the JWT token
+
+      // Fetch user details using the token
+      const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user details");
       }
 
-      const data = await response.json();
-      setUser(data.user); // Set user data in context
+      const userDetails = await userResponse.json();
+      setUser({ ...loggedInUser, ...userDetails }); // Merge user data correctly
       toast.success("Login successful");
     } catch (error) {
-      console.error("Login error:", error);
-      setError("An error occurred. Please try again."); // More generic error message
+      let errorMessage = "An error occurred. Please try again.";
+      if (error) {
+        switch (error.message) {
+          case "Invalid email or password":
+            errorMessage = "Invalid email or password. Please try again.";
+            break;
+          default:
+            break;
+        }
+      }
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-
   // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -71,14 +89,16 @@ const InvestorLogin = () => {
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
-    // Verify all fields have values
+    // Log form values to check if they are captured correctly
+    console.log("Form values:", { username, email, password, confirmPassword });
+    console.log("API_URL:", API_URL);
+
     if (!username || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
 
-    // Validate password
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -109,8 +129,19 @@ const InvestorLogin = () => {
     }
 
     try {
-      // Create user in your API
-      const response = await createUser(email, password, username);
+      const userData = await createUser(email, password, username);
+      setUser({ ...userData });
+      localStorage.setItem("jwt", userData.jwt);
+
+      // Send user details to your API
+      const response = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username, password, role: "investor" }),
+      });
+
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || "Failed to register");
@@ -247,24 +278,21 @@ const InvestorLogin = () => {
             </div>
             <input
               type="submit"
-              value={isLoading.register ? "Registering..." : "Sign up"}
-              className="login-btn solid lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80"
+              value={isLoading.register ? "Signing up..." : "Sign up"}
+              className="login-btn lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 solid"
               disabled={isLoading.register}
             />
           </form>
         </div>
       </div>
+
       <div className="panels-container">
-        <div className="panel left-panel">
+        <div className="panel left-panel sm:mr-6 xs:mr-6 xxs:mr-6">
           <div className="content">
-            <h3>New Here?</h3>
-            <p>
-              Sign up to create an account and access exclusive features for
-              investors.
-            </p>
+            <h3>New here?</h3>
+            <p>Sign up to access exclusive features!</p>
             <button
-              className="login-btn transparent"
-              id="sign-up-btn"
+              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
               onClick={() => setIsSignUpMode(true)}
             >
               Sign up
@@ -272,19 +300,15 @@ const InvestorLogin = () => {
           </div>
           <img src="img/log.svg" className="image" alt="" />
         </div>
-        <div className="panel right-panel">
+        <div className="panel right-panel sm:ml-6 xs:ml-6 xxs:ml-6">
           <div className="content">
             <h3>One of us?</h3>
-            <p>
-              If you already have an account, log in to access your dashboard
-              and investment details.
-            </p>
+            <p>Log in to access your account.</p>
             <button
-              className="login-btn transparent"
-              id="sign-in-btn"
+              className="login-btn2 lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 transparent"
               onClick={() => setIsSignUpMode(false)}
             >
-              Sign in
+              Log in
             </button>
           </div>
           <img src="img/register.svg" className="image" alt="" />
