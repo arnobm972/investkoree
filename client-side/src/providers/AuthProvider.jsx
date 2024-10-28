@@ -96,6 +96,7 @@ const AuthProvider = ({ children }) => {
 
       const data = await response.json();
       // Store JWT token in localStorage
+      console.log("Token received from backend:", data.token);
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
