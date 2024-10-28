@@ -110,7 +110,6 @@ const AuthProvider = ({ children }) => {
 
       toast.success("Sign in successful!");
     } catch (error) {
-      toast.error("Error signing in: " + error.message);
     } finally {
       setLoading(false);
     }
