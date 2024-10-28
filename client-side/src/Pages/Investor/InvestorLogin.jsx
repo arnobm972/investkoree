@@ -24,7 +24,7 @@ const InvestorLogin = () => {
     try {
       const response = await fetch(`${API_URL}/users/details?email=${email}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the JWT token
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -32,7 +32,7 @@ const InvestorLogin = () => {
         const errorResponse = await response.json();
         console.error("Error fetching user details:", errorResponse);
         throw new Error(
-          "Failed to fetch user details: " + errorResponse.message
+          "Failed to fetch user details: " + errorResponse.message + response
         );
       }
 
