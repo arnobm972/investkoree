@@ -1,5 +1,4 @@
 import express from 'express';
-import helmet from "helmet";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
@@ -10,13 +9,13 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Define allowed origins
+// Define allowed origins, including your Render frontend URL
 const allowedOrigins = [
   'http://localhost:3000',
   'https://investkoree.onrender.com', // Replace with your actual Render frontend URL
 ];
 
-// Set up CORS options
+// Set up CORS options to restrict origins
 const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
@@ -37,19 +36,9 @@ app.use(cors(corsOptions));
 // Other middleware
 connectDB();
 app.use(express.json());
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      "script-src": ["'self'", "https://investkoree-backend.onrender.com"],
-      "style-src": null,
-    },
-  })
-);
-
-// Define a root route
 app.get('/', (req, res) => {
-    res.send('Welcome to the API!');
-});
+  res.send('Welcome to the API!');
+})
 
 // Routes
 app.use('/api/users', userRoutes);
