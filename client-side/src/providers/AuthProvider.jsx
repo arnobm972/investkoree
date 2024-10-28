@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   getAuth,
   onAuthStateChanged,
-  createUserWithEmailAndPassword, // Fixed method name
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
@@ -73,21 +73,19 @@ const AuthProvider = ({ children }) => {
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
+      // Create user with Firebase
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       await updateProfile(user, { displayName: name });
-      setUser(user);
-      const token = await user.getIdToken(); // Get the Firebase token
 
-      // Send the token to the backend for JWT creation
+      // Send user data to backend to create JWT
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Attach Firebase token
         },
         body: JSON.stringify({
           email,
@@ -103,7 +101,7 @@ const AuthProvider = ({ children }) => {
       // Set user state with JWT token and user details
       setUser({ ...user, jwt: data.token });
       setIsAuthenticated(true);
-      toast.success("User created successfully!");
+      toast.success("User  created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {

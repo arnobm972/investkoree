@@ -30,8 +30,6 @@ const InvestorLogin = () => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // Handle Login Submissi
-  // Handle Login Submission
   // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -44,13 +42,13 @@ const InvestorLogin = () => {
 
     try {
       // Use the signIn method from AuthContext
-      const loggedInUser = await signIn(email, password); // signIn will handle the API request
+      const loggedInUser = await signIn(email, password); // signIn should handle the API request
 
-      // Fetch user details using the JWT token from the signIn response
-      const token = loggedInUser.jwt; // Assuming signIn returns the user with the JWT token
+      // Assuming signIn returns the user with the JWT token
+      const token = loggedInUser.jwt;
 
       // Fetch user details using the token
-      const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
+      const userResponse = await fetch(`${API_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,6 +78,7 @@ const InvestorLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
+
   // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -92,10 +91,6 @@ const InvestorLogin = () => {
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
-    // Log form values to check if they are captured correctly
-    console.log("Form values:", { username, email, password, confirmPassword });
-    console.log("API_URL:", API_URL);
-
     if (!username || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
@@ -104,7 +99,7 @@ const InvestorLogin = () => {
 
     const passwordValidations = [
       {
-        regex: /[A-Z]/,
+        regex: /[ A-Z]/,
         message: "Password must contain at least one uppercase letter",
       },
       {
