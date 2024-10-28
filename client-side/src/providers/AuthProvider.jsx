@@ -67,6 +67,7 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Error fetching user data:", error);
       localStorage.removeItem("jwt"); // Remove invalid token
+      setIsAuthenticated(false);
     } finally {
       setLoading(false);
     }
