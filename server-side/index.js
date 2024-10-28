@@ -110,6 +110,10 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
+})
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
