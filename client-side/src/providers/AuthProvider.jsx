@@ -79,8 +79,9 @@ const AuthProvider = ({ children }) => {
         password
       );
       await updateProfile(user, { displayName: name });
-      setUser(user);
-      const token = await user.getIdToken(); // Get the Firebase token
+
+      // Get the Firebase token
+      const token = await user.getIdToken();
 
       // Send the token to the backend for JWT creation
       const response = await fetch(`${API_URL}/users`, {
@@ -97,13 +98,19 @@ const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
+
+      // Check if the response contains the token
+      if (!data.token) {
+        throw new Error("No token received from the server");
+      }
+
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
       setUser({ ...user, jwt: data.token });
       setIsAuthenticated(true);
-      toast.success("User created successfully!");
+      toast.success("User  created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {
