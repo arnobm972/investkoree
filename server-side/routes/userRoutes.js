@@ -87,12 +87,11 @@ router.post('/login', async (req, res) => {
 });
 
 // Route to get user details
-router.get('/me ', verifyToken, async (req, res) => {
+router.get('/me', verifyToken, async (req, res) => {
   try {
-    // Find the user by ID from the decoded token
-    const user = await User.findById(req.user.id).select('-password'); // Exclude password from the response
+    const user = await User.findById(req.user.id).select('-password');
     if (!user) {
-      return res.status(404).json({ message: 'User   not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
     res.status(200).json(user);
   } catch (error) {
