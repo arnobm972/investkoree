@@ -14,7 +14,7 @@ const InvestorLogin = () => {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
@@ -39,6 +39,8 @@ const InvestorLogin = () => {
 
       // Fetch user details using the JWT token from the signIn response
       await fetchUserData(loggedInUser.jwt); // Fetch user data after login
+
+      toast.success("Login successful");
     } catch (error) {
       let errorMessage = " An error occurred. Please try again.";
       if (error) {
@@ -51,6 +53,7 @@ const InvestorLogin = () => {
         }
       }
       setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
@@ -106,6 +109,8 @@ const InvestorLogin = () => {
     try {
       const userData = await createUser(email, password, username); // Ensure this returns user data with jwt
       await fetchUserData(userData.jwt); // Fetch user data after registration
+
+      toast.success("Registration successful");
     } catch (err) {
       console.error("Registration error:", err);
       toast.error(err.message || "Registration error");
