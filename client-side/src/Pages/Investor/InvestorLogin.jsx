@@ -18,29 +18,6 @@ const InvestorLogin = () => {
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  const fetchUserDetails = async (email, token) => {
-    console.log("Fetching user details with token:", token);
-
-    try {
-      const response = await fetch(`${API_URL}/users/details?email=${email}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.error("Error fetching user details:", response);
-        throw new Error("Failed to fetch user details: " + errorResponse);
-      }
-
-      const userDetails = await response.json();
-      return userDetails;
-    } catch (error) {
-      console.error("Fetch user details error:", error);
-      throw error; // Rethrow the error for further handling
-    }
-  };
 
   useEffect(() => {
     // Redirect to dashboard if user is logged in
@@ -64,23 +41,25 @@ const InvestorLogin = () => {
 
     try {
       // Use the signIn method from AuthContext
-      const loggedInUser = await signIn(email, password);
+      const loggedInUser = await signIn(email, password); // signIn will handle the API request
 
-      // Check if user data is returned
-      if (loggedInUser && loggedInUser.jwt) {
-        const token = loggedInUser.jwt;
+      // Fetch user details using the JWT token from the signIn response
+      const token = loggedInUser.jwt; // Assuming signIn returns the user with the JWT token
 
-        // Log the token to the console
-        console.log("Fetching user details with token:", token);
+      // Fetch user details using the token
+      const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        // Fetch user details using the fetchUser Details function
-        const userDetails = await fetchUserDetails(email, token);
-        console.log(userDetails);
-        setUser({ ...loggedInUser, ...userDetails });
-        toast.success("Login successful");
-      } else {
-        throw new Error("Login failed: No user data received");
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user details");
       }
+
+      const userDetails = await userResponse.json();
+      setUser({ ...loggedInUser, ...userDetails }); // Merge user data correctly
+      toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
       if (error) {
@@ -89,7 +68,6 @@ const InvestorLogin = () => {
             errorMessage = "Invalid email or password. Please try again.";
             break;
           default:
-            errorMessage = error.message; // Use the error message from the catch block
             break;
         }
       }
