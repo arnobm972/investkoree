@@ -2,6 +2,8 @@ import express from 'express';
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
 
@@ -23,7 +25,7 @@ const verifyToken = (req, res, next) => {
 
 // Route to register a user
 router.post('/', async (req, res) => {
-  const { email, username, password, role } = req.body;
+  const { email, username, password,role } = req.body;
 
   if (!email || !username || !password || !role) {
     return res.status(400).json({ message: 'All fields are required' });
@@ -39,12 +41,12 @@ router.post('/', async (req, res) => {
       password: hashedPassword, 
       role,
     });
-    await newUser .save();
+    await newUser.save();
 
     // Create a JWT token
-    const jwtToken = jwt.sign({ id: newUser ._id, role: newUser .role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const jwtToken = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ token: jwtToken, user: newUser  });
+    res.status(201).json({ token: jwtToken, user: newUser });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
