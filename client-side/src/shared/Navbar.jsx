@@ -41,11 +41,7 @@ const Navbar = () => {
         </div>
 
         {/* Full Navbar for Larger Screens */}
-        <div
-          className={`hidden lg:flex flex-1 justify-center items-center ${
-            isOpen ? "block" : "hidden"
-          }`}
-        >
+        <div className={`hidden lg:flex flex-1 justify-center items-center`}>
           <ul className="font-bold text-lg menu menu-horizontal gap-8 px-1 flex">
             <li>
               <NavLink
