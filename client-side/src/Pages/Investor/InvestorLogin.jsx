@@ -45,7 +45,7 @@ const InvestorLogin = () => {
       const sessionToken = localStorage.getItem("sessionToken");
       // Fetch user details using the session token
       await fetchUserData(sessionToken); // Fetch user data after login
-
+      navigate("/investordashboard");
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
@@ -118,7 +118,7 @@ const InvestorLogin = () => {
       const sessionToken = localStorage.getItem("sessionToken");
       // Fetch user data after registration
       await fetchUserData(sessionToken); // Fetch user data after registration
-
+      navigate("/investordashboard");
       toast.success("Registration successful");
     } catch (err) {
       console.error("Registration error:", err);

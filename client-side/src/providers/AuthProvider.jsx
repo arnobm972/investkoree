@@ -75,8 +75,6 @@ const AuthProvider = ({ children }) => {
 
       // Fetch user data after registration
       await fetchUserData(data.sessionToken);
-
-      toast.success("User created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {
