@@ -149,7 +149,7 @@ const AuthProvider = ({ children }) => {
       localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
       setUser(null);
       setIsAuthenticated(false);
-      toast.success("Signed out successfully!");
+      // toast.success("Signed out successfully!");
     } catch (error) {
       toast.error("Error signing out: " + error.message);
     } finally {

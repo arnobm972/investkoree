@@ -30,8 +30,8 @@ const InvestorLogin = () => {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        console.error("Error fetching user details:", errorResponse);
-        throw new Error("Failed to fetch user details: " + response);
+        console.error("Error fetching user details:", response);
+        throw new Error("Failed to fetch user details: " + errorResponse);
       }
 
       const userDetails = await response.json();
