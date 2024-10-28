@@ -41,12 +41,14 @@ const InvestorLogin = () => {
       // Use the signIn method from AuthContext
       const loggedInUser = await signIn(email, password); // signIn will handle the API request
 
-      // Fetch user details using the JWT token from the signIn response
-      await fetchUserData(loggedInUser.jwt); // Fetch user data after login
+      // The session token is stored in local storage by the signIn method
+      const sessionToken = localStorage.getItem("sessionToken");
+      // Fetch user details using the session token
+      await fetchUserData(sessionToken); // Fetch user data after login
 
       toast.success("Login successful");
     } catch (error) {
-      let errorMessage = " An error occurred. Please try again.";
+      let errorMessage = "An error occurred. Please try again.";
       if (error) {
         switch (error.message) {
           case "Invalid email or password":
@@ -111,8 +113,11 @@ const InvestorLogin = () => {
     }
 
     try {
-      const userData = await createUser(email, password, username); // Ensure this returns user data with jwt
-      await fetchUserData(userData.jwt); // Fetch user data after registration
+      const userData = await createUser(email, password, username); // Ensure this returns user data
+      // The session token is stored in local storage by createUser
+      const sessionToken = localStorage.getItem("sessionToken");
+      // Fetch user data after registration
+      await fetchUserData(sessionToken); // Fetch user data after registration
 
       toast.success("Registration successful");
     } catch (err) {
