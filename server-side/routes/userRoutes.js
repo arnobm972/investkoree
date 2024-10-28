@@ -85,6 +85,29 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+// Route to get user details by email
+router.get('/details', verifyToken, async (req, res) => {
+  const email = req.query.email; // Get email from query parameters
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User  not found' });
+    }
+
+    // Exclude the password from the response
+    const { password, ...userDetails } = user._doc;
+
+    res.status(200).json(userDetails);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // Example protected route
 router.get('/protected', verifyToken, (req, res) => {
