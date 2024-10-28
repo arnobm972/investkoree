@@ -91,15 +91,8 @@ router.get('/me', async (req, res) => {
   }
 });
 
-// Route for logout
-router.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error logging out' });
-    }
-    res.status(200).json({ message: 'Logout successful' });
-  });
-});
+
+
 
 // Example protected route
 router.get('/protected', (req, res) => {
