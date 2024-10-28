@@ -75,7 +75,6 @@ const AuthProvider = ({ children }) => {
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
-      // Create user in your backend API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
@@ -95,13 +94,11 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // Store JWT token in localStorage
-      localStorage.setItem("jwt", data.token);
+      localStorage.setItem("jwt", data.token); // Store JWT token
 
-      // Fetch user data after registration
-      await fetchUserData(data.token);
+      await fetchUserData(data.token); // Fetch user data immediately after registration
 
-      toast.success("User  created successfully!");
+      toast.success("User created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {
