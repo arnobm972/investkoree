@@ -19,18 +19,29 @@ const InvestorLogin = () => {
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const fetchUserDetails = async (email, token) => {
-    const response = await fetch(`${API_URL}/users/details?email=${email}`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // Include the JWT token
-      },
-    });
+    console.log("Fetching user details with token:", token);
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch user details");
+    try {
+      const response = await fetch(`${API_URL}/users/details?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the JWT token
+        },
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error("Error fetching user details:", errorResponse);
+        throw new Error(
+          "Failed to fetch user details: " + errorResponse.message
+        );
+      }
+
+      const userDetails = await response.json();
+      return userDetails;
+    } catch (error) {
+      console.error("Fetch user details error:", error);
+      throw error; // Rethrow the error for further handling
     }
-
-    const userDetails = await response.json();
-    return userDetails;
   };
 
   useEffect(() => {
@@ -60,6 +71,9 @@ const InvestorLogin = () => {
       // Check if user data is returned
       if (loggedInUser && loggedInUser.jwt) {
         const token = loggedInUser.jwt;
+
+        // Log the token to the console
+        console.log("Fetching user details with token:", token);
 
         // Fetch user details using the fetchUser Details function
         const userDetails = await fetchUserDetails(email, token);
