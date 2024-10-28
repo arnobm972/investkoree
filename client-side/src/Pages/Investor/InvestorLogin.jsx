@@ -41,29 +41,15 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      // Sign in user and get Firebase ID token
-      const loggedInUser = await signIn(email, password); // signIn should return user and ID token
-      const token = await loggedInUser.user.getIdToken(); // Get Firebase ID token
-
-      // Fetch user details using the Firebase ID token
-      const userResponse = await fetch(`${API_URL}/users/details`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Ensure the token is sent for user details
-        },
-      });
-
-      if (!userResponse.ok) {
-        const errorResponse = await userResponse.json();
-        throw new Error(
-          errorResponse.message || "Failed to fetch user details"
-        );
+      // Sign in user and get user data from your API
+      const response = await signIn(email, password); // signIn should return user data
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || "Failed to sign in");
       }
 
-      const userDetails = await userResponse.json();
-      const userData = { firebaseUID: loggedInUser.user.uid, ...userDetails };
-
-      // Update user in context
-      setUser(userData);
+      const data = await response.json();
+      setUser(data.user); // Set user data in context
       toast.success("Login successful");
     } catch (error) {
       console.error("Login error:", error);
@@ -73,7 +59,6 @@ const InvestorLogin = () => {
     }
   };
 
-  // Handle Registration Submission
   // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -85,14 +70,6 @@ const InvestorLogin = () => {
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
-
-    // Log the values for debugging
-    console.log("Registration Values:", {
-      username,
-      email,
-      password,
-      confirmPassword,
-    });
 
     // Verify all fields have values
     if (!username || !email || !password || !confirmPassword) {
@@ -132,20 +109,8 @@ const InvestorLogin = () => {
     }
 
     try {
-      // Create user in Firebase
-      const userData = await createUser(email, password, username);
-      const token = await userData.user.getIdToken(); // Get Firebase ID token
-
-      // Send user details to your API
-      const response = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Use Firebase token for authorization
-        },
-        body: JSON.stringify({ email, username, password, role: "investor" }), // Send password for backend storage
-      });
-
+      // Create user in your API
+      const response = await createUser(email, password, username);
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || "Failed to register");

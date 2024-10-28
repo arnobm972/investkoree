@@ -1,19 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import {
-  getAuth,
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-  signOut,
-} from "firebase/auth";
-import { app } from "../Firebase/firebase.config";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 
 export const AuthContext = createContext(null);
-
-const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -24,58 +13,69 @@ const AuthProvider = ({ children }) => {
     "https://investkoree-backend.onrender.com/api";
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        setLoading(false);
-        setIsAuthenticated(true);
-      } else {
-        setUser(null);
-        setLoading(false);
-        setIsAuthenticated(false);
-      }
-    });
-    return () => {
-      unsubscribe();
-    };
+    // Check if a JWT token exists in localStorage
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      // Optionally, you can fetch user details using the token
+      fetch(`${API_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error("Failed to fetch user details");
+        })
+        .then((userData) => {
+          setUser(userData);
+          setIsAuthenticated(true);
+        })
+        .catch((error) => {
+          console.error(error);
+          setUser(null);
+          setIsAuthenticated(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await updateProfile(user, { displayName: name });
-      setUser(user);
-      const token = await user.getIdToken(); // Get the Firebase token
-
-      // Send the token to the backend for JWT creation
+      // Send user data to your API for registration
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Attach Firebase token
         },
         body: JSON.stringify({
           email,
           username: name,
+          password,
           role: "investor", // Or dynamically set the role based on your logic
         }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create user");
+      }
 
       const data = await response.json();
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
       // Set user state with JWT token and user details
-      setUser({ ...user, jwt: data.token });
-
-      setLoading(false);
+      setUser({ ...data.user, jwt: data.token });
       setIsAuthenticated(true);
-      return user;
+      setLoading(false);
+      return data.user; // Return the user data
     } catch (error) {
       setLoading(false);
       toast.error("Error creating user: " + error.message);
@@ -105,9 +105,8 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem("jwt", data.token);
 
       setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
-
-      setLoading(false);
       setIsAuthenticated(true);
+      setLoading(false);
       return data.user; // Return the user data
     } catch (error) {
       setLoading(false);
@@ -119,7 +118,6 @@ const AuthProvider = ({ children }) => {
   const logOut = async () => {
     setLoading(true);
     try {
-      await signOut(auth);
       localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
       setLoading(false);
       setIsAuthenticated(false);
