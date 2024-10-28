@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   getAuth,
   onAuthStateChanged,
-  createUserWithEmailAndPassword, // Fixed method name
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
@@ -28,28 +28,7 @@ const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("jwt");
     if (token) {
       // If token exists, fetch user details using the token
-      fetch(`${API_URL}/users/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch user details");
-          }
-          return response.json();
-        })
-        .then((userData) => {
-          setUser(userData);
-          setIsAuthenticated(true);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          localStorage.removeItem("jwt"); // Remove invalid token
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      fetchUserData(token);
     } else {
       setLoading(false);
     }
@@ -70,6 +49,29 @@ const AuthProvider = ({ children }) => {
     };
   }, [API_URL]);
 
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch(`${API_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user details");
+      }
+
+      const userData = await response.json();
+      setUser(userData);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      localStorage.removeItem("jwt"); // Remove invalid token
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createUser = async (email, password, name) => {
     setLoading(true);
     try {
@@ -82,8 +84,8 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify({
           email,
           username: name,
-          password, // Send password for backend storage
-          role: "investor", // Or dynamically set the role based on your logic
+          password,
+          role: "investor",
         }),
       });
 
@@ -96,18 +98,17 @@ const AuthProvider = ({ children }) => {
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
-      // Set user state with JWT token and user details
-      setUser({ ...data.user, jwt: data.token });
-      setIsAuthenticated(true);
+      // Fetch user data after registration
+      await fetchUserData(data.token);
+
       toast.success("User  created successfully!");
-      return { ...data.user, jwt: data.token }; // Return user data including JWT
     } catch (error) {
       toast.error("Error creating user: " + error.message);
-      throw error; // Rethrow the error to handle it in the component
     } finally {
       setLoading(false);
     }
   };
+
   const signIn = async (email, password) => {
     setLoading(true);
     try {
@@ -117,7 +118,7 @@ const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }), // Send email and password to the backend
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -129,8 +130,9 @@ const AuthProvider = ({ children }) => {
       // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
 
-      setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
-      setIsAuthenticated(true);
+      // Fetch user data after login
+      await fetchUserData(data.token);
+
       toast.success("Sign in successful!");
     } catch (error) {
       toast.error("Error signing in: " + error.message);
@@ -162,6 +164,7 @@ const AuthProvider = ({ children }) => {
     isAuthenticated,
     setUser,
     signIn,
+    fetchUserData,
   };
 
   return (

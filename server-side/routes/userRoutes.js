@@ -39,18 +39,18 @@ router.post('/', async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
+    const newUser  = new User({
       email,
       name: username,
       password: hashedPassword, 
       role,
     });
-    await newUser.save();
+    await newUser .save();
 
     // Create a JWT token
-    const jwtToken = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const jwtToken = jwt.sign({ id: newUser ._id, role: newUser .role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ token: jwtToken, user: newUser });
+    res.status(201).json({ token: jwtToken, user: newUser  });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -81,6 +81,20 @@ router.post('/login', async (req, res) => {
     const jwtToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(200).json({ token: jwtToken, user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Route to get user details
+router.get('/me ', verifyToken, async (req, res) => {
+  try {
+    // Find the user by ID from the decoded token
+    const user = await User.findById(req.user.id).select('-password'); // Exclude password from the response
+    if (!user) {
+      return res.status(404).json({ message: 'User   not found' });
+    }
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,13 +1,10 @@
-import { useEffect, useState, useContext } from "react";
-import "@fortawesome/fontawesome-free/css/all.css";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 
 const InvestorLogin = () => {
-  const { user, createUser, signIn, setUser } = useContext(AuthContext);
+  const { user, createUser, signIn, fetchUserData } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState({
     login: false,
     register: false,
@@ -26,10 +23,6 @@ const InvestorLogin = () => {
     }
   }, [navigate, user]);
 
-  const togglePasswordVisibility = (field) => {
-    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -44,21 +37,8 @@ const InvestorLogin = () => {
       const loggedInUser = await signIn(email, password); // signIn will handle the API request
 
       // Fetch user details using the JWT token from the signIn response
-      const token = loggedInUser.jwt; // Assuming signIn returns the user with the JWT token
+      await fetchUserData(loggedInUser.jwt); // Fetch user data after login
 
-      // Fetch user details using the token
-      const userResponse = await fetch(`${API_URL}/users?email=${email}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!userResponse.ok) {
-        throw new Error("Failed to fetch user details");
-      }
-
-      const userDetails = await userResponse.json();
-      setUser({ ...loggedInUser, ...userDetails }); // Merge user data correctly
       toast.success("Login successful");
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
@@ -77,7 +57,7 @@ const InvestorLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-  // Handle Registration Submission
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
@@ -127,7 +107,8 @@ const InvestorLogin = () => {
 
     try {
       const userData = await createUser(email, password, username); // Ensure this returns user data with jwt
-      setUser(userData); // Set user data in context
+      await fetchUserData(userData.jwt); // Fetch user data after registration
+
       toast.success("Registration successful");
     } catch (err) {
       console.error("Registration error:", err);
@@ -137,7 +118,6 @@ const InvestorLogin = () => {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
   };
-
   return (
     <div className={`signcontainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
