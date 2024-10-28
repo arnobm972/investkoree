@@ -70,6 +70,7 @@
 // export default app;
 // Import required modules
 import express from 'express';
+import helmet from "helmet";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
@@ -107,6 +108,14 @@ app.use(cors(corsOptions));
 // Other middleware
 connectDB();
 app.use(express.json());
+app.use(helmet({
+  contentSecurityPolicy: {
+      directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-eval'"], 
+      },
+  },
+}));
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-eval';");
   next();
