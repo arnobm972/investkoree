@@ -108,7 +108,7 @@ app.use(cors(corsOptions));
 // Other middleware
 connectDB();
 app.use(express.json());
-server.use(
+app.use(
   helmet.contentSecurityPolicy({
     directives: {
       "script-src": ["'self'", "https://investkoree-backend.onrender.com"],
