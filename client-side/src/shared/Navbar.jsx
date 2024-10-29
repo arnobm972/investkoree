@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hamburger and close icons
 
 const Navbar = () => {
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
@@ -30,6 +30,7 @@ const Navbar = () => {
   }, [token, navigate]);
   const handleSignOut = async () => {
     localStorage.removeItem("token");
+    setToken(null);
     toast.success("Signed Out Successfully");
     navigate("/");
   };
