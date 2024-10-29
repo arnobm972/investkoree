@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import session from 'express-session'; // Keep this import
+
 import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js'
@@ -16,14 +16,7 @@ const port = process.env.PORT || 5000;
 
 
 // Session configuration using MemoryStore
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_secret_key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 180 * 60 * 1000 // Example: 3 hours
-  }
-}));
+
 connectDB();
 
 // CORS configuration
@@ -49,7 +42,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use("/user", signupRoute);  
+app.use("/users", signupRoute);  
 app.use("/auth", loginRoute);
 
 // Routes

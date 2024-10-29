@@ -103,7 +103,7 @@ const InvestorDashboard = () => {
       }
     };
     if (token) fetchUsers();
-    else navigate("/login");
+    else;
   }, [token, navigate]);
 
   const chart1Ref = useRef(null); // For Chart 1
