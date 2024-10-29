@@ -8,17 +8,19 @@ async function login(email, password) {
         const existingUser = await User.findOne({ email });
 
         if (!existingUser) {
+            console.error("User not found for email:", email); // Log if user isn't found
             throw new Error("User not found");
         }
 
         const isPassValid = await bcrypt.compare(password, existingUser.password);
         if (!isPassValid) {
+            console.error("Password mismatch for email:", email); // Log password mismatch
             throw new Error("Incorrect password");
         }
 
         // Generate and return token if user is authenticated
         const token = generateToken(existingUser);
-        return token; // Ensure this is returned
+        return token;
 
     } catch (error) {
         console.error("Login error:", error.message); // Log detailed error for debugging
