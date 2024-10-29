@@ -55,7 +55,6 @@ const InvestorLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
@@ -115,7 +114,15 @@ const InvestorLogin = () => {
           role: "investor",
         }),
       });
+
+      // Check if response is JSON
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Unexpected response format");
+      }
+
       const result = await response.json();
+
       if (response.ok) {
         navigate("/investordashboard");
         toast.success("Registration successful");
@@ -123,6 +130,7 @@ const InvestorLogin = () => {
         throw new Error(result.message || "Registration failed");
       }
     } catch (err) {
+      console.error("Error:", err); // Helps in debugging
       toast.error(err.message || "Registration error");
       setError(err.message || "Registration error");
     } finally {
