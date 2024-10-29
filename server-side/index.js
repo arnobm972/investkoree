@@ -49,7 +49,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use("/users", signupRoute);  
+app.use("/user", signupRoute);  
 app.use("/auth", loginRoute);
 
 // Routes
