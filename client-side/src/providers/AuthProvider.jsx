@@ -26,6 +26,8 @@ const AuthProvider = ({ children }) => {
   const fetchUserData = async (token) => {
     try {
       const response = await fetch(`${API_URL}/users/me`, {
+        method: "get",
+        credentials: "include",
         headers: {
           Authorization: `Session ${token}`,
         },
@@ -53,6 +55,7 @@ const AuthProvider = ({ children }) => {
       // Create user in your backend API
       const response = await fetch(`${API_URL}/users`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -87,6 +90,7 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
