@@ -1,11 +1,10 @@
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../providers/AuthProvider";
+
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
 
 const InvestorLogin = () => {
-  const { user, createUser, signIn, fetchUserData } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState({
     login: false,
     register: false,
@@ -16,12 +15,6 @@ const InvestorLogin = () => {
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-  useEffect(() => {
-    if (user) {
-      navigate("/investordashboard");
-    }
-  }, [navigate, user]);
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
