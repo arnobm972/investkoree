@@ -18,7 +18,6 @@ const InvestorLogin = () => {
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
-    // Redirect to dashboard if user is logged in
     if (user) {
       navigate("/investordashboard");
     }
@@ -31,35 +30,34 @@ const InvestorLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
-    setError(null); // Reset error before login attempt
+    setError(null);
 
     const form = new FormData(e.currentTarget);
     const email = form.get("u_signin_email");
     const password = form.get("u_signin_pass");
 
     try {
-      // Use the signIn method from AuthContext
-      const loggedInUser = await signIn(email, password); // signIn will handle the API request
-
-      // The session token is stored in local storage by the signIn method
-      const sessionToken = localStorage.getItem("sessionToken");
-      // Fetch user details using the session token
-      await fetchUserData(sessionToken); // Fetch user data after login
-      navigate("/investordashboard");
-      toast.success("Login successful");
-    } catch (error) {
-      let errorMessage = "An error occurred. Please try again.";
-      if (error) {
-        switch (error.message) {
-          case "Invalid email or password":
-            errorMessage = "Invalid email or password. Please try again.";
-            break;
-          default:
-            break;
-        }
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", result.token);
+        navigate("/investordashboard");
+        toast.success("Login successful");
+      } else {
+        throw new Error(result.message || "Login failed");
       }
-      setError(errorMessage);
-      toast.error(errorMessage);
+    } catch (err) {
+      toast.error(err.message || "Login error");
+      setError(err.message || "Login error");
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
@@ -82,7 +80,6 @@ const InvestorLogin = () => {
       return;
     }
 
-    // Validate password
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -113,21 +110,33 @@ const InvestorLogin = () => {
     }
 
     try {
-      const userData = await createUser(email, password, username); // Ensure this returns user data
-      // The session token is stored in local storage by createUser
-      const sessionToken = localStorage.getItem("sessionToken");
-      // Fetch user data after registration
-      await fetchUserData(sessionToken); // Fetch user data after registration
-      navigate("/investordashboard");
-      toast.success("Registration successful");
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          username,
+          password,
+          role: "investor",
+        }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        navigate("/investordashboard");
+        toast.success("Registration successful");
+      } else {
+        throw new Error(result.message || "Registration failed");
+      }
     } catch (err) {
-      console.error("Registration error:", err);
       toast.error(err.message || "Registration error");
       setError(err.message || "Registration error");
     } finally {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
   };
+
   return (
     <div className={`signcontainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">

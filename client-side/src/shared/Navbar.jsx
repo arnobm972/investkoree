@@ -6,19 +6,14 @@ import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hamburger and close icons
 
 const Navbar = () => {
+  const token = localStorage.getItem("token");
   const { user, logOut } = useContext(AuthContext); // Use AuthContext to get user and logOut
   const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    try {
-      await logOut(); // Call logOut from AuthContext
-      toast.success("Logged out successfully");
-      setIsOpen(false); // Close the mobile menu on logout
-      navigate("/"); // Redirect to home after logout
-    } catch (err) {
-      toast.error(err.message || "Logout failed");
-    }
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   // Toggle hamburger menu
@@ -98,12 +93,12 @@ const Navbar = () => {
               </details>
             </li>
             <li>
-              {user ? (
+              {token ? (
                 <div className="flex items-center logout-container">
-                  <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
+                  {/* <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
                     {user.displayName || user.email}{" "}
-                    {/* Display user's name or email */}
-                  </span>
+                    
+                  </span> */}
                   <div
                     onClick={handleSignOut}
                     className="hover:bg-salmon transition hover:text-white p-2 rounded cursor-pointer"
@@ -201,12 +196,12 @@ const Navbar = () => {
                 </details>
               </li>
               <li>
-                {user ? (
+                {token ? (
                   <div className="flex items-center">
-                    <span className="mr-2 hover:bg-salmon transition p-2 rounded">
+                    {/* <span className="mr-2 hover:bg-salmon transition p-2 rounded">
                       {user.displayName || user.email}{" "}
-                      {/* Display user's name or email */}
-                    </span>
+
+                    </span> */}
                     <div
                       onClick={handleSignOut}
                       className="hover:bg-salmon transition p-2 rounded cursor-pointer"

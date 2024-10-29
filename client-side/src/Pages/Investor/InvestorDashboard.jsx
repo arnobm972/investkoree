@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import { useNavigate } from "react-router-dom";
 
 const randomData = () => Math.floor(Math.random() * 100);
 const data = [
@@ -81,8 +82,29 @@ const chartData2 = {
 };
 
 const InvestorDashboard = () => {
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/users`, {
+          header: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await response.json();
+        setUsers(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (token) fetchUsers();
+    else navigate("/login");
+  }, [token, navigate]);
 
   const chart1Ref = useRef(null); // For Chart 1
   const chart2Ref = useRef(null); // For Chart 2

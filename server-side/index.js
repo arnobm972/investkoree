@@ -3,13 +3,17 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session'; // Keep this import
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
-
+import signupRoute from '../server-side/routes/signup.js'
+import bodyParser from 'body-parser';
+import loginRoute from '../server-side/routes/login.js'
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+
 
 // Session configuration using MemoryStore
 app.use(session({
@@ -44,9 +48,12 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(bodyParser.json());
+app.use ("/user",signupRoute);
+app.use ("/auth",loginRoute);
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/api', userRoutes);
 app.get('/', (req, res) => {
   res.send('Welcome to the API!');
 });
