@@ -76,6 +76,7 @@ router.post('/login', async (req, res) => {
 
 // Route to get user details
 router.get('/me', async (req, res) => {
+  console.log("Session data:", req.session);
   if (!req.session.userId) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
