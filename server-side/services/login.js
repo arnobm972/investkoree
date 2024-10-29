@@ -9,7 +9,7 @@ async function login(email,password) {
         if(!existingUser){
             throw new Error("User not Found");
         }
-     const isPassvalid =   bcrypt.compare(password,existingUser.password);
+     const isPassvalid = await  bcrypt.compare(password,existingUser.password);
      if(!isPassvalid){
         throw new Error("Incorrect Password");
     }
