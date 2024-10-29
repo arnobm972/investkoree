@@ -1,18 +1,19 @@
 import { useState, useContext } from "react";
 import logo from "../assets/ll.png";
 import { useNavigate, NavLink } from "react-router-dom";
-import { AuthContext } from "../providers/AuthProvider"; // Import AuthContext
+
 import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hamburger and close icons
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
-  const { user, logOut } = useContext(AuthContext); // Use AuthContext to get user and logOut
+
   const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     localStorage.removeItem("token");
+    toast.success("Signed Out Successfully");
     navigate("/");
   };
 
