@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      localStorage.removeItem("sessionToken");
+
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
