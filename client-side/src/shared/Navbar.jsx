@@ -7,10 +7,27 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hambur
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
-
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
-  const navigate = useNavigate();
 
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/users`, {
+          header: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await response.json();
+        setUsers(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (token) fetchUsers();
+    else;
+  }, [token, navigate]);
   const handleSignOut = async () => {
     localStorage.removeItem("token");
     toast.success("Signed Out Successfully");
@@ -96,10 +113,9 @@ const Navbar = () => {
             <li>
               {token ? (
                 <div className="flex items-center logout-container">
-                  {/* <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {user.displayName || user.email}{" "}
-                    
-                  </span> */}
+                  <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
+                    {users.Name || users.email}{" "}
+                  </span>
                   <div
                     onClick={handleSignOut}
                     className="hover:bg-salmon transition hover:text-white p-2 rounded cursor-pointer"
@@ -199,10 +215,9 @@ const Navbar = () => {
               <li>
                 {token ? (
                   <div className="flex items-center">
-                    {/* <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {user.displayName || user.email}{" "}
-
-                    </span> */}
+                    <span className="mr-2 hover:bg-salmon transition p-2 rounded">
+                      {users.Name || users.email}{" "}
+                    </span>
                     <div
                       onClick={handleSignOut}
                       className="hover:bg-salmon transition p-2 rounded cursor-pointer"
