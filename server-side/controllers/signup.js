@@ -2,6 +2,7 @@ import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 
 async function createUser(req, res) {
+    res.setHeader('Content-Type', 'application/json');
     try {
         const { name, email, password } = req.body;
 
