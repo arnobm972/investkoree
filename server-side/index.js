@@ -49,8 +49,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use ("/user",signupRoute);
-app.use ("/auth",loginRoute);
+app.use("/users", signupRoute);  
+app.use("/auth", loginRoute);
 
 // Routes
 app.use('/api', userRoutes);

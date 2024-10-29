@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 async function createUser(req, res) {
     try {
         const { name, email, password } = req.body;
+
+        // Await bcrypt.hash to handle the promise
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
