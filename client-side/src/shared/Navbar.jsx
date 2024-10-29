@@ -9,7 +9,7 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
-
+  const navigate = useNavigate;
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
