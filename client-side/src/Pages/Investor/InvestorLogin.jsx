@@ -61,12 +61,12 @@ const InvestorLogin = () => {
     setIsLoading((prev) => ({ ...prev, register: true }));
 
     const form = new FormData(e.currentTarget);
-    const username = form.get("u_signup_name");
+    const name = form.get("u_signup_name");
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
@@ -109,7 +109,7 @@ const InvestorLogin = () => {
         },
         body: JSON.stringify({
           email,
-          username,
+          name,
           password,
           role: "investor",
         }),
