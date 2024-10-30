@@ -33,7 +33,7 @@ const InvestorLogin = () => {
     const name = form.get("u_sigin_name");
 
     try {
-      await signIn(email, password); // Use the signIn function from context
+      await signIn(email, password, name);
       toast.success("Login successful");
       navigate("/investordashboard");
     } catch (err) {
@@ -119,13 +119,13 @@ const InvestorLogin = () => {
               <i className="fas fa-user"></i>
               <input
                 type="text"
-                placeholder="name"
+                placeholder="Name"
                 name="u_signin_name"
                 required
               />
             </div>
             <div className="input-field">
-              <i className="fas fa-user"></i>
+              <i className="fas fa-envelope"></i>
               <input
                 type="email"
                 placeholder="Email Address"
