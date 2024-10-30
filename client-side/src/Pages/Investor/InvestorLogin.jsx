@@ -21,40 +21,40 @@ const InvestorLogin = () => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoading((prev) => ({ ...prev, login: true }));
-    setError(null);
-
-    const form = new FormData(e.currentTarget);
-    const email = form.get("u_signin_email");
-    const password = form.get("u_signin_pass");
-
+  const handleLogin = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
-      const result = await response.json();
-      if (response.ok) {
-        localStorage.setItem("token", result.token);
-        setToken(token);
-        navigate("/investordashboard");
-        toast.success("Login successful");
-      } else {
-        throw new Error(result.message || "Login failed");
+
+      if (!response.ok) {
+        throw new Error("Login failed");
       }
-    } catch (err) {
-      toast.error(err.message || "Login error");
-      setError(err.message || "Login error");
-    } finally {
-      setIsLoading((prev) => ({ ...prev, login: false }));
+
+      const data = await response.json();
+      localStorage.setItem("token", data.token); // Store token in localStorage
+      setToken(data.token); // Update state
+      toast.success("Logged in successfully");
+
+      // Fetch user data after logging in
+      const userResponse = await fetch(`${API_URL}/users/api`, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!userResponse.ok) throw new Error("Failed to fetch user data");
+
+      const userData = await userResponse.json();
+      setUsers(userData); // Update user state
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Login failed");
     }
   };
   const handleRegister = async (e) => {

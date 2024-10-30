@@ -22,6 +22,7 @@ const Navbar = () => {
     // Cleanup the event listener on component unmount
     return () => window.removeEventListener("storage", handleTokenChange);
   }, []);
+
   useEffect(() => {
     const fetchUser = async () => {
       if (!token) return;
@@ -52,6 +53,7 @@ const Navbar = () => {
     toast.success("Signed Out Successfully");
     navigate("/");
   };
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
