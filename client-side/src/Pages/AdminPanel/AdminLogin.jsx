@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from "react";
-
+import "@fortawesome/fontawesome-free/css/all.css";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
-
+import "react-toastify/dist/ReactToastify.css";
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState({
     login: false,
