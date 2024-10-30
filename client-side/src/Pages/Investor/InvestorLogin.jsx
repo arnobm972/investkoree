@@ -22,8 +22,15 @@ const InvestorLogin = () => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const handleLogin = async (e, email, password) => {
-    e.preventDefault(); // Prevent the default form submission
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading((prev) => ({ ...prev, login: true }));
+
+    // Your l
+    // Get email and password from the form fields
+    const form = new FormData(e.currentTarget);
+    const email = form.get("u_signin_email");
+    const password = form.get("u_signin_pass");
 
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
@@ -46,6 +53,8 @@ const InvestorLogin = () => {
       console.error("Login error:", error);
       toast.error("Login failed: " + error.message);
     }
+
+    setIsLoading((prev) => ({ ...prev, login: false }));
   };
   const handleRegister = async (e) => {
     e.preventDefault();
