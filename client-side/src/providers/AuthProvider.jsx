@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (response.ok) {
-        const userData = { displayName: name, email };
+        const userData = { email };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token); // Update the token state
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signIn = async (email, password, name) => {
+  const signIn = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (response.ok) {
-        const userData = { displayName: name, email }; // Adjust based on your API response
+        const userData = { email }; // Adjust based on your API response
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token); // Update the token state

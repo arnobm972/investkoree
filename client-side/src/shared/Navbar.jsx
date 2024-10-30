@@ -97,7 +97,7 @@ const Navbar = () => {
               {user ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {user.displayName ? user.displayName : user.email}
+                    {user.email}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -199,7 +199,7 @@ const Navbar = () => {
                 {user ? (
                   <div className="flex items-center">
                     <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {user.displayName ? user.displayName : user.email}
+                      {user.email}
                     </span>
                     <div
                       onClick={handleSignOut}
