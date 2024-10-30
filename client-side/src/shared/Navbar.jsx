@@ -96,9 +96,6 @@ const Navbar = () => {
             <li>
               {user ? (
                 <div className="flex items-center logout-container">
-                  <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {user.email}
-                  </span>
                   <div
                     onClick={handleSignOut}
                     className="hover:bg-salmon transition hover:text-white p-2 rounded cursor-pointer"
@@ -198,9 +195,6 @@ const Navbar = () => {
               <li>
                 {user ? (
                   <div className="flex items-center">
-                    <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {user.email}
-                    </span>
                     <div
                       onClick={handleSignOut}
                       className="hover:bg-salmon transition p-2 rounded cursor-pointer"
