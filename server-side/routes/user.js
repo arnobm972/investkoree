@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use(cors());
 
-router.get("/users", authMiddleware.authToken, userController.getUsers);
+router.get("/api", authMiddleware.authToken, userController.getUsers);
 
 export default router;
