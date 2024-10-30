@@ -21,7 +21,8 @@ const InvestorLogin = () => {
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
-  const handleLogin = async (e) => {
+
+  const handleLogin = async (e, email, password) => {
     e.preventDefault(); // Prevent the default form submission
 
     try {
