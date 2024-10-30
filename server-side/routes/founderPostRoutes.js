@@ -31,7 +31,7 @@ const cpUpload = upload.fields([
 ]);
 
 // Handle founder post creation
-router.post("/founderpost", cpUpload, async (req, res) => {
+router.post("/postdata", cpUpload, async (req, res) => {
   try {
     const {
       businessName, email, address, phone, businessCategory, businessSector,
