@@ -8,6 +8,7 @@ import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js'
 import bodyParser from 'body-parser';
 import loginRoute from '../server-side/routes/login.js'
+import founderPostRoute from '../server-side/routes/founderPostRoutes.js'
 dotenv.config();
 
 const app = express();
@@ -46,6 +47,7 @@ app.use(cors(corsOptions));
 
 app.use("/users", signupRoute);  
 app.use("/users/auth", loginRoute);
+app.use("/postdata", founderPostRoute);
 
 // Routes
 app.use('/users', userRoutes);

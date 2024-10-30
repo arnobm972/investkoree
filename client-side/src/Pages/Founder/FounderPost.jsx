@@ -21,7 +21,7 @@ const FounderPost = () => {
     businessSafety: "",
     additionalComments: "",
   });
-
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
   const [images, setImages] = useState([]);
@@ -86,7 +86,7 @@ const FounderPost = () => {
     postData.append("financialFile", financialFile);
 
     try {
-      const response = await fetch("/founderpost", {
+      const response = await fetch(`${API_URL}/postdata/founderpost`, {
         method: "POST",
         body: postData,
       });

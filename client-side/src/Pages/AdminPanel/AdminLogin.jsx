@@ -1,36 +1,27 @@
-import { useEffect, useState, useContext } from "react";
-import "@fortawesome/fontawesome-free/css/all.css";
+import { useContext, useState, useEffect } from "react";
+
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../providers/AuthProvider";
 import Loader from "../../shared/Loader";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../providers/AuthProvider";
 
 const AdminLogin = () => {
-  const { user, createUser, signIn, setUser } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState({
     login: false,
     register: false,
     confirm: false,
   });
+  const { createUser, signIn } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-  useEffect(() => {
-    // Redirect to dashboard if user is logged in
-    if (user) {
-      navigate("/admindashboard");
-    }
-  }, [navigate, user]);
+  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
-
-  // Handle Login Submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -41,61 +32,34 @@ const AdminLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const loggedInUser = await signIn(email, password);
-      const token = await loggedInUser.getIdToken();
-
-      const response = await fetch(`${API_URL}/users?email=${email}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const userDetails = await response.json();
-      setUser({ ...loggedInUser, ...userDetails });
+      await signIn(email, password);
       toast.success("Login successful");
-    } catch (error) {
-      let errorMessage;
-      switch (error.code) {
-        case "auth/wrong-password":
-          errorMessage = "Invalid password. Please try again.";
-          break;
-        case "auth/user-not-found":
-          errorMessage = "No user found with this email.";
-          break;
-        case "auth/email-already-in-use":
-          errorMessage = "This email is already in use.";
-          break;
-        default:
-          errorMessage = "An error occurred. Please try again.";
-      }
-      setError(errorMessage);
-      toast.error(errorMessage);
+      navigate("/admindashboard");
+    } catch (err) {
+      toast.error(err.message || "Login error");
+      setError(err.message || "Login error");
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-
-  // Handle Registration Submission
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
     setIsLoading((prev) => ({ ...prev, register: true }));
 
     const form = new FormData(e.currentTarget);
-    const username = form.get("u_signup_name");
+    const name = form.get("u_signup_name");
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
 
-    // Log form values to check if they are captured correctly
-    console.log("Form values:", { username, email, password, confirmPassword });
-
-    if (!username || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
 
+    // Password validations
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -126,26 +90,10 @@ const AdminLogin = () => {
     }
 
     try {
-      const userData = await createUser(email, password, username);
-      setUser({ ...userData });
-
-      // Send user details to your API
-      const response = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, username, password, role: "admin" }),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Failed to register");
-      }
-
+      await createUser(name, email, password); // Use the createUser function from context
       toast.success("Registration successful");
+      navigate("/admindashboard");
     } catch (err) {
-      console.error("Registration error:", err);
       toast.error(err.message || "Registration error");
       setError(err.message || "Registration error");
     } finally {
@@ -167,7 +115,7 @@ const AdminLogin = () => {
             </h2>
             {error && <p className="error-message">{error}</p>}
             <div className="input-field">
-              <i className="fas fa-user"></i>
+              <i className="fas fa-envelope"></i>
               <input
                 type="email"
                 placeholder="Email Address"
