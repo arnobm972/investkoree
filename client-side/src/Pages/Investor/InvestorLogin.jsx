@@ -11,6 +11,7 @@ const InvestorLogin = () => {
     confirm: false,
   });
   const [isSignUpMode, setIsSignUpMode] = useState(false);
+  const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const InvestorLogin = () => {
       const result = await response.json();
       if (response.ok) {
         localStorage.setItem("token", result.token);
+        setToken(token);
         navigate("/investordashboard");
         toast.success("Login successful");
       } else {

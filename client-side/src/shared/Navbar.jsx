@@ -12,15 +12,17 @@ const Navbar = () => {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    // Listen for token changes in localStorage to update token state accordingly
-    const handleTokenChange = () => setToken(localStorage.getItem("token"));
+    const handleTokenChange = () => {
+      const newToken = localStorage.getItem("token");
+      setToken(newToken);
+    };
+
     window.addEventListener("storage", handleTokenChange);
 
+    // Cleanup the event listener on component unmount
     return () => window.removeEventListener("storage", handleTokenChange);
   }, []);
-
   useEffect(() => {
-    // Fetch user details only if a token exists
     const fetchUser = async () => {
       if (!token) return;
 
@@ -44,14 +46,12 @@ const Navbar = () => {
   }, [token]);
 
   const handleSignOut = () => {
-    // Clear token and user data on logout
     localStorage.removeItem("token");
-    setToken(null);
+    setToken(null); // Clear token state
     setUsers(null); // Clear user data
     toast.success("Signed Out Successfully");
     navigate("/");
   };
-
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
