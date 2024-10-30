@@ -9,10 +9,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { user, logout } = useAuth();
+  const { user, logOut } = useAuth();
 
   const handleSignOut = () => {
-    logout(); // Call the logout function from context
+    logOut(); // Call the logout function from context
     toast.success("Signed Out Successfully");
     navigate("/");
   };
