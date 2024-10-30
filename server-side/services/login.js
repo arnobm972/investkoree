@@ -4,6 +4,9 @@ import generateToken from '../utils/jwtUtils.js';
 import verifyToken from '../utils/authMiddleware.js';
 
 async function login(email, password) {
+    console.log("Received email:", email); // Log email to verify value
+    console.log("Received password:", password); // Log password to verify value
+    
     try {
         const existingUser = await User.findOne({ email });
 
