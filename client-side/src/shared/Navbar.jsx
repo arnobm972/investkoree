@@ -14,7 +14,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/users`, {
+        const response = await fetch(`${API_URL}/users/api`, {
           header: {
             Authorization: `Bearer ${token}`,
           },
