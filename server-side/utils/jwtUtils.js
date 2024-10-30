@@ -3,7 +3,7 @@ import secretkey from '../config/jwtConfig.js'
 
 function generateToken(user){
     const payload={
-        id:user_id,
+        id:user._id,
         email:user.email,
         role:user.role,
         name :user.name,
