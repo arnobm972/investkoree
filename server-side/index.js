@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-
+import path from 'path';
 import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js'
@@ -44,6 +44,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/users", signupRoute);  
 app.use("/users/auth", loginRoute);
