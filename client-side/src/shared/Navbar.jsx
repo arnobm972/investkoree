@@ -12,22 +12,34 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   useEffect(() => {
+    const handleTokenChange = () => setToken(localStorage.getItem("token"));
+    window.addEventListener("storage", handleTokenChange);
+
+    return () => window.removeEventListener("storage", handleTokenChange);
+  }, []);
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${API_URL}/users/api`, {
-          header: {
-            Authorization: `Bearer ${token}`,
+          headers: {
+            Authorization: `Bearer ${token}`, // Ensure header is correctly formatted
+            "Content-Type": "application/json",
           },
         });
+        if (!response.ok) throw new Error("Failed to fetch user data");
+
         const result = await response.json();
-        setUsers(result);
+        setUsers(result); // Save fetched user data
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching user data:", error);
       }
     };
-    if (token) fetchUsers();
-    else;
-  }, [token, navigate]);
+
+    if (token) {
+      fetchUsers();
+    }
+  }, [token]); // Runs whenever `token` changes
+
   const handleSignOut = async () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -115,7 +127,7 @@ const Navbar = () => {
               {token ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {users.name || users.email}{" "}
+                    {users.name ? users.name : users.email}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -217,7 +229,7 @@ const Navbar = () => {
                 {token ? (
                   <div className="flex items-center">
                     <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {users.name || users.email}{" "}
+                      {users.name ? users.name : users.email}
                     </span>
                     <div
                       onClick={handleSignOut}
