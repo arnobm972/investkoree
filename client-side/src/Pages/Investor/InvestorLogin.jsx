@@ -115,8 +115,7 @@ const InvestorLogin = () => {
         }),
       });
 
-      // Check if response is JSON
-      console.log(response); // Check if it shows content-type and status
+      console.log(response);
 
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
