@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import "@fortawesome/fontawesome-free/css/all.css";
+import "react-toastify/dist/ReactToastify.css";
 const FounderPost = () => {
   const [formData, setFormData] = useState({
     businessName: "",
