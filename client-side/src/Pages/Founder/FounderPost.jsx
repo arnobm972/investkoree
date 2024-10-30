@@ -85,10 +85,15 @@ const FounderPost = () => {
     postData.append("securityFile", securityFile);
     postData.append("financialFile", financialFile);
 
+    const token = localStorage.getItem("token"); // Adjust this based on your implementation
+
     try {
       const response = await fetch(`${API_URL}/founderpost/postdata`, {
         method: "POST",
         body: postData,
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+        },
       });
 
       if (response.ok) {
