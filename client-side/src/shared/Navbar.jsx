@@ -32,7 +32,7 @@ const Navbar = () => {
         if (!response.ok) throw new Error("Failed to fetch user data");
 
         const userData = await response.json();
-        setUser(userData);
+        setUsers(userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
