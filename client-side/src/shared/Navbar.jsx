@@ -1,25 +1,27 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import logo from "../assets/ll.png";
 import { useNavigate, NavLink } from "react-router-dom";
-
 import { toast } from "react-toastify";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import hamburger and close icons
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
 const Navbar = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  const [isOpen, setIsOpen] = useState(false); // Track whether the mobile menu is open
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
+
   useEffect(() => {
+    // Listen for token changes in localStorage to update token state accordingly
     const handleTokenChange = () => setToken(localStorage.getItem("token"));
     window.addEventListener("storage", handleTokenChange);
 
     return () => window.removeEventListener("storage", handleTokenChange);
   }, []);
+
   useEffect(() => {
+    // Fetch user details only if a token exists
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
       if (!token) return;
 
       try {
@@ -39,16 +41,17 @@ const Navbar = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [token]);
 
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
+    // Clear token and user data on logout
     localStorage.removeItem("token");
     setToken(null);
+    setUsers(null); // Clear user data
     toast.success("Signed Out Successfully");
     navigate("/");
   };
 
-  // Toggle hamburger menu
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
