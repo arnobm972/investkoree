@@ -8,7 +8,7 @@ const Main = () => {
   return (
     <div className="roboto-regular">
       <AuthProvider>
-        <Navbar></Navbar>
+        <Navbar user={user}></Navbar>
         <ToastContainer></ToastContainer>
         <Outlet></Outlet>
         <Footer></Footer>

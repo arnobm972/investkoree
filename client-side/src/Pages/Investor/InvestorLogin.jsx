@@ -11,6 +11,7 @@ const InvestorLogin = () => {
     confirm: false,
   });
   const [isSignUpMode, setIsSignUpMode] = useState(false);
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
@@ -129,6 +130,8 @@ const InvestorLogin = () => {
       if (response.ok) {
         navigate("/investordashboard");
         toast.success("Registration successful");
+        const userData = { displayName: name, email: email };
+        setUser(userData);
       } else {
         throw new Error(result.message || "Registration failed");
       }

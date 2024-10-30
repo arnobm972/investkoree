@@ -3,13 +3,13 @@ import logo from "../assets/ll.png";
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { useAuth } from "../providers/AuthProvider";
+import { AuthContext } from "../providers/AuthProvider";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { user, logOut } = useAuth();
+  const { user, logOut } = useContext(AuthContext);
 
   const handleSignOut = () => {
     logOut(); // Call the logout function from context
