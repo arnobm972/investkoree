@@ -115,7 +115,7 @@ const Navbar = () => {
               {token ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {users.Name || users.email}{" "}
+                    {users.name || users.email}{" "}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -217,7 +217,7 @@ const Navbar = () => {
                 {token ? (
                   <div className="flex items-center">
                     <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {users.Name || users.email}{" "}
+                      {users.name || users.email}{" "}
                     </span>
                     <div
                       onClick={handleSignOut}
