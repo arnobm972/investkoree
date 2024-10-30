@@ -3,7 +3,6 @@ import { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../providers/AuthProvider";
 
 const InvestorLogin = () => {
   const [showPassword, setShowPassword] = useState({
@@ -12,7 +11,7 @@ const InvestorLogin = () => {
     confirm: false,
   });
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const { logIn } = useAuth();
+  const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
@@ -25,41 +24,39 @@ const InvestorLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
+    setError(null);
 
     const form = new FormData(e.currentTarget);
     const email = form.get("u_signin_email");
     const password = form.get("u_signin_pass");
 
     try {
-      console.log("API_URL:", API_URL);
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
+      const result = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", result.token);
+        setToken(token);
+        navigate("/investordashboard");
+        toast.success("Login successful");
+      } else {
+        throw new Error(result.message || "Login failed");
       }
-
-      const data = await response.json();
-      console.log("Login data received:", data);
-
-      // Assuming the data contains a token for login
-      logIn(data.token); // Calls login from context to store the token
-      toast.success("Logged in successfully");
-      navigate("/"); // Redirect to home page
-    } catch (error) {
-      console.error("Login error:", error.message);
-      toast.error("Login failed: " + error.message);
+    } catch (err) {
+      toast.error(err.message || "Login error");
+      setError(err.message || "Login error");
     } finally {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
