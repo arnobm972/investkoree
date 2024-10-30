@@ -48,7 +48,7 @@ app.use("/users", signupRoute);
 app.use("/users/auth", loginRoute);
 
 // Routes
-app.use('/api', userRoutes);
+app.use('/users', userRoutes);
 app.get('/', (req, res) => {
   res.send('Welcome to the API!');
 });
