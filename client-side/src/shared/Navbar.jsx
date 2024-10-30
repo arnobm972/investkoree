@@ -9,7 +9,7 @@ const Navbar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { user, logOut } = useContext(AuthContext);
+  const {  logOut } = useContext(AuthContext);
 
   const handleSignOut = () => {
     logOut(); // Call the logout function from context
@@ -96,7 +96,7 @@ const Navbar = ({ user }) => {
               {user ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {user.name ? user.name : user.email}
+                    {user.displayName ? user.displayName : user.email}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -198,7 +198,7 @@ const Navbar = ({ user }) => {
                 {user ? (
                   <div className="flex items-center">
                     <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {user.name ? user.name : user.email}
+                      {user.displayName ? user.displayName : user.email}
                     </span>
                     <div
                       onClick={handleSignOut}
