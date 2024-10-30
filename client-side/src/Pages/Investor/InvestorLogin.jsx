@@ -30,6 +30,7 @@ const InvestorLogin = () => {
     const form = new FormData(e.currentTarget);
     const email = form.get("u_signin_email");
     const password = form.get("u_signin_pass");
+    const name = form.get("u_sigin_name");
 
     try {
       await signIn(email, password); // Use the signIn function from context
@@ -114,6 +115,15 @@ const InvestorLogin = () => {
               Investor Sign in
             </h2>
             {error && <p className="error-message">{error}</p>}
+            <div className="input-field">
+              <i className="fas fa-user"></i>
+              <input
+                type="text"
+                placeholder="name"
+                name="u_signin_name"
+                required
+              />
+            </div>
             <div className="input-field">
               <i className="fas fa-user"></i>
               <input

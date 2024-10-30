@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signIn = async (email, password) => {
+  const signIn = async (email, password, name) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
@@ -76,32 +76,22 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({
           email,
           password,
+          name,
         }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        // Fetch user details from backend after signing in
-        const userResponse = await fetch(`${API_URL}/users/api`, {
-          headers: {
-            Authorization: `Bearer ${result.token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!userResponse.ok) throw new Error("Failed to fetch user data");
-
-        const userData = await userResponse.json();
-        const newUserData = { displayName: userData.name, email };
-        setUser(newUserData); // Set the user state with the fetched user data
+        const userData = { displayName: name, email }; // Adjust based on your API response
+        setUser(userData);
         localStorage.setItem("token", result.token);
-        setToken(result.token);
+        setToken(result.token); // Update the token state
       } else {
         throw new Error(result.message || "Login failed");
       }
     } catch (error) {
       console.error("Error signing in:", error);
-      throw error;
+      throw error; // Rethrow the error to handle it in the component
     }
   };
   const authInfo = {
