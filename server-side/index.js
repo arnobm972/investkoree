@@ -19,7 +19,8 @@ const port = process.env.PORT || 5000;
 
 connectDB();
 
-
+app.use(express.json());
+app.use(bodyParser.json());
 const allowedOrigins = [
   'http://localhost:3000',
   'https://investkoree.onrender.com', 
@@ -40,8 +41,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
-app.use(bodyParser.json());
+
+
+
 app.use("/users", signupRoute);  
 app.use("/users/auth", loginRoute);
 
