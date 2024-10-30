@@ -12,7 +12,7 @@ const InvestorLogin = () => {
     confirm: false,
   });
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const { login } = useAuth();
+  const { logIn } = useAuth();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
@@ -26,13 +26,12 @@ const InvestorLogin = () => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
 
-    // Your l
-    // Get email and password from the form fields
     const form = new FormData(e.currentTarget);
     const email = form.get("u_signin_email");
     const password = form.get("u_signin_pass");
 
     try {
+      console.log("API_URL:", API_URL);
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
         headers: {
@@ -42,20 +41,25 @@ const InvestorLogin = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
       }
 
       const data = await response.json();
-      login(data.token); // Call the login function from context to set the token
-      toast.success("Logged in successfully");
-      navigate("/"); // Redirect to the home page or any other page
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Login failed: " + error.message);
-    }
+      console.log("Login data received:", data);
 
-    setIsLoading((prev) => ({ ...prev, login: false }));
+      // Assuming the data contains a token for login
+      logIn(data.token); // Calls login from context to store the token
+      toast.success("Logged in successfully");
+      navigate("/"); // Redirect to home page
+    } catch (error) {
+      console.error("Login error:", error.message);
+      toast.error("Login failed: " + error.message);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, login: false }));
+    }
   };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);

@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, [token, API_URL]); // Added API_URL to the dependency array
 
-  const login = (newToken) => {
+  const logIn = (newToken) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
   };
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   const authInfo = {
     user,
     token,
-    login,
+    logIn,
     logOut,
   };
 
