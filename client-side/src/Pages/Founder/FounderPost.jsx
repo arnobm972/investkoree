@@ -78,10 +78,12 @@ const FounderPost = () => {
     });
 
     // Append multiple images for businessPicture
-    images.forEach((image, index) =>
-      postData.append(`businessPicture[${index}]`, image)
+    images.forEach(
+      (image) => postData.append("businessPicture", image) // Append without index
     );
-
+    for (let pair of postData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
     // Append single files for other fields
     postData.append("nidCopy", nidFile);
     postData.append("tinCopy", tinFile);
