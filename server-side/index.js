@@ -15,14 +15,14 @@ const port = process.env.PORT || 5000;
 
 
 
-// Session configuration using MemoryStore
+
 
 connectDB();
 
-// CORS configuration
+
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://investkoree.onrender.com', // Replace with your actual Render frontend URL
+  'https://investkoree.onrender.com', 
 ];
 
 const corsOptions = {
