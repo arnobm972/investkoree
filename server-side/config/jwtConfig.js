@@ -1,9 +1,7 @@
-import crypto from 'crypto'
+import crypto from 'crypto';
 
+// Generate the secret key once
+const secretKey = crypto.randomBytes(32).toString('hex');
 
-
-const secretKey =crypto.randomBytes(32).toString('hex');
-
-export default {
-    secretKey: secretKey
-  };
+// Export only the secret key string directly
+export default secretKey;
