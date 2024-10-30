@@ -30,7 +30,7 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(`${API_URL}users/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
