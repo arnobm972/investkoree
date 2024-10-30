@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../providers/AuthProvider";
 
 const InvestorLogin = () => {
   const [showPassword, setShowPassword] = useState({

@@ -3,6 +3,7 @@ import logo from "../assets/ll.png";
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { useAuth } from "../providers/AuthProvider";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

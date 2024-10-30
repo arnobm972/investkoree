@@ -1,10 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 export const AuthContext = createContext(null);
-import React, { createContext, useContext, useState, useEffect } from "react";
-
-const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -32,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchUser();
-  }, [token]);
+  }, [token, API_URL]); // Added API_URL to the dependency array
 
   const login = (newToken) => {
     localStorage.setItem("token", newToken);
@@ -59,6 +56,11 @@ export const AuthProvider = ({ children }) => {
 
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
+};
+
+// Custom hook to use the AuthContext
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
 
 export default AuthProvider;
