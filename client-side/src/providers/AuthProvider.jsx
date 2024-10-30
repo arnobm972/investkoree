@@ -1,3 +1,7 @@
+import { createContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+
+export const AuthContext = createContext(null);
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
@@ -35,19 +39,26 @@ export const AuthProvider = ({ children }) => {
     setToken(newToken);
   };
 
-  const logout = () => {
+  const logOut = () => {
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
   };
 
+  const authInfo = {
+    user,
+    token,
+    login,
+    logOut,
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
+
+export default AuthProvider;
