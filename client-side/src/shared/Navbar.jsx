@@ -5,51 +5,13 @@ import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
 const Navbar = () => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const [users, setUsers] = useState(null);
 
-  useEffect(() => {
-    const handleTokenChange = () => {
-      const newToken = localStorage.getItem("token");
-      setToken(newToken);
-    };
-
-    window.addEventListener("storage", handleTokenChange);
-
-    // Cleanup the event listener on component unmount
-    return () => window.removeEventListener("storage", handleTokenChange);
-  }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!token) return;
-
-      try {
-        const response = await fetch(`${API_URL}/users/api`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) throw new Error("Failed to fetch user data");
-
-        const userData = await response.json();
-        setUsers(userData);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUser();
-  }, [token]);
+  const { user, logout } = useAuth();
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
-    setToken(null); // Clear token state
-    setUsers(null); // Clear user data
+    logout(); // Call the logout function from context
     toast.success("Signed Out Successfully");
     navigate("/");
   };
@@ -130,10 +92,10 @@ const Navbar = () => {
               </details>
             </li>
             <li>
-              {users ? (
+              {user ? (
                 <div className="flex items-center logout-container">
                   <span className="mr-2 hover:bg-salmon transition hover:text-white p-2 rounded">
-                    {users.name ? users.name : users.email}
+                    {user.name ? user.name : user.email}
                   </span>
                   <div
                     onClick={handleSignOut}
@@ -232,10 +194,10 @@ const Navbar = () => {
                 </details>
               </li>
               <li>
-                {users ? (
+                {user ? (
                   <div className="flex items-center">
                     <span className="mr-2 hover:bg-salmon transition p-2 rounded">
-                      {users.name ? users.name : users.email}
+                      {user.name ? user.name : user.email}
                     </span>
                     <div
                       onClick={handleSignOut}

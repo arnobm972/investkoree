@@ -11,7 +11,7 @@ const InvestorLogin = () => {
     confirm: false,
   });
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const [token, setToken] = useState(null);
+  const { login } = useAuth();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
@@ -20,8 +20,9 @@ const InvestorLogin = () => {
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
 
-  const handleLogin = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
@@ -36,25 +37,12 @@ const InvestorLogin = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.token); // Store token in localStorage
-      setToken(data.token); // Update state
+      login(data.token); // Call the login function from context to set the token
       toast.success("Logged in successfully");
-
-      // Fetch user data after logging in
-      const userResponse = await fetch(`${API_URL}/users/api`, {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!userResponse.ok) throw new Error("Failed to fetch user data");
-
-      const userData = await userResponse.json();
-      setUsers(userData); // Update user state
+      navigate("/"); // Redirect to the home page or any other page
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Login failed");
+      toast.error("Login failed: " + error.message);
     }
   };
   const handleRegister = async (e) => {
