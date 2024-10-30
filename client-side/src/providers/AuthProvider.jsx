@@ -36,11 +36,69 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
   };
+  const createUser = async (name, email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          name,
+          password,
+          role: "investor", // Adjust based on your role system
+        }),
+      });
 
+      const result = await response.json();
+      if (response.ok) {
+        const userData = { displayName: name, email };
+        setUser(userData);
+        localStorage.setItem("token", result.token);
+        setToken(result.token); // Update the token state
+      } else {
+        throw new Error(result.message || "Registration failed");
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error; // Rethrow the error to handle it in the component
+    }
+  };
+
+  const signIn = async (email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/users/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        const userData = { displayName: result.name, email }; // Adjust based on your API response
+        setUser(userData);
+        localStorage.setItem("token", result.token);
+        setToken(result.token); // Update the token state
+      } else {
+        throw new Error(result.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error signing in:", error);
+      throw error; // Rethrow the error to handle it in the component
+    }
+  };
   const authInfo = {
     user,
     token,
     logOut,
+    createUser,
+    signIn,
   };
 
   return (
@@ -52,6 +110,8 @@ AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// Custom hook to use the AuthContext
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 export default AuthProvider;

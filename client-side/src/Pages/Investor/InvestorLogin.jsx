@@ -10,9 +10,9 @@ const InvestorLogin = () => {
     register: false,
     confirm: false,
   });
+  const { createUser, signIn } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ const InvestorLogin = () => {
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
@@ -32,25 +31,9 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const response = await fetch(`${API_URL}/users/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        localStorage.setItem("token", result.token);
-        setToken(token);
-        navigate("/investordashboard");
-        toast.success("Login successful");
-      } else {
-        throw new Error(result.message || "Login failed");
-      }
+      await signIn(email, password); // Use the signIn function from context
+      toast.success("Login successful");
+      navigate("/investordashboard");
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");
@@ -75,6 +58,7 @@ const InvestorLogin = () => {
       return;
     }
 
+    // Password validations
     const passwordValidations = [
       {
         regex: /[A-Z]/,
@@ -105,38 +89,10 @@ const InvestorLogin = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/users/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          name,
-          password,
-          role: "investor",
-        }),
-      });
-
-      console.log(response);
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Unexpected response format");
-      }
-
-      const result = await response.json();
-
-      if (response.ok) {
-        navigate("/investordashboard");
-        toast.success("Registration successful");
-        const userData = { displayName: name, email: email };
-        setUser(userData);
-      } else {
-        throw new Error(result.message || "Registration failed");
-      }
+      await createUser(name, email, password); // Use the createUser function from context
+      toast.success("Registration successful");
+      navigate("/investordashboard");
     } catch (err) {
-      console.error("Error:", err); // Helps in debugging
       toast.error(err.message || "Registration error");
       setError(err.message || "Registration error");
     } finally {

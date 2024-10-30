@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react"; // Import useContext
 import logo from "../assets/ll.png";
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { AuthContext } from "../providers/AuthProvider";
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const {  logOut } = useContext(AuthContext);
+  // Destructure user and logOut from AuthContext
+  const { user, logOut } = useContext(AuthContext);
 
   const handleSignOut = () => {
     logOut(); // Call the logout function from context
