@@ -87,6 +87,7 @@ const FounderPost = () => {
     postData.append("financialFile", financialFile);
 
     const token = localStorage.getItem("token"); // Adjust this based on your implementation
+
     try {
       const response = await fetch(`${API_URL}/founderpost/postdata`, {
         method: "POST",
@@ -95,6 +96,7 @@ const FounderPost = () => {
           Authorization: `Bearer ${token}`, // Include the token in the headers
         },
       });
+
       if (response.ok) {
         toast.success("Form submitted successfully!");
       } else {
