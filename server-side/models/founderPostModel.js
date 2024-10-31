@@ -42,4 +42,5 @@ additionalComments: {
   }
 });
 
-module.exports = mongoose.model('FounderPost', founderPostSchema);
+module.exports = mongoose.model('founderPost', founderPostSchema);
+export default founderPost;
