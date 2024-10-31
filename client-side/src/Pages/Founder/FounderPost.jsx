@@ -75,9 +75,7 @@ const FounderPost = () => {
     });
 
     // Append files
-    images.forEach((image, index) =>
-      postData.append(`images[${index}]`, image)
-    );
+    images.forEach((image) => postData.append("images", image)); // No need for index
     postData.append("nidCopy", nidFile);
     postData.append("tinCopy", tinFile);
     postData.append("taxCopy", taxFile);
@@ -170,7 +168,7 @@ const FounderPost = () => {
           </div>
           <input
             type="file"
-            name="businessPicture"
+            name="images" // Change this to match the backend
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
             accept="image/*"
             onChange={handleMultipleFileChange}
