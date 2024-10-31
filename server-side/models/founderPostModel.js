@@ -42,5 +42,5 @@ additionalComments: {
   }
 });
 
-module.exports = mongoose.model('founderPost', founderPostSchema);
+const founderPost = mongoose.model('founderPost', founderPostSchema);
 export default founderPost;
