@@ -183,7 +183,7 @@ const FounderPost = () => {
             type="file"
             name="businessPicture"
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-            accept="image/*"
+            // accept="image/*"
             onChange={(e) => handleFileChange(e, setbusinessPic)}
             required
           />
