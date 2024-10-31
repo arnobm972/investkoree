@@ -2,14 +2,17 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-
+import path from 'path';
 import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js'
 import bodyParser from 'body-parser';
 import loginRoute from '../server-side/routes/login.js'
 import founderPostRoute from '../server-side/routes/founderPostRoutes.js'
+import { fileURLToPath } from 'url';
 dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -37,7 +40,6 @@ const corsOptions = {
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
   optionsSuccessStatus: 200,
 };
 
@@ -45,9 +47,11 @@ app.use(cors(corsOptions));
 
 
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use("/users", signupRoute);  
 app.use("/users/auth", loginRoute);
-app.use("/founderpost", founderPostRoute);
+app.use("/founder", founderPostRoute);
 
 // Routes
 app.use('/users', userRoutes);
