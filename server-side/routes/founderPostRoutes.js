@@ -9,7 +9,7 @@ const router = express.Router();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads')); // Save files in an 'uploads' folder
+    cb(null, "uploads/"); // Save files in an 'uploads' folder
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // Save files with unique names
@@ -31,7 +31,7 @@ const cpUpload = upload.fields([
 ]);
 
 // Handle founder post creation
-router.post("/postdata", cpUpload, async (req, res) => {
+router.post("/founderpost", cpUpload, async (req, res) => {
   try {
     const {
       businessName, email, address, phone, businessCategory, businessSector,

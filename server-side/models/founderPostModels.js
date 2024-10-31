@@ -19,8 +19,8 @@ const FounderPostSchema = new mongoose.Schema({
   returnPlan: { type: String, required: true },
   businessSafety: { type: String, required: true },
   additionalComments: { type: String },
-  // businessPic: { type: String }, 
-  nidFile: { type: String },
+  images: [{ type: String }], // Array of image paths
+  nidFile: { type: String }, // Single file paths
   tinFile: { type: String },
   taxFile: { type: String },
   tradeLicenseFile: { type: String },

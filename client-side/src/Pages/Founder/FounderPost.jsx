@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "@fortawesome/fontawesome-free/css/all.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const FounderPost = () => {
@@ -86,11 +85,10 @@ const FounderPost = () => {
     postData.append("bankStatement", bankStatementFile);
     postData.append("securityFile", securityFile);
     postData.append("financialFile", financialFile);
-
     const token = localStorage.getItem("token"); // Adjust this based on your implementation
 
     try {
-      const response = await fetch(`${API_URL}/founderpost/postdata`, {
+      const response = await fetch(`${API_URL}/postdata/founderpost`, {
         method: "POST",
         body: postData,
         headers: {
