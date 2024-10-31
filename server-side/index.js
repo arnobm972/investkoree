@@ -51,7 +51,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/users", signupRoute);  
 app.use("/users/auth", loginRoute);
-app.use("/founder", founderPostRoute);
+app.use("/founderpost", founderPostRoute);
 
 // Routes
 app.use('/users', userRoutes);
