@@ -19,7 +19,7 @@ const upload = multer({ storage });
 
 
 const cpUpload = upload.fields([
-  { name: "businessPicture", maxCount: 5 }, // multiple images
+  { name: "businessPicture", maxCount: 1 }, // multiple images
   { name: "nidCopy", maxCount: 1 }, // single file
   { name: "tinCopy", maxCount: 1 }, 
   { name: "taxCopy", maxCount: 1 },
@@ -41,7 +41,7 @@ router.post("/postdata", cpUpload, async (req, res) => {
     } = req.body;
 
     
-    const businessPicture = req.files.businessPicture && req.files.businessPicture.length > 0 ? req.files.businessPicture[0].path : "";
+    const businessPic = req.files.businessPicture && req.files.businessPicture.length > 0 ? req.files.businessPicture[0].path : "";
     const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? req.files.nidCopy[0].path : "";
     const tinFile = req.files.tinCopy && req.files.tinCopy.length > 0 ? req.files.tinCopy[0].path : "";
     const taxFile = req.files.taxCopy && req.files.taxCopy.length > 0 ? req.files.taxCopy[0].path : "";
@@ -55,7 +55,7 @@ router.post("/postdata", cpUpload, async (req, res) => {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,
-      returnPlan, businessSafety, additionalComments, businessPicture, nidFile, tinFile,
+      returnPlan, businessSafety, additionalComments, businessPic, nidFile, tinFile,
       taxFile, tradeLicenseFile, bankStatementFile, securityFile, financialFile
     });
 
