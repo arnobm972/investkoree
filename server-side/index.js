@@ -9,6 +9,7 @@ import signupRoute from '../server-side/routes/signup.js';
 import bodyParser from 'body-parser';
 import loginRoute from '../server-side/routes/login.js';
 import founderFormPostRoute from './routes/founderFormPostRoutes.js';
+import founderPostRoute from './routes//founderPostRoute.js'
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -56,6 +57,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Route definitions
 app.use("/users", signupRoute);
+app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
 app.use("/founderpost", founderFormPostRoute);
 app.use('/users', userRoutes);
