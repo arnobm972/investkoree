@@ -1,6 +1,7 @@
+// founderPostModels.js
 import mongoose from 'mongoose';
 
-const FounderPostSchema = new mongoose.Schema({
+const founderPostSchema = new mongoose.Schema({
   businessName: { type: String, required: true },
   email: { type: String, required: true },
   address: { type: String, required: true },
@@ -19,8 +20,8 @@ const FounderPostSchema = new mongoose.Schema({
   returnPlan: { type: String, required: true },
   businessSafety: { type: String, required: true },
   additionalComments: { type: String },
-  businessPic: { type: String }, // Array of image paths for business pictures
-  nidFile: { type: String }, // Single file paths
+  businessPic: { type: [String], required: true }, // Change to an array of strings
+  nidFile: { type: String },
   tinFile: { type: String },
   taxFile: { type: String },
   tradeLicenseFile: { type: String },
@@ -29,6 +30,5 @@ const FounderPostSchema = new mongoose.Schema({
   financialFile: { type: String },
 }, { timestamps: true });
 
-const FounderPost = mongoose.model('FounderPost', FounderPostSchema);
-
+const FounderPost = mongoose.model('FounderPost', founderPostSchema);
 export default FounderPost;
