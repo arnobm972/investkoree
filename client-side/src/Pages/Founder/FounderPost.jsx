@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import "@fortawesome/fontawesome-free/css/all.css";
 import "react-toastify/dist/ReactToastify.css";
+
 const FounderPost = () => {
   const [formData, setFormData] = useState({
     businessName: "",
@@ -22,6 +24,7 @@ const FounderPost = () => {
     businessSafety: "",
     additionalComments: "",
   });
+
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
@@ -74,8 +77,12 @@ const FounderPost = () => {
       postData.append(key, formData[key]);
     });
 
-    // Append files
-    images.forEach((image) => postData.append("images", image)); // No need for index
+    // Append multiple images for businessPicture
+    images.forEach((image, index) =>
+      postData.append(`businessPicture[${index}]`, image)
+    );
+
+    // Append single files for other fields
     postData.append("nidCopy", nidFile);
     postData.append("tinCopy", tinFile);
     postData.append("taxCopy", taxFile);
@@ -104,6 +111,7 @@ const FounderPost = () => {
       toast.error("Error submitting form.");
     }
   };
+
   return (
     <div>
       <form className="mb-10" onSubmit={handleSubmit}>
@@ -168,7 +176,7 @@ const FounderPost = () => {
           </div>
           <input
             type="file"
-            name="images" // Change this to match the backend
+            name="businessPicture"
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
             accept="image/*"
             onChange={handleMultipleFileChange}
