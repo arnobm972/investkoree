@@ -1,36 +1,38 @@
 // server-side/models/FounderPost.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const founderPostSchema = new mongoose.Schema({
-  location: {
+    address: {
     type: String,
     required: true
   },
-  funded: {
+  
+fundingAmount: {
     type: String,
     required: true
   },
-  left_for_fund: {
+//   left_for_fund: {
+//     type: String,
+//     required: true
+//   },
+//   raised: {
+//     type: Number,
+//     required: true
+//   },
+  
+businessSector: {
     type: String,
     required: true
   },
-  raised: {
-    type: Number,
-    required: true
-  },
-  sector: {
+  businessPic: {
     type: String,
     required: true
   },
-  project_pic: {
-    type: String,
-    required: true
-  },
-  required_funding: {
-    type: Number,
-    required: true
-  },
-  description: {
+//   funded: {
+//     type: Number,
+//     required: true
+//   },
+additionalComments: {
     type: String,
     required: true
   },
