@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import "@fortawesome/fontawesome-free/css/all.css";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 const FounderPost = () => {
   const [formData, setFormData] = useState({
     businessName: "",
@@ -24,13 +23,11 @@ const FounderPost = () => {
     businessSafety: "",
     additionalComments: "",
   });
-
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
-  // const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [nidFile, setNidFile] = useState(null);
-  // const [businessPic, setbusinessPic] = useState(null);
   const [tinFile, setTinFile] = useState(null);
   const [taxFile, setTaxFile] = useState(null);
   const [tradeLicenseFile, setTradeLicenseFile] = useState(null);
@@ -40,7 +37,7 @@ const FounderPost = () => {
 
   // Handle image file changes
   const handleFileChange = (e, setFile) => setFile(e.target.files[0]);
-  // const handleMultipleFileChange = (e) => setImages(Array.from(e.target.files));
+  const handleMultipleFileChange = (e) => setImages(Array.from(e.target.files));
 
   // Handle input change for text fields and selects
   const handleInputChange = (e) => {
@@ -78,16 +75,11 @@ const FounderPost = () => {
       postData.append(key, formData[key]);
     });
 
-    // Append multiple images for businessPicture
-    // images.forEach(
-    //   (image) => postData.append("businessPicture", image) // Append without index
-    // );
-    // for (let pair of postData.entries()) {
-    //   console.log(`${pair[0]}: ${pair[1]}`);
-    // }
-    // Append single files for other fields
+    // Append files
+    images.forEach((image, index) =>
+      postData.append(`images[${index}]`, image)
+    );
     postData.append("nidCopy", nidFile);
-    // postData.append("businessPicture", businessPic);
     postData.append("tinCopy", tinFile);
     postData.append("taxCopy", taxFile);
     postData.append("tradeLicense", tradeLicenseFile);
@@ -95,8 +87,7 @@ const FounderPost = () => {
     postData.append("securityFile", securityFile);
     postData.append("financialFile", financialFile);
 
-    const token = localStorage.getItem("token");
-    // Adjust this based on your implementation
+    const token = localStorage.getItem("token"); // Adjust this based on your implementation
 
     try {
       const response = await fetch(`${API_URL}/founderpost/postdata`, {
@@ -116,7 +107,6 @@ const FounderPost = () => {
       toast.error("Error submitting form.");
     }
   };
-
   return (
     <div>
       <form className="mb-10" onSubmit={handleSubmit}>
@@ -173,7 +163,7 @@ const FounderPost = () => {
         </label>
 
         {/* Business Picture */}
-        {/* <label className="form-control my-3 w-full max-w-xs">
+        <label className="form-control my-3 w-full max-w-xs">
           <div className="label">
             <span className="label-text">
               Upload Your Business's Picture Here
@@ -183,11 +173,12 @@ const FounderPost = () => {
             type="file"
             name="businessPicture"
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-            // accept="image/*"
-            onChange={(e) => handleFileChange(e, setbusinessPic)}
+            accept="image/*"
+            onChange={handleMultipleFileChange}
+            multiple
             required
           />
-        </label> */}
+        </label>
 
         {/* Phone Number */}
         <label className="form-control my-3 w-full max-w-xs">
