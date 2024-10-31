@@ -87,7 +87,7 @@ const FounderPost = () => {
     // }
     // Append single files for other fields
     postData.append("nidCopy", nidFile);
-    postData.append("businessPicture", businessPic);
+    // postData.append("businessPicture", businessPic);
     postData.append("tinCopy", tinFile);
     postData.append("taxCopy", taxFile);
     postData.append("tradeLicense", tradeLicenseFile);
@@ -173,7 +173,7 @@ const FounderPost = () => {
         </label>
 
         {/* Business Picture */}
-        <label className="form-control my-3 w-full max-w-xs">
+        {/* <label className="form-control my-3 w-full max-w-xs">
           <div className="label">
             <span className="label-text">
               Upload Your Business's Picture Here
@@ -187,7 +187,7 @@ const FounderPost = () => {
             onChange={(e) => handleFileChange(e, setbusinessPic)}
             required
           />
-        </label>
+        </label> */}
 
         {/* Phone Number */}
         <label className="form-control my-3 w-full max-w-xs">
