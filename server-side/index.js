@@ -1,16 +1,16 @@
-
-// index.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs'; // Import fs to check for directory existence
 import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
-import signupRoute from '../server-side/routes/signup.js'
+import signupRoute from '../server-side/routes/signup.js';
 import bodyParser from 'body-parser';
-import loginRoute from '../server-side/routes/login.js'
-import founderPostRoute from '../server-side/routes/founderPostRoutes.js'
+import loginRoute from '../server-side/routes/login.js';
+import founderPostRoute from '../server-side/routes/founderPostRoutes.js';
 import { fileURLToPath } from 'url';
+
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,17 +18,22 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 5000;
 
-
-
-
-
+// Connect to the database
 connectDB();
 
-app.use(express.urlencoded({extended:false}));
+// Create uploads directory if it doesn't exist
+const uploadPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
+
+// Middleware
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://investkoree.onrender.com', 
+  'https://investkoree.onrender.com',
 ];
 
 const corsOptions = {
@@ -46,16 +51,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
-
+// Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use("/users", signupRoute);  
+// Route definitions
+app.use("/users", signupRoute);
 app.use("/users/auth", loginRoute);
 app.use("/founderpost", founderPostRoute);
-
-// Routes
 app.use('/users', userRoutes);
+
+// Root route
 app.get('/', (req, res) => {
   res.send('Welcome to the API!');
 });
