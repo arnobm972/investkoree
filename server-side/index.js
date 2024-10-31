@@ -24,7 +24,7 @@ const port = process.env.PORT || 5000;
 
 connectDB();
 
-app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 app.use(bodyParser.json());
 const allowedOrigins = [
   'http://localhost:3000',

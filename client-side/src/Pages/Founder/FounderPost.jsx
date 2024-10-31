@@ -119,7 +119,13 @@ const FounderPost = () => {
 
   return (
     <div>
-      <form className="mb-10" onSubmit={handleSubmit}>
+      <form
+        className="mb-10"
+        method="POST"
+        action="/upload"
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}
+      >
         <p className="lg:text-2xl xs:text-lg xxs:text-lg sm:text-lg  font-bold my-10">
           For Business Investment
         </p>
