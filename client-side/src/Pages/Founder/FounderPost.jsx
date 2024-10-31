@@ -30,7 +30,7 @@ const FounderPost = () => {
   const [otherDocumentation, setOtherDocumentation] = useState(false);
   // const [images, setImages] = useState([]);
   const [nidFile, setNidFile] = useState(null);
-  const [businessPic, setbusinessPic] = useState(null);
+  // const [businessPic, setbusinessPic] = useState(null);
   const [tinFile, setTinFile] = useState(null);
   const [taxFile, setTaxFile] = useState(null);
   const [tradeLicenseFile, setTradeLicenseFile] = useState(null);
