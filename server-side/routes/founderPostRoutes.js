@@ -8,17 +8,18 @@ const router = express.Router();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads')); // Adjusted path
+    cb(null, "/server-side/uploads"); // Save files in an 'uploads' folder
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // Save files with unique names
   },
 });
+
 const upload = multer({ storage });
 
 // Multiple image fields and single file uploads
 const cpUpload = upload.fields([
-  { name: "businessPicture", maxCount: 5 }, // multiple images
+  { name: "businessPicture", maxCount: 1 }, // multiple images
   { name: "nidCopy", maxCount: 1 }, // single file
   { name: "tinCopy", maxCount: 1 }, 
   { name: "taxCopy", maxCount: 1 },
@@ -39,7 +40,7 @@ router.post("/postdata", cpUpload, async (req, res) => {
     } = req.body;
 
     // Collect file paths for saving in the database
-    const businessPicture = req.files.businessPicture ? req.files.businessPicture.map(file => file.path) : [];
+    const businessPic = req.files.businessPicture ? req.files.businessPicture.map(file => file.path) : [];
     const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? req.files.nidCopy[0].path : "";
     const tinFile = req.files.tinCopy && req.files.tinCopy.length > 0 ? req.files.tinCopy[0].path : "";
     const taxFile = req.files.taxCopy && req.files.taxCopy.length > 0 ? req.files.taxCopy[0].path : "";
@@ -53,7 +54,7 @@ router.post("/postdata", cpUpload, async (req, res) => {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,
-      returnPlan, businessSafety, additionalComments, businessPicture, nidFile, tinFile,
+      returnPlan, businessSafety, additionalComments, businessPic, nidFile, tinFile,
       taxFile, tradeLicenseFile, bankStatementFile, securityFile, financialFile
     });
 
