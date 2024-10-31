@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import "@fortawesome/fontawesome-free/css/all.css";
 import "react-toastify/dist/ReactToastify.css";
-
 const FounderPost = () => {
   const [formData, setFormData] = useState({
     businessName: "",
@@ -24,7 +22,6 @@ const FounderPost = () => {
     businessSafety: "",
     additionalComments: "",
   });
-
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
@@ -77,12 +74,10 @@ const FounderPost = () => {
       postData.append(key, formData[key]);
     });
 
-    // Append multiple images for businessPicture
+    // Append files
     images.forEach((image, index) =>
-      postData.append(`businessPicture[${index}]`, image)
+      postData.append(`images[${index}]`, image)
     );
-
-    // Append single files for other fields
     postData.append("nidCopy", nidFile);
     postData.append("tinCopy", tinFile);
     postData.append("taxCopy", taxFile);
@@ -91,15 +86,10 @@ const FounderPost = () => {
     postData.append("securityFile", securityFile);
     postData.append("financialFile", financialFile);
 
-    const token = localStorage.getItem("token"); // Adjust this based on your implementation
-
     try {
       const response = await fetch(`${API_URL}/founderpost/postdata`, {
         method: "POST",
         body: postData,
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
-        },
       });
 
       if (response.ok) {
@@ -111,7 +101,6 @@ const FounderPost = () => {
       toast.error("Error submitting form.");
     }
   };
-
   return (
     <div>
       <form className="mb-10" onSubmit={handleSubmit}>
