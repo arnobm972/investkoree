@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Multiple image fields and single file uploads
+
 const cpUpload = upload.fields([
   { name: "businessPicture", maxCount: 5 }, // multiple images
   { name: "nidCopy", maxCount: 1 }, // single file
