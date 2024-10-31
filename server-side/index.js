@@ -21,7 +21,7 @@ const port = process.env.PORT || 5000;
 
 connectDB();
 
-// Create uploads directory if it doesn't exist
+
 const uploadPath = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
