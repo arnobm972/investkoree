@@ -1,17 +1,24 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import FounderPost from '../models/founderPostModels.js';
 
 const router = express.Router();
 
+// Create uploads directory if it doesn't exist
+const uploadPath = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../uploads"); // Save files in an 'uploads' folder
+    cb(null, uploadPath); // Use the absolute path
   },
   filename: function(req, file, cb) {
-    return cb(null,`${Date.now()}-${file.originalname}`) // Save files with unique names
+    return cb(null, `${Date.now()}-${file.originalname}`); // Save files with unique names
   },
 });
 
