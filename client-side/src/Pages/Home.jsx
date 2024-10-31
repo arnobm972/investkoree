@@ -1,46 +1,27 @@
+import { useEffect, useState } from "react";
 import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  // Hardcoded data for latest posts
-  const latestPosts = [
-    {
-      _id: "1",
-      location: "New York, USA",
-      funded: "70%",
-      left_for_fund: "30%",
-      raised: 7000,
-      sector: "Technology",
-      project_pic: "https://i.ibb.co.com/L5TY0Nt/s2.jpg",
-      required_funding: 10000,
-      description: "Innovative Tech Solution for Everyday Problems",
-    },
-    {
-      _id: "2",
-      location: "San Francisco, USA",
-      funded: "50%",
-      left_for_fund: "50%",
-      raised: 5000,
-      sector: "Health",
-      project_pic: "https://i.ibb.co.com/L5TY0Nt/s2.jpg",
-      required_funding: 10000,
-      description: "Revolutionizing Healthcare with AI",
-    },
-    {
-      _id: "3",
-      location: "London, UK",
-      funded: "30%",
-      left_for_fund: "70%",
-      raised: 3000,
-      sector: "Finance",
-      project_pic: "https://i.ibb.co.com/L5TY0Nt/s2.jpg",
-      required_funding: 10000,
-      description: "Blockchain-based Finance Management",
-    },
-  ];
+  const [latestPosts, setLatestPosts] = useState([]);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch(
+          "https://investkoree-backend.onrender.com/founderpost/latestposts"
+        );
+        const data = await response.json();
+        setLatestPosts(data);
+      } catch (error) {
+        console.error("Error fetching latest posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
   return (
     <div>
       {/* Hero Section */}
@@ -71,7 +52,7 @@ const Home = () => {
       <h5 className="text-center lg:mt-20 lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16     font-bold">
         Currently Running Investments
       </h5>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 xxs:gap-8 sm:gap-8    px-6 lg:px-20 cursor-pointer">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 xxs:gap-8 sm:gap-8 px-6 lg:px-20 cursor-pointer">
         {latestPosts.map((item) => (
           <LatestPost key={item._id} item={item} />
         ))}
