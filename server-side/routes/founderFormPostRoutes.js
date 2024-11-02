@@ -56,7 +56,7 @@ const cpUpload = upload.fields([
 console.log("Uploadpath:", uploadPath);
 // Handle founder post creation
 router.post("/postdata", cpUpload, async (req, res) => {
-  console.log("Files received:", req.files);
+  console.log("Files received:", JSON.stringify(req.files, null, 2));
   try {
     const {
       businessName, email, address, phone, businessCategory, businessSector,
