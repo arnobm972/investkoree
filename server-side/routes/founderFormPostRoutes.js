@@ -20,6 +20,7 @@ if (!fs.existsSync(uploadPath)) {
 // Configure multer for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log("Uploading file:", file.originalname);
     cb(null, uploadPath); // Use the absolute path
   },
   filename: function(req, file, cb) {
@@ -52,9 +53,10 @@ const cpUpload = upload.fields([
   { name: "securityFile", maxCount: 1 },
   { name: "financialFile", maxCount: 1 },
 ]);
-
+console.log("Uploadpath:", uploadPath);
 // Handle founder post creation
 router.post("/postdata", cpUpload, async (req, res) => {
+  console.log("Files received:", req.files);
   try {
     const {
       businessName, email, address, phone, businessCategory, businessSector,
