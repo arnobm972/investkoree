@@ -23,10 +23,7 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 
-const uploadPath = path.join(__dirname, 'upload');
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
+
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
