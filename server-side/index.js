@@ -23,7 +23,7 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 
-const uploadPath = path.join(__dirname, 'uploads');
+const uploadPath = path.join(__dirname, 'upload');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
@@ -52,8 +52,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Serve static files from the upload directory
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 // Route definitions
 app.use("/users", signupRoute);

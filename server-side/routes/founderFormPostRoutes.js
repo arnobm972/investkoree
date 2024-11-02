@@ -11,13 +11,13 @@ const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-// Create uploads directory if it doesn't exist
-const uploadPath = path.join(__dirname, '../uploads');
+// Create upload directory if it doesn't exist
+const uploadPath = path.join(__dirname, '../upload');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
 
-// Configure multer for file uploads
+// Configure multer for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadPath); // Use the absolute path
@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploads = multer({ 
+const upload = multer({ 
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
   fileFilter: (req, file, cb) => {
@@ -41,8 +41,8 @@ const uploads = multer({
   }
 });
 
-// Multiple image fields and single file uploads
-const cpUpload = uploads.fields([
+// Multiple image fields and single file upload
+const cpUpload = upload.fields([
   { name: "businessPicture", maxCount: 5 }, // multiple images
   { name: "nidCopy", maxCount: 1 }, // single file
   { name: "tinCopy", maxCount: 1 }, 

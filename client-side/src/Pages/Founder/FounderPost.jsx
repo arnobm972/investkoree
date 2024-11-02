@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const FounderPost = () => {
   const [formData, setFormData] = useState({
@@ -26,6 +27,7 @@ const FounderPost = () => {
   });
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const navigate = useNavigate();
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
   // const [images, setImages] = useState([]);
@@ -109,6 +111,7 @@ const FounderPost = () => {
 
       if (response.ok) {
         toast.success("Form submitted successfully!");
+        navigate("/");
       } else {
         toast.error("Failed to submit form.");
       }
