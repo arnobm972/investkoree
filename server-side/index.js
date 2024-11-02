@@ -1,9 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs'; // Import fs to check for directory existence
 import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
@@ -49,46 +48,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-const uploadPath = path.join(__dirname, '../server-side/upload');
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadPath),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|pdf/;
-    const mimetype = allowedTypes.test(file.mimetype);
-    cb(null, mimetype ? true : new Error('Error: File type not allowed!'));
-  },
-});
-
-// Define upload fields middleware
-const cpUpload = upload.fields([
-  { name: "businessPicture", maxCount: 5 },
-  { name: "nidCopy", maxCount: 1 },
-  { name: "tinCopy", maxCount: 1 },
-  { name: "taxCopy", maxCount: 1 },
-  { name: "tradeLicense", maxCount: 1 },
-  { name: "bankStatement", maxCount: 1 },
-  { name: "securityFile", maxCount: 1 },
-  { name: "financialFile", maxCount: 1 },
-]);
-
-// Define upload route
-app.post('/upload', cpUpload, (req, res) => {
-  res.status(200).json({ message: 'Files uploaded successfully!', files: req.files });
-});
-
 
 // Serve static files from the upload directory
-// app.use('/upload', express.static(path.join(__dirname, 'upload')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 // Route definitions
 app.use("/users", signupRoute);
