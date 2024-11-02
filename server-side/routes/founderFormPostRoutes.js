@@ -27,10 +27,22 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const uploads = multer({ 
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif|pdf/; // Allowed file types
+    const mimetype = filetypes.test(file.mimetype);
+    if (mimetype) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Error: File type not allowed!'));
+    }
+  }
+});
 
 // Multiple image fields and single file uploads
-const cpUpload = upload.fields([
+const cpUpload = uploads.fields([
   { name: "businessPicture", maxCount: 1 }, // multiple images
   { name: "nidCopy", maxCount: 1 }, // single file
   { name: "tinCopy", maxCount: 1 }, 
