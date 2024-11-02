@@ -43,7 +43,7 @@ const uploads = multer({
 
 // Multiple image fields and single file uploads
 const cpUpload = uploads.fields([
-  { name: "businessPicture", maxCount: 1 }, // multiple images
+  { name: "businessPicture", maxCount: 5 }, // multiple images
   { name: "nidCopy", maxCount: 1 }, // single file
   { name: "tinCopy", maxCount: 1 }, 
   { name: "taxCopy", maxCount: 1 },
