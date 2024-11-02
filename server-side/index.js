@@ -49,7 +49,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-const uploadPath = path.join(__dirname, 'upload');
+const uploadPath = path.join(__dirname, '../server-side/upload');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
