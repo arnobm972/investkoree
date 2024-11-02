@@ -110,8 +110,8 @@ const FounderPost = () => {
       });
 
       if (response.ok) {
-        toast.success("Form submitted successfully!");
         navigate("/");
+        toast.success("Form submitted successfully!");
       } else {
         toast.error("Failed to submit form.");
       }
