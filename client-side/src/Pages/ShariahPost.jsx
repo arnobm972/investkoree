@@ -65,7 +65,7 @@ const ShariahPost = ({ item }) => {
   );
 };
 
-shariahPost.propTypes = {
+ShariahPost.propTypes = {
   item: PropTypes.shape({
     address: PropTypes.string.isRequired,
     // funded: PropTypes.string.isRequired,
