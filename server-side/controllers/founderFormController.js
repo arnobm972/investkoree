@@ -1,5 +1,5 @@
 // controllers/founderController.js
-import FounderPost from '../models/founderFormPostModels';
+import FounderPost from '../models/founderFormPostModels.js';
 import { validationResult } from 'express-validator';
 
 // Handle founder post creation
