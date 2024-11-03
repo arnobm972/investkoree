@@ -59,6 +59,13 @@ const Shariah = () => {
     setFilteredPosts(filtered); // Update filtered posts
   };
 
+  // Function to clear filters
+  const clearFilters = () => {
+    setSelectedSector(""); // Reset sector selection
+    setSelectedDuration(""); // Reset duration selection
+    setFilteredPosts(shariahpost); // Show all posts again
+  };
+
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -147,7 +154,16 @@ const Shariah = () => {
             >
               <a>Long term</a>
             </li>
-            {/* Add more durations as needed */}
+
+            {/* Clear Filter Option */}
+            <li className="mt-6">
+              <button
+                onClick={clearFilters}
+                className="btn bg-gray-500 text-white w-full font-bold text-lg rounded-lg"
+              >
+                Clear Filters
+              </button>
+            </li>
           </ul>
         </div>
       </div>
