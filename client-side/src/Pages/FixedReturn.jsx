@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 
 const FixedReturn = () => {
   const [fixedReturnpost, setFixedReturnPost] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [selectedSector, setSelectedSector] = useState(""); // State for selected sector
+  const [selectedDuration, setSelectedDuration] = useState(""); // State for selected duration
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -12,12 +15,13 @@ const FixedReturn = () => {
         );
         const data = await response.json();
 
-        // Filter posts with businessCategory set to "FixedReturn"
+        // Filter posts for FixedReturn category
         const filteredPosts = data.filter(
           (post) => post.businessCategory === "Fixed Return"
         );
 
         setFixedReturnPost(filteredPosts);
+        setFilteredPosts(filteredPosts); // Initialize filtered posts
       } catch (error) {
         console.error("Error fetching latest posts:", error);
       }
@@ -25,6 +29,42 @@ const FixedReturn = () => {
 
     fetchPosts();
   }, []);
+
+  // Function to handle sector selection
+  const handleSectorClick = (sector) => {
+    setSelectedSector(sector); // Set the selected sector
+    filterPosts(sector, selectedDuration); // Filter posts based on sector and current duration
+  };
+
+  // Function to handle duration selection
+  const handleDurationClick = (duration) => {
+    setSelectedDuration(duration); // Set the selected duration
+    filterPosts(selectedSector, duration); // Filter posts based on current sector and duration
+  };
+
+  // Function to filter posts based on sector and duration
+  const filterPosts = (sector, duration) => {
+    let filtered = fixedReturnpost;
+
+    if (sector) {
+      filtered = filtered.filter((post) => post.businessSector === sector);
+    }
+
+    if (duration) {
+      filtered = filtered.filter(
+        (post) => post.investmentDuration === duration
+      );
+    }
+
+    setFilteredPosts(filtered); // Update filtered posts
+  };
+
+  // Function to clear filters
+  const clearFilters = () => {
+    setSelectedSector(""); // Reset sector selection
+    setSelectedDuration(""); // Reset duration selection
+    setFilteredPosts(fixedReturnpost); // Show all posts again
+  };
 
   return (
     <div>
@@ -43,7 +83,7 @@ const FixedReturn = () => {
             FixedReturn Business
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 xxs:gap-8 sm:gap-8 px-6 lg:px-20 cursor-pointer">
-            {fixedReturnpost.map((item) => (
+            {filteredPosts.map((item) => (
               <FixedReturnPost key={item._id} item={item} />
             ))}
           </div>
@@ -56,35 +96,73 @@ const FixedReturn = () => {
             className="drawer-overlay"
           ></label>
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
-            <li className="font-extrabold text-salmon hover:text-white text-lg mb-2 rounded-lg">
+            <li className="font-extrabold text-salmon hover:text-white text-lg mb-2">
               <a>Sector</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+            {/* Add onClick handlers to filter posts by sector */}
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg"
+              onClick={() => handleSectorClick("Retail")}
+            >
               <a>Retail</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              onClick={() => handleSectorClick("Financial")}
+            >
               <a>Financial</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              onClick={() => handleSectorClick("Farming")}
+            >
               <a>Farming</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              onClick={() => handleSectorClick("Clothing")}
+            >
               <a>Clothing</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              onClick={() => handleSectorClick("Health")}
+            >
               <a>Health</a>
             </li>
-            <li className="font-extrabold text-salmon hover:text-white text-lg mb-2 mt-6 rounded-lg">
+            {/* Add more sectors as needed */}
+
+            <li className="font-extrabold text-salmon hover:text-white text-lg mb-2 mt-6">
               <a>Duration</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+            {/* Add onClick handlers to filter posts by duration */}
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg"
+              onClick={() => handleDurationClick("short-term")}
+            >
               <a>Short term</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              onClick={() => handleDurationClick("mid-term")}
+            >
               <a>Mid term</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            <li
+              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              onClick={() => handleDurationClick("long-term")}
+            >
               <a>Long term</a>
+            </li>
+
+            {/* Clear Filter Option */}
+            <li className="mt-6">
+              <button
+                onClick={clearFilters}
+                className="btn bg-gray-500 text-white w-full font-bold text-lg rounded-lg"
+              >
+                Clear Filters
+              </button>
             </li>
           </ul>
         </div>
