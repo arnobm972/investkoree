@@ -14,7 +14,7 @@ const FixedReturn = () => {
 
         // Filter posts with businessCategory set to "FixedReturn"
         const filteredPosts = data.filter(
-          (post) => post.businessCategory === "FixedReturn"
+          (post) => post.businessCategory === "Fixed Return"
         );
 
         setFixedReturnPost(filteredPosts);
