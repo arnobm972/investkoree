@@ -14,7 +14,7 @@ const FixedReturnPost = ({ item }) => {
 
   // Calculate funding percentage for progress bar
   const fundingPercentage = (50000 / fundingAmount) * 100;
-
+  const leftForFund = fundingAmount - 50000;
   return (
     <div className="mx-auto">
       <div
@@ -38,7 +38,7 @@ const FixedReturnPost = ({ item }) => {
           <h3 className="text-lg font-semibold mb-2">{additionalComments}</h3>
           <div className="flex flex-row my-4 justify-between">
             <p className="">Funded: 50000</p>
-            <p className="">Left for fund: 20000</p>
+            <p className="">Left for fund: {leftForFund}</p>
           </div>
           <div className="mb-4">
             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
