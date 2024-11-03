@@ -31,7 +31,7 @@ const Shariah = () => {
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col p-10">
-          <div className="fixed top-[100px] left-[5px] z-50">
+          <div className="fixed top-[100px] left-[5px] z-40">
             <label
               htmlFor="my-drawer-2"
               className="btn bg-salmon text-white sticky drawer-button transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
