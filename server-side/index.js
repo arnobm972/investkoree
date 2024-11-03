@@ -50,7 +50,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Serve static files from the upload directory
-app.use('/upload', express.static("/upload"));
+app.use('/upload', express.static("../server-side/upload"));
 
 // Route definitions
 app.use("/users", signupRoute);
