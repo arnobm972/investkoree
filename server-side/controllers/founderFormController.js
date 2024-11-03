@@ -2,7 +2,7 @@
 import FounderPost from '../models/founderFormPostModels.js';
 import { validationResult } from 'express-validator';
 
-// Handle founder post creation
+// Handle founder post creati
 export const createFounderPost = async (req, res) => {
   console.log("Files received:", JSON.stringify(req.files, null, 2));
   try {
