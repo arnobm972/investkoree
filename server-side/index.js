@@ -49,7 +49,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Serve static files from the upload directory
-app.use('/upload',cpUpload, express.static(path.join(__dirname, 'upload')))
+app.use('/upload', express.static(path.join(__dirname, 'upload')))
 
 // Route definitions
 app.use("/users", signupRoute);
