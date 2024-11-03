@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 const router = express.Router();
 
 // Create upload directory if it doesn't exist
-const uploadPath = path.join(__dirname, '../../server-side/upload');
+const uploadPath = path.join(__dirname, '../../client-side/Public/upload');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
