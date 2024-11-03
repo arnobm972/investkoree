@@ -125,7 +125,6 @@ const FounderPost = () => {
       <form
         className="mb-10"
         method="POST"
-        action="/upload"
         encType="multipart/form-data"
         onSubmit={handleSubmit}
       >

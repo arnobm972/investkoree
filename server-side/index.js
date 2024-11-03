@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import fs from 'fs'; // Import fs to check for directory existence
 import userRoutes from './routes/user.js';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
@@ -50,7 +49,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Serve static files from the upload directory
-app.use('/upload', express.static(path.join(__dirname, 'upload')))
+app.use('/upload',cpUpload, express.static(path.join(__dirname, 'upload')))
 
 // Route definitions
 app.use("/users", signupRoute);
