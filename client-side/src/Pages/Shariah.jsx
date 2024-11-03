@@ -1,4 +1,4 @@
-import ShariahPost from "../Pages/shariahPost";
+import ShariahPost from "../Pages/ShariahPost";
 import { useEffect, useState } from "react";
 
 const Shariah = () => {
