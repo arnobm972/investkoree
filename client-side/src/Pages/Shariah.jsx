@@ -12,7 +12,6 @@ const Shariah = () => {
         );
         const data = await response.json();
 
-        // Filter posts with businessCategory set to "Shariah"
         const filteredPosts = data.filter(
           (post) => post.businessCategory === "Shariah"
         );
