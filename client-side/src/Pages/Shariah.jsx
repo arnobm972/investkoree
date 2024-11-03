@@ -131,19 +131,19 @@ const Shariah = () => {
             {/* Add onClick handlers to filter posts by duration */}
             <li
               className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg"
-              onClick={() => handleDurationClick("Short term")}
+              onClick={() => handleDurationClick("Short-term")}
             >
               <a>Short term</a>
             </li>
             <li
               className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
-              onClick={() => handleDurationClick("Mid term")}
+              onClick={() => handleDurationClick("Mid-term")}
             >
               <a>Mid term</a>
             </li>
             <li
               className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
-              onClick={() => handleDurationClick("Long term")}
+              onClick={() => handleDurationClick("Long-term")}
             >
               <a>Long term</a>
             </li>
