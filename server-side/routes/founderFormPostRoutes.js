@@ -21,6 +21,7 @@ if (!fs.existsSync(uploadPath)) {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("Uploading file:", file.originalname);
+    console.log(uploadPath)
     cb(null, uploadPath); // Use the absolute path
   },
   filename: function(req, file, cb) {
