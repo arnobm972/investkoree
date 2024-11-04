@@ -9,7 +9,7 @@ export const createFounderPost = async (req, res) => {
     const {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
-      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,
+      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,minInvestment,projectedROI,
       returnPlan, businessSafety, additionalComments
     } = req.body;
 
@@ -29,7 +29,7 @@ export const createFounderPost = async (req, res) => {
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,
       returnPlan, businessSafety, additionalComments, businessPic, nidFile, tinFile,
-      taxFile, tradeLicenseFile, bankStatementFile, securityFile, financialFile
+      taxFile, tradeLicenseFile, bankStatementFile, securityFile, financialFile,minInvestment,projectedROI
     });
 
     await newPost.save();

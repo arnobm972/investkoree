@@ -29,9 +29,17 @@ const ProjectDetail = () => {
   }
 
   // Image sources from the project data
-  const images = project.images || []; // Assuming project.images is an array of image URLs
+  // const images = project.images || [];
+  const images = [
+    "https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp",
+    "https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp",
+    "https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp",
+    "https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp",
+    "https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.webp",
+    "https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.webp",
+    "https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.webp",
+  ];
 
-  // Handler to change the current slide
   const handleDotClick = (index) => {
     setCurrentSlide(index);
   };
@@ -74,14 +82,12 @@ const ProjectDetail = () => {
 
           <div className="lg:ml-12 lg:mt-0 mt-8 text-center lg:text-left">
             <h1 className="lg:text-4xl xs:text-lg xxs:text-lg sm:text-lg font-bold">
-              {project.title} {/* Assuming project has a title field */}
+              {project.businessName} {/* Assuming project has a title field */}
             </h1>
             <div className="my-6">
               <div className="flex lg:gap-8 xs:gap-4 xxs:gap-4 sm:gap-4">
                 <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">
-                    {project.raisedAmount} Taka
-                  </span>
+                  <span className="text-salmon lg:text-2xl">70000 Taka</span>
                   <div className="xs:text-sm xxs:text-sm sm:text-sm">
                     Raised
                   </div>
@@ -94,10 +100,10 @@ const ProjectDetail = () => {
                 </div>
                 <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
                   <span className="text-salmon lg:text-2xl">
-                    {project.daysLeft} Days
+                    {project.investmentDuration}
                   </span>
                   <div className="xs:text-sm xxs:text-sm sm:text-sm">
-                    Days Left
+                    Duration
                   </div>
                 </div>
               </div>
@@ -105,20 +111,14 @@ const ProjectDetail = () => {
                 <div
                   className="bg-salmon h-2.5 rounded-full"
                   style={{
-                    width: `${
-                      (project.raisedAmount / project.fundingAmount) * 100
-                    }%`,
+                    width: `${(70000 / project.fundingAmount) * 100}%`,
                   }} // Calculate percentage
                 ></div>
               </div>
               <div className="flex xs:ml-2 xxs:ml-2 sm:ml-2 lg:justify-between xs:justify-between xxs:justify-between sm:justify-between text-sm">
                 <div>Raised :</div>
                 <div className="xs:mr-2 xxs:mr-2 sm:mr-2">
-                  {(
-                    (project.raisedAmount / project.fundingAmount) *
-                    100
-                  ).toFixed(0)}
-                  %
+                  {((70000 / project.fundingAmount) * 100).toFixed(0)}%
                 </div>
               </div>
             </div>
@@ -132,34 +132,27 @@ const ProjectDetail = () => {
         <div className="flex flex-col lg:w-[50%]">
           <h2 className="font-bold xs:mb-2 xxs:mb-2 sm:mb-2">Overview</h2>
           <p className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-            {project.overview} {/* Assuming project has an overview field */}
+            {project.desciption}
           </p>
         </div>
         <div>
           <div>
-            <span className="font-bold">Duration :</span>
-            <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.duration} {/* Assuming project has a duration field */}
-            </span>
-          </div>
-          <div>
             <span className="font-bold">Min Investment :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.minInvestment} Taka{" "}
+              {project.minInvestment} Taka
               {/* Assuming project has a minInvestment field */}
             </span>
           </div>
           <div>
             <span className="font-bold">Projected ROI :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.projectedROI}%{" "}
-              {/* Assuming project has a projectedROI field */}
+              {project.projectedROI}%
             </span>
           </div>
           <div>
             <span className="font-bold">Risk Grade :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.riskGrade} {/* Assuming project has a riskGrade field */}
+              A {/* Assuming project has a riskGrade field */}
             </span>
           </div>
         </div>
@@ -172,7 +165,7 @@ const ProjectDetail = () => {
             How Would The Funding Help You
           </div>
           <div className="collapse-content peer-checked:block">
-            <p>{project.fundingHelp}</p>{" "}
+            <p>{project.fundingHelp}</p>
             {/* Assuming project has a fundingHelp field */}
           </div>
         </div>
@@ -183,7 +176,7 @@ const ProjectDetail = () => {
             How Do You Plan To Return The Investment
           </div>
           <div className="collapse-content peer-checked:block">
-            <p>{project.returnPlan}</p>{" "}
+            <p>{project.returnPlan}</p>
             {/* Assuming project has a returnPlan field */}
           </div>
         </div>
@@ -194,7 +187,7 @@ const ProjectDetail = () => {
             How Safe Do You Consider Your Business To Be?
           </div>
           <div className="collapse-content peer-checked:block">
-            <p>{project.safetyAssessment}</p>{" "}
+            <p>{project.businessSafety}</p>
             {/* Assuming project has a safetyAssessment field */}
           </div>
         </div>

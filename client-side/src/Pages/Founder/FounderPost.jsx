@@ -24,6 +24,8 @@ const FounderPost = () => {
     returnPlan: "",
     businessSafety: "",
     additionalComments: "",
+    projectedROI: "",
+    minInvestment: "",
   });
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -530,6 +532,32 @@ const FounderPost = () => {
           <textarea
             name="returnPlan"
             value={formData.returnPlan}
+            onChange={handleInputChange}
+            className="textarea textarea-warning w-full max-w-xs"
+            required
+          ></textarea>
+        </label>
+        <label className="form-control my-3 w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">
+              What is the minimum amount that someone can invest
+            </span>
+          </div>
+          <textarea
+            name="minInvestment"
+            value={formData.minInvestment}
+            onChange={handleInputChange}
+            className="textarea textarea-warning w-full max-w-xs"
+            required
+          ></textarea>
+        </label>
+        <label className="form-control my-3 w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">What is your projectedROI</span>
+          </div>
+          <textarea
+            name="projectedROI"
+            value={formData.projectedROI}
             onChange={handleInputChange}
             className="textarea textarea-warning w-full max-w-xs"
             required

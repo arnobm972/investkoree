@@ -28,6 +28,8 @@ const founderPostSchema = new mongoose.Schema({
   bankStatementFile: { type: String },
   securityFile: { type: String },
   financialFile: { type: String },
+  projectedROI :{ type: String, required: true },
+  minInvestment:{ type: String, required: true },
 }, { timestamps: true });
 
 const FounderPost = mongoose.model('FounderPost', founderPostSchema);
