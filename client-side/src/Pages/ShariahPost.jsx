@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-
+import temp from "../assets/s2.jpg";
 const ShariahPost = ({ item }) => {
   const {
     address,
@@ -7,7 +7,7 @@ const ShariahPost = ({ item }) => {
     // left_for_fund,
     // raised,
     businessSector,
-    businessPic,
+    // businessPic,
     fundingAmount,
     additionalComments,
   } = item;
@@ -23,7 +23,7 @@ const ShariahPost = ({ item }) => {
         transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
       >
         <img
-          src={businessPic} // Fallback image
+          src={temp} // Fallback image
           alt="Fundraiser"
           className="w-full h-48 object-cover"
         />
@@ -73,7 +73,7 @@ ShariahPost.propTypes = {
     // left_for_fund: PropTypes.string.isRequired,
     // raised: PropTypes.number.isRequired,
     businessSector: PropTypes.string.isRequired,
-    businessPic: PropTypes.string.isRequired,
+    // businessPic: PropTypes.string.isRequired,
     fundingAmount: PropTypes.number.isRequired,
     additionalComments: PropTypes.string.isRequired,
   }).isRequired,

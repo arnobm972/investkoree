@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-
+import temp from "../assets/s2.jpg";
 const StocksPost = ({ item }) => {
   const {
     address,
@@ -7,7 +7,7 @@ const StocksPost = ({ item }) => {
     // left_for_fund,
     // raised,
     businessSector,
-    businessPic,
+    // businessPic,
     fundingAmount,
     additionalComments,
   } = item;
@@ -72,7 +72,7 @@ StocksPost.propTypes = {
     // left_for_fund: PropTypes.string.isRequired,
     // raised: PropTypes.number.isRequired,
     businessSector: PropTypes.string.isRequired,
-    businessPic: PropTypes.string.isRequired,
+    // businessPic: PropTypes.string.isRequired,
     fundingAmount: PropTypes.number.isRequired,
     additionalComments: PropTypes.string.isRequired,
   }).isRequired,

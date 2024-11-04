@@ -1,19 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const ProjectDetail = () => {
-  // State to manage the current slide
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const { id } = useParams(); // Get the project ID from the URL
+  const [project, setProject] = useState(null); // State to hold project data
+  const [currentSlide, setCurrentSlide] = useState(0); // State for the current slide
 
-  // Image sources
-  const images = [
-    "https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp",
-    "https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp",
-    "https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp",
-    "https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp",
-    "https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.webp",
-    "https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.webp",
-    "https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.webp",
-  ];
+  useEffect(() => {
+    // Fetch project details from the backend
+    const fetchProjectDetails = async () => {
+      try {
+        const response = await fetch(
+          `https://investkoree-backend.onrender.com/founderpost/projectdetail/${id}`
+        ); // Replace with your API URL
+        const data = await response.json();
+        setProject(data); // Set the project data in state
+      } catch (error) {
+        console.error("Error fetching project details:", error);
+      }
+    };
+
+    fetchProjectDetails();
+  }, [id]);
+
+  // If project data is not yet loaded, show a loading message
+  if (!project) {
+    return <div>Loading...</div>;
+  }
+
+  // Image sources from the project data
+  const images = project.images || []; // Assuming project.images is an array of image URLs
 
   // Handler to change the current slide
   const handleDotClick = (index) => {
@@ -30,14 +46,14 @@ const ProjectDetail = () => {
               {images.map((src, index) => (
                 <div
                   key={index}
-                  className={`carousel-item h-full  ${
+                  className={`carousel-item h-full ${
                     currentSlide === index ? "block" : "hidden"
                   }`}
                 >
                   <img
                     src={src}
                     alt={`Slide ${index + 1}`}
-                    className="object-cover  w-full h-full"
+                    className="object-cover w-full h-full"
                   />
                 </div>
               ))}
@@ -57,37 +73,53 @@ const ProjectDetail = () => {
           </div>
 
           <div className="lg:ml-12 lg:mt-0 mt-8 text-center lg:text-left">
-            <h1 className="lg:text-4xl xs:text-lg xxs:text-lg sm:text-lg  font-bold">
-              Box Office News!
+            <h1 className="lg:text-4xl xs:text-lg xxs:text-lg sm:text-lg font-bold">
+              {project.title} {/* Assuming project has a title field */}
             </h1>
-            <div className="my-6 ">
-              <div className="flex lg:gap-8 xs:gap-4  xxs:gap-4  sm:gap-4   ">
+            <div className="my-6">
+              <div className="flex lg:gap-8 xs:gap-4 xxs:gap-4 sm:gap-4">
                 <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">10000 Taka</span>
-                  <div className=" xs:text-sm xxs:text-sm sm:text-sm">
+                  <span className="text-salmon lg:text-2xl">
+                    {project.raisedAmount} Taka
+                  </span>
+                  <div className="xs:text-sm xxs:text-sm sm:text-sm">
                     Raised
                   </div>
                 </div>
                 <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">100000 Taka</span>
-                  <div className=" xs:text-sm xxs:text-sm sm:text-sm">Goal</div>
+                  <span className="text-salmon lg:text-2xl">
+                    {project.fundingAmount} Taka
+                  </span>
+                  <div className="xs:text-sm xxs:text-sm sm:text-sm">Goal</div>
                 </div>
                 <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">7 Days</span>
-                  <div className=" xs:text-sm xxs:text-sm sm:text-sm">
+                  <span className="text-salmon lg:text-2xl">
+                    {project.daysLeft} Days
+                  </span>
+                  <div className="xs:text-sm xxs:text-sm sm:text-sm">
                     Days Left
                   </div>
                 </div>
               </div>
-              <div className="lg:w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%]  bg-gray-200 rounded-full h-2.5 mt-8 mb-2 xs:mx-auto xxs:mx-auto sm:mx-auto">
+              <div className="lg:w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%] bg-gray-200 rounded-full h-2.5 mt-8 mb-2 xs:mx-auto xxs:mx-auto sm:mx-auto">
                 <div
                   className="bg-salmon h-2.5 rounded-full"
-                  style={{ width: `40%` }}
+                  style={{
+                    width: `${
+                      (project.raisedAmount / project.fundingAmount) * 100
+                    }%`,
+                  }} // Calculate percentage
                 ></div>
               </div>
-              <div className="flex xs:ml-2 xxs:ml-2 sm:ml-2 lg:justify-between xs:justify-between xxs:justify-between sm:justify-between  text-sm">
+              <div className="flex xs:ml-2 xxs:ml-2 sm:ml-2 lg:justify-between xs:justify-between xxs:justify-between sm:justify-between text-sm">
                 <div>Raised :</div>
-                <div className="xs:mr-2 xxs:mr-2 sm:mr-2">40%</div>
+                <div className="xs:mr-2 xxs:mr-2 sm:mr-2">
+                  {(
+                    (project.raisedAmount / project.fundingAmount) *
+                    100
+                  ).toFixed(0)}
+                  %
+                </div>
               </div>
             </div>
             <button className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn">
@@ -100,35 +132,34 @@ const ProjectDetail = () => {
         <div className="flex flex-col lg:w-[50%]">
           <h2 className="font-bold xs:mb-2 xxs:mb-2 sm:mb-2">Overview</h2>
           <p className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt
-            rerum quas vero maiores vitae quasi, optio, doloremque labore
-            obcaecati, eum atque libero consectetur maxime tempora quidem magnam
-            veritatis nobis repudiandae!
+            {project.overview} {/* Assuming project has an overview field */}
           </p>
         </div>
         <div>
           <div>
             <span className="font-bold">Duration :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              Short term(1 week to 1 month)
+              {project.duration} {/* Assuming project has a duration field */}
             </span>
           </div>
           <div>
             <span className="font-bold">Min Investment :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              5000taka
+              {project.minInvestment} Taka{" "}
+              {/* Assuming project has a minInvestment field */}
             </span>
           </div>
           <div>
-            <span className="font-bold"> Projected ROI :</span>
+            <span className="font-bold">Projected ROI :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              12%
+              {project.projectedROI}%{" "}
+              {/* Assuming project has a projectedROI field */}
             </span>
           </div>
           <div>
             <span className="font-bold">Risk Grade :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              A
+              {project.riskGrade} {/* Assuming project has a riskGrade field */}
             </span>
           </div>
         </div>
@@ -138,30 +169,33 @@ const ProjectDetail = () => {
         <div className="collapse collapse-plus border border-base-300 rounded-box">
           <input type="checkbox" className="peer" />
           <div className="collapse-title text-xl font-medium">
-            Section 1: Click to expand
+            How Would The Funding Help You
           </div>
           <div className="collapse-content peer-checked:block">
-            <p>Content for the first section.</p>
+            <p>{project.fundingHelp}</p>{" "}
+            {/* Assuming project has a fundingHelp field */}
           </div>
         </div>
 
         <div className="collapse collapse-plus border border-base-300 rounded-box mt-4">
           <input type="checkbox" className="peer" />
           <div className="collapse-title text-xl font-medium">
-            Section 2: Click to expand
+            How Do You Plan To Return The Investment
           </div>
           <div className="collapse-content peer-checked:block">
-            <p>Content for the second section.</p>
+            <p>{project.returnPlan}</p>{" "}
+            {/* Assuming project has a returnPlan field */}
           </div>
         </div>
 
         <div className="collapse collapse-plus border border-base-300 rounded-box mt-4">
           <input type="checkbox" className="peer" />
           <div className="collapse-title text-xl font-medium">
-            Section 3: Click to expand
+            How Safe Do You Consider Your Business To Be?
           </div>
           <div className="collapse-content peer-checked:block">
-            <p>Content for the third section.</p>
+            <p>{project.safetyAssessment}</p>{" "}
+            {/* Assuming project has a safetyAssessment field */}
           </div>
         </div>
       </div>
