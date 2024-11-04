@@ -1,4 +1,4 @@
-// // import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
 
 // const LatestPost = ({ item }) => {
@@ -85,7 +85,7 @@
 // };
 
 // export default LatestPost;
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import temp from "../assets/s2.jpg";
 
