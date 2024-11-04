@@ -140,7 +140,6 @@ const ProjectDetail = () => {
             <span className="font-bold">Min Investment :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
               {project.minInvestment} Taka
-              {/* Assuming project has a minInvestment field */}
             </span>
           </div>
           <div>
@@ -152,7 +151,7 @@ const ProjectDetail = () => {
           <div>
             <span className="font-bold">Risk Grade :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              A {/* Assuming project has a riskGrade field */}
+              A
             </span>
           </div>
         </div>
