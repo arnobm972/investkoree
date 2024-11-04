@@ -22,7 +22,7 @@ const StocksPost = ({ item }) => {
         transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
       >
         <img
-          src={businessPic} // Fallback image
+          src={temp} // Fallback image
           alt="Fundraiser"
           className="w-full h-48 object-cover"
         />
