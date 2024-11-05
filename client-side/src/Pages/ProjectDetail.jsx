@@ -165,7 +165,6 @@ const ProjectDetail = () => {
           </div>
           <div className="collapse-content peer-checked:block">
             <p>{project.fundingHelp}</p>
-            {/* Assuming project has a fundingHelp field */}
           </div>
         </div>
 
