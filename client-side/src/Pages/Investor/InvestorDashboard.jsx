@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const randomData = () => Math.floor(Math.random() * 100);
 const data = [
@@ -82,30 +83,35 @@ const chartData2 = {
 };
 
 const InvestorDashboard = () => {
-  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
-  // const token = localStorage.getItem("token");
-  // const navigate = useNavigate();
-  // const [users, setUsers] = useState([]);
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await fetch(`${API_URL}/api/users`, {
-  //         header: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       const result = await response.json();
-  //       setUsers(result);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   if (token) fetchUsers();
-  //   else;
-  // }, [token, navigate]);
+  const [userData, setUserData] = useState(null);
+  const userId = localStorage.getItem("userId"); // Ensure this is securely handled
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+        const response = await fetch(`${API_URL}/users/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch user data");
+
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (!userData) return <p>Loading...</p>;
   const chart1Ref = useRef(null); // For Chart 1
   const chart2Ref = useRef(null); // For Chart 2
 
@@ -220,16 +226,16 @@ const InvestorDashboard = () => {
           </div>
         </div>
         <div className="drawer-side z-50">
-          <label
-            htmlFor="my-drawer-2"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
+          <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
-            {/* Sidebar content here */}
-            <li className="font-extrabold text-salmon  hover:text-white text-lg mb-2 rounded-lg ">
+            <li className="font-extrabold text-salmon text-lg mb-2 rounded-lg">
               <a>Investor</a>
             </li>
+            {userData && (
+              <li className="font-bold text-lg mb-4 text-green-500">
+                Welcome, {userData.name || "Investor"}!
+              </li>
+            )}
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
               <a>Dashboard</a>
             </li>

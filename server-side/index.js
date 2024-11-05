@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import userRoutes from './routes/user.js';
+import userSpecificRoute from './routes/userRoutes.js'
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
 import bodyParser from 'body-parser';
@@ -57,6 +58,7 @@ app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
 app.use("/founderpost", founderFormPostRoute);
 app.use('/users', userRoutes);
+app.use('/users', userSpecificRoute);
 
 // Root route
 app.get('/', (req, res) => {
