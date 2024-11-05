@@ -113,7 +113,6 @@ const InvestorDashboard = () => {
   const chart1Ref = useRef(null); // For Chart 1
   const chart2Ref = useRef(null); // For Chart 2
 
-  // Cleanup function to destroy Chart instances when component unmounts
   useEffect(() => {
     return () => {
       // Check if the chart reference exists before trying to destroy it
