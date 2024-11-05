@@ -86,7 +86,6 @@ const InvestorDashboard = () => {
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
   const [userData, setUserData] = useState(null);
-  const userId = localStorage.getItem("userId"); // Ensure this is securely handled
 
   useEffect(() => {
     const fetchUserData = async () => {
