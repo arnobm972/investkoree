@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const randomData = () => Math.floor(Math.random() * 100);
 const data = [
