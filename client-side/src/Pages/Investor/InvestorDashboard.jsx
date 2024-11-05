@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
-import { useNavigate } from "react-router-dom";
 
 const randomData = () => Math.floor(Math.random() * 100);
 const data = [
@@ -90,7 +89,10 @@ const InvestorDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+        const token = localStorage.getItem("jwt"); // Retrieve JWT token from localStorage
+        if (!token) {
+          throw new Error("No authentication token found");
+        }
         const response = await fetch(`${API_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
