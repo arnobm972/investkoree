@@ -57,7 +57,7 @@ app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
 app.use("/founderpost", founderFormPostRoute);
 // app.use('/users', userRoutes);
-app.use('/users', userSpecificRoute);
+app.use('/api', userSpecificRoute);
 
 // Root route
 app.get('/', (req, res) => {
