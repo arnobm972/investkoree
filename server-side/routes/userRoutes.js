@@ -1,17 +1,19 @@
-
 import express from 'express';
-import authMiddleware from '../utils/authMiddleware.js';
+import { authToken } from '../utils/authMiddleware.js'; // Named import
 import User from '../models/userModel.js';
 
 const router = express.Router();
 
-router.get('/profile', authMiddleware.authToken, async (req, res) => {
+router.get('/profile', authToken, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password'); // Exclude password
-        if (!user) return res.status(404).json({ message: 'User not found.' });
+        const user = await User.findById(req.user.id).select('-password'); // Exclude password field
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
         
         res.json(user);
     } catch (error) {
+        console.error(error); // Logging for easier debugging
         res.status(500).json({ message: 'Server error' });
     }
 });
