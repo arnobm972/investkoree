@@ -175,12 +175,12 @@ const InvestorDashboard = () => {
         </div>
         <div className="drawer-side z-50">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu bg-base-200 text-base-content min-h-full xs:mt-6 xxs:mt-6 sm:mt-6 lg:w-80 p-4">
-            <li className="font-extrabold text-salmon text-lg mb-2 rounded-lg">
+          <ul className="menu bg-base-200 text-base-content min-h-full  lg:w-80 p-4">
+            <li className="font-extrabold text-salmon text-lg mb-2  xs:mt-6 xxs:mt-6 sm:mt-6 rounded-lg">
               <a>Investor</a>
             </li>
             {userdata && (
-              <li className="font-extrabold text-salmon text-center text-lg mb-2 rounded-lg">
+              <li className="font-extrabold text-salmon ml-2 text-lg mb-2 rounded-lg">
                 {userdata.name || "Investor"}!
               </li>
             )}
