@@ -118,7 +118,7 @@ const AuthProvider = ({ children }) => {
   const logOut = async () => {
     setLoading(true);
     try {
-      localStorage.removeItem("jwt"); // Clear the JWT token from localStorage on logout
+      localStorage.removeItem("jwt");
       setUser(null);
       setIsAuthenticated(false);
       toast.success("Signed out successfully!");
@@ -148,5 +148,7 @@ const AuthProvider = ({ children }) => {
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 export default AuthProvider;
