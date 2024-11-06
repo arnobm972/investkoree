@@ -25,7 +25,7 @@ const FounderPost = () => {
     businessSafety: "",
     additionalComments: "",
     projectedROI: "",
-    minInvestment: "",
+    returndate: "",
   });
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -517,6 +517,7 @@ const FounderPost = () => {
             name="fundingHelp"
             value={formData.fundingHelp}
             onChange={handleInputChange}
+            placeholder="Type here"
             className="textarea textarea-warning w-full max-w-xs"
             required
           ></textarea>
@@ -533,20 +534,20 @@ const FounderPost = () => {
             name="returnPlan"
             value={formData.returnPlan}
             onChange={handleInputChange}
+            placeholder="Type here"
             className="textarea textarea-warning w-full max-w-xs"
             required
           ></textarea>
         </label>
         <label className="form-control my-3 w-full max-w-xs">
           <div className="label">
-            <span className="label-text">
-              What is the minimum amount that someone can invest
-            </span>
+            <span className="label-text">When is Your Return Date</span>
           </div>
           <textarea
-            name="minInvestment"
-            value={formData.minInvestment}
+            name="returndate"
+            value={formData.returndate}
             onChange={handleInputChange}
+            placeholder="Type here"
             className="textarea textarea-warning w-full max-w-xs"
             required
           ></textarea>
@@ -559,6 +560,7 @@ const FounderPost = () => {
             name="projectedROI"
             value={formData.projectedROI}
             onChange={handleInputChange}
+            placeholder="Type here"
             className="textarea textarea-warning w-full max-w-xs"
             required
           ></textarea>
@@ -575,6 +577,7 @@ const FounderPost = () => {
             name="businessSafety"
             value={formData.businessSafety}
             onChange={handleInputChange}
+            placeholder="Type here"
             className="textarea textarea-warning w-full max-w-xs"
             required
           ></textarea>
@@ -589,6 +592,7 @@ const FounderPost = () => {
             name="additionalComments"
             value={formData.additionalComments}
             onChange={handleInputChange}
+            placeholder="Type here"
             className="textarea textarea-warning w-full max-w-xs"
           ></textarea>
         </label>

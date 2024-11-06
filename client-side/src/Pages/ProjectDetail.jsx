@@ -139,7 +139,7 @@ const ProjectDetail = () => {
           <div>
             <span className="font-bold">Min Investment :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.minInvestment} Taka
+              {project.returndate} Taka
             </span>
           </div>
           <div>
