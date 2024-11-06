@@ -82,13 +82,12 @@ const chartData2 = {
 };
 
 const InvestorDashboard = () => {
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
 
   // useEffect(() => {
-  //   const fetchUserData = async () => {
+  //   const fetchuserdata = async () => {
   //     try {
   //       const response = await fetch(`${API_URL}/users/profile`, {
   //         headers: {
@@ -107,7 +106,7 @@ const InvestorDashboard = () => {
   //   fetchUserData();
   // }, []);
 
-  if (!userData) return <p>Loading...</p>;
+  if (!userdata) return <p>Loading...</p>;
   const chart1Ref = useRef(null); // For Chart 1
   const chart2Ref = useRef(null); // For Chart 2
 
@@ -226,9 +225,9 @@ const InvestorDashboard = () => {
             <li className="font-extrabold text-salmon text-lg mb-2 rounded-lg">
               <a>Investor</a>
             </li>
-            {userData && (
+            {userdata && (
               <li className="font-bold text-lg mb-4 text-green-500">
-                Welcome, {userData.name || "Investor"}!
+                Welcome, {userdata.name || "Investor"}!
               </li>
             )}
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
