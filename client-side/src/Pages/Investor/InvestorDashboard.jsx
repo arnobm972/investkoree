@@ -93,7 +93,7 @@ const InvestorDashboard = () => {
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col p-10">
-          <div className="fixed top-[100px] left-[5px] z-50">
+          <div className="fixed top-[100px] left-[5px] z-40">
             <label
               htmlFor="my-drawer-2"
               className="btn bg-salmon text-white sticky drawer-button transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
@@ -173,14 +173,14 @@ const InvestorDashboard = () => {
             </table>
           </div>
         </div>
-        <div className="drawer-side z-50">
+        <div className="drawer-side z-40">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
           <ul className="menu bg-base-200 text-base-content min-h-full  lg:w-80 p-4">
             <li className="font-extrabold text-salmon text-lg mb-2  xs:mt-6 xxs:mt-6 sm:mt-6 rounded-lg">
               <a>Investor</a>
             </li>
             {userdata && (
-              <li className="font-extrabold text-salmon ml-2 text-lg mb-2 rounded-lg">
+              <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
                 {userdata.name || "Investor"}!
               </li>
             )}
