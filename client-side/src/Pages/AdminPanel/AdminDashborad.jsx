@@ -163,7 +163,7 @@ const AdminDashboard = () => {
             </table>
           </div>
         </div>
-        <div className="drawer-side z-50">
+        <div className="drawer-side z-40">
           <label
             htmlFor="my-drawer-2"
             aria-label="close sidebar"
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
               <a>Dashboard</a>
             </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+            {/* <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
               <a></a>
             </li>
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
             </li>
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
               <a></a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
