@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../../providers/AuthProvider";
 const data = [
   {
     Serial: 1,
@@ -38,6 +38,10 @@ const data = [
 ];
 
 const FounderDashboard = () => {
+  const { userdata } = useAuth();
+  if (!userdata) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -176,8 +180,13 @@ const FounderDashboard = () => {
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
             {/* Sidebar content here */}
             <li className="font-extrabold text-salmon  hover:text-white text-lg mb-2 rounded-lg ">
-              <a>Founder</a>
+              <li>Founder</li>
             </li>
+            {userdata && (
+              <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
+                {userdata.name || "Investor"}!
+              </li>
+            )}
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
               <a>Dashboard</a>
             </li>

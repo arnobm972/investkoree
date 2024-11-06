@@ -86,8 +86,9 @@ const InvestorDashboard = () => {
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
 
-  if (!userdata) return <p>Loading...</p>;
-
+  if (!userdata) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
   return (
     <div>
       <div className="drawer lg:drawer-open">
