@@ -95,7 +95,7 @@ const Stocks = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
+          <ul className="menu bg-base-200 text-base-content xs:mt-6 xxs:mt-6 sm:mt-6 min-h-full lg:w-80 p-4">
             <li className="font-extrabold text-salmon hover:text-white text-lg mb-2">
               <a>Sector</a>
             </li>
