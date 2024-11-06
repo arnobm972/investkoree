@@ -89,10 +89,6 @@ const InvestorDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem("jwt"); // Retrieve JWT token from localStorage
-        if (!token) {
-          throw new Error("No authentication token found");
-        }
         const response = await fetch(`${API_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
