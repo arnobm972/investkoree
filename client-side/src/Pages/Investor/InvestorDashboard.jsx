@@ -180,7 +180,7 @@ const InvestorDashboard = () => {
               <a>Investor</a>
             </li>
             {userdata && (
-              <li className="font-bold text-salmon mb-2">
+              <li className="font-extrabold text-salmon text-lg mb-2 rounded-lg">
                 {userdata.name || "Investor"}!
               </li>
             )}
