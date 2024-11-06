@@ -180,7 +180,7 @@ const FounderDashboard = () => {
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
             {/* Sidebar content here */}
             <li className="font-extrabold text-salmon   text-lg mb-2 rounded-lg ">
-              <li>Founder</li>
+              Founder
             </li>
             {userdata && (
               <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
