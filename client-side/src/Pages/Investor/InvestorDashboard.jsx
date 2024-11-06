@@ -86,33 +86,12 @@ const InvestorDashboard = () => {
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
 
-  // useEffect(() => {
-  //   const fetchuserdata = async () => {
-  //     try {
-  //       const response = await fetch(`${API_URL}/users/profile`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       if (!response.ok) throw new Error("Failed to fetch user data");
-
-  //       const data = await response.json();
-  //       setUserData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching user data:", error);
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, []);
-
   if (!userdata) return <p>Loading...</p>;
   const chart1Ref = useRef(null); // For Chart 1
   const chart2Ref = useRef(null); // For Chart 2
 
   useEffect(() => {
     return () => {
-      // Check if the chart reference exists before trying to destroy it
       if (chart1Ref.current && chart1Ref.current.chartInstance) {
         chart1Ref.current.chartInstance.destroy();
       }
