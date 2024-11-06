@@ -5,7 +5,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createFounderPost } from '../controllers/founderFormController.js';
-import { authToken } from '../utils/authMiddleware.js'
+import { authToken} from '../utils/authMiddleware.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
