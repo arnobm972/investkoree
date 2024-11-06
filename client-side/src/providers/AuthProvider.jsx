@@ -1,11 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { app } from "../Firebase/firebase.config";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 
 export const AuthContext = createContext(null);
-
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
@@ -17,11 +16,11 @@ const AuthProvider = ({ children }) => {
     import.meta.env.VITE_API_URL || "https://investkoree-backend.onrender.com";
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt"); // Retrieve JWT token from localStorage
+    const token = localStorage.getItem("jwt");
     if (token) {
-      fetchUserData(token); // Fetch user data if token exists
+      fetchUserData(token);
     } else {
-      setLoading(false); // No token, stop loading
+      setLoading(false);
     }
   }, []);
 
@@ -32,7 +31,6 @@ const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (!response.ok) throw new Error("Failed to fetch user data");
 
       const data = await response.json();
@@ -60,7 +58,7 @@ const AuthProvider = ({ children }) => {
           email,
           password,
           username: name,
-          role: "investor", // Or dynamically set the role based on your logic
+          role: "investor",
         }),
       });
 
@@ -70,13 +68,10 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
-
-      // Set user state with JWT token and user details
       setUser({ ...data.user, jwt: data.token });
       setIsAuthenticated(true);
-      toast.success("User  created successfully!");
+      toast.success("User created successfully!");
     } catch (error) {
       toast.error("Error creating user: " + error.message);
     } finally {
@@ -87,13 +82,12 @@ const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     setLoading(true);
     try {
-      // Fetch user credentials from backend
       const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }), // Send email and password to the backend
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -102,10 +96,8 @@ const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // Store JWT token in localStorage
       localStorage.setItem("jwt", data.token);
-
-      setUser({ ...data.user, jwt: data.token }); // Set user state with JWT token and user details
+      setUser({ ...data.user, jwt: data.token });
       setIsAuthenticated(true);
       toast.success("Sign in successful!");
     } catch (error) {
@@ -115,18 +107,13 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const logOut = async () => {
+  const logOut = () => {
     setLoading(true);
-    try {
-      localStorage.removeItem("jwt");
-      setUser(null);
-      setIsAuthenticated(false);
-      toast.success("Signed out successfully!");
-    } catch (error) {
-      toast.error("Error signing out: " + error.message);
-    } finally {
-      setLoading(false);
-    }
+    localStorage.removeItem("jwt");
+    setUser(null);
+    setIsAuthenticated(false);
+    toast.success("Signed out successfully!");
+    setLoading(false);
   };
 
   const authInfo = {
@@ -148,7 +135,7 @@ const AuthProvider = ({ children }) => {
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+
+export const useAuth = () => useContext(AuthContext);
+
 export default AuthProvider;
