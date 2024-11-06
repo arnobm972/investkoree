@@ -226,8 +226,8 @@ const InvestorDashboard = () => {
               <a>Investor</a>
             </li>
             {userdata && (
-              <li className="font-bold text-lg mb-4 text-green-500">
-                Welcome, {userdata.name || "Investor"}!
+              <li className="font-bold text-salmon mb-2">
+                {userdata.name || "Investor"}!
               </li>
             )}
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
