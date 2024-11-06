@@ -1,6 +1,7 @@
 import { FcLowBattery } from "react-icons/fc";
 import { FcIdea } from "react-icons/fc";
 import { FcDonate } from "react-icons/fc";
+import { useAuth } from "../../providers/AuthProvider";
 import { AiFillDollarCircle } from "react-icons/ai";
 
 const data = [
@@ -41,6 +42,10 @@ const data = [
 ];
 
 const AdminDashboard = () => {
+  const { userdata } = useAuth();
+  if (!userdata) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -166,9 +171,14 @@ const AdminDashboard = () => {
           ></label>
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
             {/* Sidebar content here */}
-            <li className="font-extrabold text-salmon  hover:text-white text-lg mb-2 rounded-lg ">
-              <a>Admin</a>
+            <li className="font-extrabold text-salmon ml-4   text-lg mb-2 rounded-lg ">
+              Admin
             </li>
+            {userdata && (
+              <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
+                {userdata.name || "Investor"}!
+              </li>
+            )}
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
               <a>Dashboard</a>
             </li>
