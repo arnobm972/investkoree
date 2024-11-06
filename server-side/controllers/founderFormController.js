@@ -1,19 +1,20 @@
-// controllers/founderController.js
 import FounderPost from '../models/founderFormPostModels.js';
 
-
-// Handle founder post creati
+// Handle founder post creation
 export const createFounderPost = async (req, res) => {
   console.log("Files received:", JSON.stringify(req.files, null, 2));
   try {
+    // Extract userId from the authenticated user
+    const userId = req.user.id; // Assuming req.user is populated by your authentication middleware
+
     const {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
-      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,returndate,projectedROI,
+      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate, projectedROI,
       returnPlan, businessSafety, additionalComments
     } = req.body;
 
-   
+    // Handle file uploads
     const businessPic = req.files.businessPicture && req.files.businessPicture.length > 0 ? req.files.businessPicture[0].path : "";
     const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? req.files.nidCopy[0].path : "";
     const tinFile = req.files.tinCopy && req.files.tinCopy.length > 0 ? req.files.tinCopy[0].path : "";
@@ -25,11 +26,12 @@ export const createFounderPost = async (req, res) => {
 
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
+      userId, // Associate the post with the user
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp,
       returnPlan, businessSafety, additionalComments, businessPic, nidFile, tinFile,
-      taxFile, tradeLicenseFile, bankStatementFile, securityFile, financialFile,returndate,projectedROI
+      taxFile, tradeLicenseFile, bankStatementFile, securityFile, financialFile, returndate, projectedROI
     });
 
     await newPost.save();

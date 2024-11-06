@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createFounderPost } from '../controllers/founderFormController.js';
+import { authToken } from '../utils/authMiddleware.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,6 +56,7 @@ const cpUpload = upload.fields([
   { name: "financialFile", maxCount: 1 },
 ]);
 
-router.post("/postdata", cpUpload, createFounderPost);
+router.post("/postdata", authToken, cpUpload, createFounderPost);
+
 
 export default router;

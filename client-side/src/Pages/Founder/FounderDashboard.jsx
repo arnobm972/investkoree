@@ -39,9 +39,33 @@ const data = [
 
 const FounderDashboard = () => {
   const { userdata } = useAuth();
-  if (!userdata) {
+  const [posts, setPosts] = useState([]); // State to hold user posts
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      if (userdata) {
+        try {
+          const response = await fetch(`/api/${userdata.id}/posts`);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json(); // Parse the JSON response
+          setPosts(data); // Set the fetched posts
+        } catch (error) {
+          console.error("Error fetching user posts:", error);
+        } finally {
+          setLoading(false); // Set loading to false after fetching
+        }
+      }
+    };
+
+    fetchUserPosts();
+  }, [userdata]);
+
+  if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
+  const LeftForInvestment = posts.fundingAmount - 70000;
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -139,31 +163,39 @@ const FounderDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((row) => (
-                  <tr key={row.Serial}>
+                {posts.map((row, index) => (
+                  <tr key={row._id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Serial}
+                      {index + 1}
+                      {/* Assuming Serial is part of the post data */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {row.ProjectTitle}
+                      {row.businessName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.ProjectOwner}
+                      {row.startDate}
+                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Organization}
+                      {row.returndate}
+                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
+                      {/* {row.InvestedAmount} */}
+                      {/* Adjust according to your data structure */}
+                      70000
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
+                      {row.fundingAmount}
+                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
+                      {LeftForInvestment}
+                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
+                      Pending
+                      {/* {need to change it */}
                     </td>
                   </tr>
                 ))}
@@ -179,7 +211,7 @@ const FounderDashboard = () => {
           ></label>
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
             {/* Sidebar content here */}
-            <li className="font-extrabold text-salmon ml-4  xs:mt-6 xxs:mt-6 sm:mt-6   text-lg mb-4 rounded-lg ">
+            <li className="font-extrabold text-salmon ml-4 xs:mt-6 xxs:mt-6 sm:mt-6 text-lg mb-4 rounded-lg ">
               Founder
             </li>
             {userdata && (
@@ -190,18 +222,7 @@ const FounderDashboard = () => {
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
               <a>Dashboard</a>
             </li>
-            {/* <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li> */}
+            {/* Additional sidebar items can be added here */}
           </ul>
         </div>
       </div>
