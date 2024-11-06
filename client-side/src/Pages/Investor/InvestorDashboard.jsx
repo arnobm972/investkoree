@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { useAuth } from "../../providers/AuthProvider";
 import Chart from "chart.js/auto";
@@ -87,19 +87,6 @@ const InvestorDashboard = () => {
   const { userdata } = useAuth();
 
   if (!userdata) return <p>Loading...</p>;
-  const chart1Ref = useRef(null); // For Chart 1
-  const chart2Ref = useRef(null); // For Chart 2
-
-  useEffect(() => {
-    return () => {
-      if (chart1Ref.current && chart1Ref.current.chartInstance) {
-        chart1Ref.current.chartInstance.destroy();
-      }
-      if (chart2Ref.current && chart2Ref.current.chartInstance) {
-        chart2Ref.current.chartInstance.destroy();
-      }
-    };
-  }, []);
 
   return (
     <div>
@@ -114,17 +101,11 @@ const InvestorDashboard = () => {
               <i className="fas fa-bars text-lg"></i>
             </label>
           </div>
-          <div className="flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col ">
-            <div className="lg:w-[50%] sm:w-[full] xs:w-[full] xxs:w-[full]  sm:h-full xs:h-full xxs:h-full ">
+          <div className="flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col">
+            <div className="lg:w-[50%] sm:w-full xs:w-full xxs:w-full">
               <Bar
-                ref={chart1Ref}
                 data={data1}
                 options={{
-                  plugins: {
-                    title: {
-                      display: true,
-                    },
-                  },
                   scales: {
                     x: { beginAtZero: true },
                     y: { beginAtZero: true },
@@ -132,16 +113,10 @@ const InvestorDashboard = () => {
                 }}
               />
             </div>
-            <div className="lg:w-[50%] sm:w-[full] xs:w-[full] xxs:w-[full]  sm:h-full xs:h-full xxs:h-full ">
+            <div className="lg:w-[50%] sm:w-full xs:w-full xxs:w-full">
               <Bar
-                ref={chart2Ref}
                 data={data2}
                 options={{
-                  plugins: {
-                    title: {
-                      display: true,
-                    },
-                  },
                   scales: {
                     x: { beginAtZero: true },
                     y: { beginAtZero: true },
@@ -150,11 +125,11 @@ const InvestorDashboard = () => {
               />
             </div>
           </div>
-          <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl  ">
+          <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl">
             Invested Project List
           </p>
-          <div className="overflow-x-auto ">
-            <table className="min-w-full divide-y   sm:w-[40%] xs:w-[40%] xxs:w-[30%]  divide-gray-200">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y sm:w-[40%] xs:w-[40%] xxs:w-[30%] divide-gray-200">
               <thead>
                 <tr className="bg-salmon rounded-xl">
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
@@ -167,14 +142,14 @@ const InvestorDashboard = () => {
                     Investment Date
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Retrun Date
+                    Return Date
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Invested Amount
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200 ">
+              <tbody className="bg-white divide-y divide-gray-200">
                 {data.map((row) => (
                   <tr key={row.Serial}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
