@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
+import { useAuth } from "../../providers/AuthProvider";
 import Chart from "chart.js/auto";
 
 const randomData = () => Math.floor(Math.random() * 100);
@@ -84,27 +85,27 @@ const InvestorDashboard = () => {
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
-  const [userData, setUserData] = useState(null);
+  const { userdata } = useAuth();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${API_URL}/users/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await fetch(`${API_URL}/users/profile`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
 
-        if (!response.ok) throw new Error("Failed to fetch user data");
+  //       if (!response.ok) throw new Error("Failed to fetch user data");
 
-        const data = await response.json();
-        setUserData(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserData();
-  }, []);
+  //       const data = await response.json();
+  //       setUserData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, []);
 
   if (!userData) return <p>Loading...</p>;
   const chart1Ref = useRef(null); // For Chart 1
