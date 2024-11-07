@@ -3,7 +3,7 @@ import authService from "../services/login.js";
 async function login(req, res) {
     try {
         const { email, password } = req.body;
-        const token = await authService.login(email, password);
+        const { token, userId, role } = await authService.login(email, password); 
 
         if (!token) {
             return res.status(401).json({ message: "Invalid Credentials" });
@@ -12,8 +12,8 @@ async function login(req, res) {
        
         res.json({
             token,
-            userId: user._id,
-            role: user.role
+            userId,
+            role
         });
     } catch (error) {
         console.error(" login error:", error.message);

@@ -23,7 +23,7 @@ async function login(email, password) {
 
         // Generate and return token if user is authenticated
         const token = generateToken(existingUser);
-        return token;
+        return { token, userId: existingUser._id, role: existingUser.role };
 
     } catch (error) {
         console.error("Login error:", error.message); // Log detailed error for debugging
