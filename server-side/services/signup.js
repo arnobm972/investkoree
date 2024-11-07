@@ -10,7 +10,7 @@ async function  createUser(userData) {
         name,
         email,
         password :hashedPassword,
-        role :'investor'
+        role 
     });
 
     const savedUser = await createUser.save();
