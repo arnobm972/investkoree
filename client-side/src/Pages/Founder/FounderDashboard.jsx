@@ -1,42 +1,42 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import { useState, useEffect } from "react";
-const data = [
-  {
-    Serial: 1,
-    ProjectTitle: "Bring Documents",
-    ProjectOwner: "Titus Kitamura",
-    Organization: "Clezerus Clacofonix",
-    Number: 357,
-    Value: "$105,148",
-    Left: "$96.08M",
-    Date: "12/1/2019",
-    Status: "Ongoing",
-  },
-  {
-    Serial: 2,
-    ProjectTitle: "Check availability locally",
-    ProjectOwner: "Thad Eddings",
-    Organization: "Zarrrazzii",
-    Number: 177,
-    Value: "$106,460",
-    Left: "$80.43M",
-    Date: "11/20/2019",
-    Status: "Completed",
-  },
-  {
-    Serial: 3,
-    ProjectTitle: "Take Mom to Doctor",
-    ProjectOwner: "Edgar Torrey",
-    Organization: "Acardan & Boorg Corp.",
-    Number: 994,
-    Value: "$167,208",
-    Left: "$12.81M",
-    Date: "11/16/2019",
-    Status: "Ongoing",
-  },
-  // ... Add the rest of your data here
-];
+// const data = [
+//   {
+//     Serial: 1,
+//     ProjectTitle: "Bring Documents",
+//     ProjectOwner: "Titus Kitamura",
+//     Organization: "Clezerus Clacofonix",
+//     Number: 357,
+//     Value: "$105,148",
+//     Left: "$96.08M",
+//     Date: "12/1/2019",
+//     Status: "Ongoing",
+//   },
+//   {
+//     Serial: 2,
+//     ProjectTitle: "Check availability locally",
+//     ProjectOwner: "Thad Eddings",
+//     Organization: "Zarrrazzii",
+//     Number: 177,
+//     Value: "$106,460",
+//     Left: "$80.43M",
+//     Date: "11/20/2019",
+//     Status: "Completed",
+//   },
+//   {
+//     Serial: 3,
+//     ProjectTitle: "Take Mom to Doctor",
+//     ProjectOwner: "Edgar Torrey",
+//     Organization: "Acardan & Boorg Corp.",
+//     Number: 994,
+//     Value: "$167,208",
+//     Left: "$12.81M",
+//     Date: "11/16/2019",
+//     Status: "Ongoing",
+//   },
+//   // ... Add the rest of your data here
+// ];
 
 const FounderDashboard = () => {
   const { userdata } = useAuth();

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
