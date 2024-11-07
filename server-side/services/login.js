@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import User from '../models/userModel.js';
 import generateToken from '../utils/jwtUtils.js';
-import verifyToken from '../utils/authMiddleware.js';
+import {verifyToken} from '../utils/authMiddleware.js';
 
 async function login(email, password) {
     console.log("Received email:", email); // Log email to verify value
