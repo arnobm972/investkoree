@@ -9,7 +9,12 @@ async function login(req, res) {
             return res.status(401).json({ message: "Invalid Credentials" });
         }
 
-        res.json({ token });
+       
+        res.json({
+            token,
+            userId: user._id,
+            role: user.role
+        });
     } catch (error) {
         console.error(" login error:", error.message);
         res.status(401).json({ message: "Invalid Credentials" });
