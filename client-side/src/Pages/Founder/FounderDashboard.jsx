@@ -74,10 +74,10 @@ const FounderDashboard = () => {
                 </p>
                 <div
                   className="radial-progress text-secondary mt-4"
-                  style={{ "--value": 30 }}
+                  style={{ "--value": `${LeftForInvestment}` }}
                   role="progressbar"
                 >
-                  30%
+                  {LeftForInvestment}
                 </div>
               </div>
               <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
