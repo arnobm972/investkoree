@@ -7,6 +7,7 @@ const FounderDashboard = () => {
   const [posts, setPosts] = useState([]); // State to hold user posts
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  console.log(userdata);
 
   useEffect(() => {
     const fetchUserPosts = async () => {

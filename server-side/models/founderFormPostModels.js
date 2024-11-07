@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const founderPostSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User ' }, // Reference to the User model
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User',index: true  }, // Reference to the User model
   businessName: { type: String, required: true },
   email: { type: String, required: true, match: /.+\@.+\..+/ }, // Basic email validation
   address: { type: String, required: true },
