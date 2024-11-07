@@ -6,13 +6,14 @@ const FounderDashboard = () => {
   const { userdata } = useAuth();
   const [posts, setPosts] = useState([]); // State to hold user posts
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const fetchUserPosts = async () => {
       // Ensure userdata and userdata.id are available
       if (userdata && userdata.id) {
         try {
-          const response = await fetch(`/api/${userdata.id}/posts`);
+          const response = await fetch(`${API_URL}/api/${userdata.id}/posts`);
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
