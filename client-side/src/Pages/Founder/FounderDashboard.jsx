@@ -72,10 +72,10 @@ const FounderDashboard = () => {
                 </p>
                 <div
                   className="radial-progress text-secondary mt-4"
-                  style={{ "--value": `${LeftForInvestment}` }}
+                  style={{ "--value": 30 }}
                   role="progressbar"
                 >
-                  {LeftForInvestment}
+                  30
                 </div>
               </div>
               <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
@@ -136,34 +136,40 @@ const FounderDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {posts.map((row, index) => (
-                  <tr key={row._id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {index + 1}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {row.businessName}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(row.startDate).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.returndate}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      70000
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.fundingAmount}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {LeftForInvestment}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      Pending
-                    </td>
-                  </tr>
-                ))}
+                {posts.map((row, index) => {
+                  const investedAmount = 70000; // Replace with actual invested amount if needed
+                  const fundingAmount = parseFloat(row.fundingAmount) || 0; // Convert fundingAmount to a number
+                  const leftForInvestment = fundingAmount - investedAmount; // Calculate Left For Investment
+
+                  return (
+                    <tr key={row._id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {row.businessName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(row.startDate).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {row.returndate}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        {investedAmount}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        {fundingAmount}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        {leftForInvestment}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        Pending
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
