@@ -29,22 +29,19 @@ connectDB();
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://investkoree.onrender.com',
-];
-
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log("Incoming origin:", origin);  // Log the origin for troubleshooting
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
+      console.error(`Blocked by CORS: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+
   optionsSuccessStatus: 200,
 };
 
