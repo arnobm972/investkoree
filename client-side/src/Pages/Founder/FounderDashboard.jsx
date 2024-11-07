@@ -1,50 +1,16 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import { useState, useEffect } from "react";
-// const data = [
-//   {
-//     Serial: 1,
-//     ProjectTitle: "Bring Documents",
-//     ProjectOwner: "Titus Kitamura",
-//     Organization: "Clezerus Clacofonix",
-//     Number: 357,
-//     Value: "$105,148",
-//     Left: "$96.08M",
-//     Date: "12/1/2019",
-//     Status: "Ongoing",
-//   },
-//   {
-//     Serial: 2,
-//     ProjectTitle: "Check availability locally",
-//     ProjectOwner: "Thad Eddings",
-//     Organization: "Zarrrazzii",
-//     Number: 177,
-//     Value: "$106,460",
-//     Left: "$80.43M",
-//     Date: "11/20/2019",
-//     Status: "Completed",
-//   },
-//   {
-//     Serial: 3,
-//     ProjectTitle: "Take Mom to Doctor",
-//     ProjectOwner: "Edgar Torrey",
-//     Organization: "Acardan & Boorg Corp.",
-//     Number: 994,
-//     Value: "$167,208",
-//     Left: "$12.81M",
-//     Date: "11/16/2019",
-//     Status: "Ongoing",
-//   },
-//   // ... Add the rest of your data here
-// ];
 
 const FounderDashboard = () => {
   const { userdata } = useAuth();
   const [posts, setPosts] = useState([]); // State to hold user posts
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchUserPosts = async () => {
-      if (userdata) {
+      // Ensure userdata and userdata.id are available
+      if (userdata && userdata.id) {
         try {
           const response = await fetch(`/api/${userdata.id}/posts`);
           if (!response.ok) {
@@ -57,6 +23,8 @@ const FounderDashboard = () => {
         } finally {
           setLoading(false); // Set loading to false after fetching
         }
+      } else {
+        setLoading(false); // Stop loading if userdata is not available
       }
     };
 
@@ -66,7 +34,11 @@ const FounderDashboard = () => {
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
-  const LeftForInvestment = posts.fundingAmount - 70000;
+
+  const LeftForInvestment = posts.fundingAmount
+    ? posts.fundingAmount - 70000
+    : 0;
+
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -83,7 +55,7 @@ const FounderDashboard = () => {
           <div className="flex lg:flex-row lg:justify-between sm:flex-col xs:flex-col xxs:flex-col">
             <div className="flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col gap-16 my-10">
               <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
-                <p className="lg:text-3xl font-bold sm:mx-auto  sm:text-lg xs:text-lg xxs:text-lg ">
+                <p className="lg:text-3xl font-bold sm:mx-auto sm:text-lg xs:text-lg xxs:text-lg ">
                   Total Invested Amount
                 </p>
                 <div
@@ -95,7 +67,7 @@ const FounderDashboard = () => {
                 </div>
               </div>
               <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
-                <p className="lg:text-3xl font-bold sm:mx-auto  sm:text-lg xs:text-lg xxs:text-lg ">
+                <p className="lg:text-3xl font-bold sm:mx-auto sm:text-lg xs:text-lg xxs:text-lg ">
                   Left for Investment
                 </p>
                 <div
@@ -107,7 +79,7 @@ const FounderDashboard = () => {
                 </div>
               </div>
               <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
-                <p className="lg:text-3xl font-bold sm:mx-auto  sm:text-lg xs:text-lg xxs:text-lg ">
+                <p className="lg:text-3xl font-bold sm:mx-auto sm:text-lg xs:text-lg xxs:text-lg ">
                   Asking Investment Amount
                 </p>
                 <div
@@ -123,7 +95,7 @@ const FounderDashboard = () => {
               <Link to="/founderpost">
                 <input
                   type="submit"
-                  className="  post-btn lg:h-[25%] lg:w-[100px] sm:h-[60%] xs:h-[60%] xxs:h-[60%] sm:w-[30%] xs:w-[30%] xxs:w-[30%]"
+                  className="post-btn lg:h-[25%] lg:w-[100px] sm:h-[60%] xs:h-[60%] xxs:h-[60%] sm:w-[30%] xs:w-[30%] xxs:w-[30%]"
                   name="founder-post"
                   value="Post"
                 />
@@ -133,8 +105,8 @@ const FounderDashboard = () => {
           <p className="lg:text-3xl font-bold sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-lg xs:text-lg xxs:text-lg mb-12 mt-16">
             Invested Project List
           </p>
-          <div className="overflow-x-auto ">
-            <table className="min-w-full divide-y  divide-gray-200">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr className="bg-salmon rounded-xl">
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
@@ -168,35 +140,27 @@ const FounderDashboard = () => {
                   <tr key={row._id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {index + 1}
-                      {/* Assuming Serial is part of the post data */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {row.businessName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {row.startDate}
-                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {row.returndate}
-                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {/* {row.InvestedAmount} */}
-                      {/* Adjust according to your data structure */}
                       70000
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
                       {row.fundingAmount}
-                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
                       {LeftForInvestment}
-                      {/* Adjust according to your data structure */}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
                       Pending
-                      {/* {need to change it */}
                     </td>
                   </tr>
                 ))}
@@ -211,8 +175,7 @@ const FounderDashboard = () => {
             className="drawer-overlay"
           ></label>
           <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
-            {/* Sidebar content here */}
-            <li className="font-extrabold text-salmon ml-4 xs:mt-6 xxs:mt-6 sm:mt-6 text-lg mb-4 rounded-lg ">
+            <li className="font-extrabold text-salmon ml-4 xs:mt-6 xxs:mt-6 sm:mt-6 text-lg mb-4 rounded-lg">
               Founder
             </li>
             {userdata && (
@@ -223,7 +186,6 @@ const FounderDashboard = () => {
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
               <a>Dashboard</a>
             </li>
-            {/* Additional sidebar items can be added here */}
           </ul>
         </div>
       </div>
