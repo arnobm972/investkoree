@@ -1,10 +1,15 @@
 // controllers/userPostsController.js
 import FounderPost from '../models/founderFormPostModels.js';
+import mongoose from 'mongoose';
+
 
 // Get posts by user ID
 export const getUserPosts = async (req, res) => {
   const { userId } = req.params;
-
+  
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid userId format' });
+  }
   try {
     const posts = await FounderPost.find({ userId }); // Find posts by userId
     if (!posts.length) {
