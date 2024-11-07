@@ -12,9 +12,9 @@ const FounderDashboard = () => {
   useEffect(() => {
     const fetchUserPosts = async () => {
       // Ensure userdata and userdata.id are available
-      if (userdata && userdata.id) {
+      if (userdata && userdata._id) {
         try {
-          const response = await fetch(`${API_URL}/api/${userdata.id}/posts`);
+          const response = await fetch(`${API_URL}/api/${userdata._id}/posts`);
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
