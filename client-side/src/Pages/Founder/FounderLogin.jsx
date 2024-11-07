@@ -91,7 +91,7 @@ const FounderLogin = () => {
     }
 
     try {
-      await createUser(name, email, password); // Use the createUser function from context
+      await createUser(name, email, password, "founder"); // Use the createUser function from context
       toast.success("Registration successful");
       navigate("/founderdashboard");
     } catch (err) {

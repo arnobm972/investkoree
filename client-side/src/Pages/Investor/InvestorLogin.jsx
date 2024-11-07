@@ -91,7 +91,7 @@ const InvestorLogin = () => {
     }
 
     try {
-      await createUser(name, email, password); // Use the createUser function from context
+      await createUser(name, email, password, "investor"); // Use the createUser function from context
       toast.success("Registration successful");
       navigate("/investordashboard");
     } catch (err) {

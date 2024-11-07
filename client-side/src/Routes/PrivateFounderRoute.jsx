@@ -1,29 +1,14 @@
-// import { useContext } from "react";
-// import { AuthContext } from "../Providers/AuthProvider";
-// import PropTypes from "prop-types";
-// import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../providers/AuthProvider";
 
-// const PrivateFounderRoute = ({ children }) => {
-//   const userInfo = localStorage.getItem("userInfo")
-//     ? JSON.parse(localStorage.getItem("userInfo"))
-//     : null;
-//   console.log(userInfo);
+const PrivateFounderRoute = ({ children }) => {
+  const { userdata } = useAuth();
 
-//   if (loading) {
-//     return <span className="loading loading-spinner loading-lg"></span>;
-//   }
+  if (!userdata || userdata.role !== "founder") {
+    return <Navigate to="/founderlogin" />; // Redirect to login if not authenticated as founder
+  }
 
-//   if (userInfo && userInfo.role === "founder") {
-//     return children;
-//   }
+  return children; // Render the protected route for founders
+};
 
-//   return (
-//     <Navigate replace state={location.pathname} to="/founderlogin"></Navigate>
-//   );
-// };
-
-// PrivateFounderRoute.propTypes = {
-//   children: PropTypes.node.isRequired,
-// };
-
-// export default PrivateFounderRoute;
+export default PrivateFounderRoute;

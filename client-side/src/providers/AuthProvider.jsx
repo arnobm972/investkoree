@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
           email,
           name,
           password,
-          role: "investor", // Adjust based on your role system
+          role, // Adjust based on your role system
         }),
       });
 

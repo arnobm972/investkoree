@@ -90,7 +90,7 @@ const AdminLogin = () => {
     }
 
     try {
-      await createUser(name, email, password); // Use the createUser function from context
+      await createUser(name, email, password, "admin"); // Use the createUser function from context
       toast.success("Registration successful");
       navigate("/admindashboard");
     } catch (err) {
