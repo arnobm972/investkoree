@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
   };
-  const createUser = async (name, email, password) => {
+  const createUser = async (name, email, password, role) => {
     try {
       const response = await fetch(`${API_URL}/users/register`, {
         method: "POST",
