@@ -83,7 +83,8 @@ export const AuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (response.ok) {
-        const userData = { email }; // Adjust based on your API response
+        const { userId } = result;
+        const userData = { email, userId };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token); // Update the token state
