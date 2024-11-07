@@ -147,7 +147,7 @@ const FounderDashboard = () => {
                       {row.businessName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.startDate}
+                      {new Date(row.startDate).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {row.returndate}
