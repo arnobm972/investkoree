@@ -36,8 +36,6 @@ const FounderDashboard = () => {
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
-  const funds = parseFloat(posts.fundingAmount);
-  const LeftForInvestment = funds - 70000;
 
   return (
     <div>
@@ -137,7 +135,7 @@ const FounderDashboard = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {posts.map((row, index) => {
-                  const investedAmount = 70000; // Replace with actual invested amount if needed
+                  const investedAmount = 70000;
                   const fundingAmount = parseFloat(row.fundingAmount) || 0; // Convert fundingAmount to a number
                   const leftForInvestment = fundingAmount - investedAmount; // Calculate Left For Investment
 
