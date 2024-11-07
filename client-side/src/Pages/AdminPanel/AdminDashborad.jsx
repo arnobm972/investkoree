@@ -176,7 +176,7 @@ const AdminDashboard = () => {
             </li>
             {userdata && (
               <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
-                {userdata.name || "Investor"}!
+                {userdata.name || "Admin"}!
               </li>
             )}
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
