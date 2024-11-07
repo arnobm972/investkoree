@@ -11,6 +11,7 @@ import loginRoute from '../server-side/routes/login.js';
 import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import founderPostRoute from './routes//founderPostRoute.js'
 import { fileURLToPath } from 'url';
+import userPostsRoute from './routes/userPostsRoute.js'
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
