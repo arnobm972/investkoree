@@ -36,8 +36,8 @@ const FounderDashboard = () => {
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
-
-  const LeftForInvestment = parseFloat(posts.fundingAmount) - 70000;
+  const funds = parseFloat(posts.fundingAmount);
+  const LeftForInvestment = funds - 70000;
 
   return (
     <div>
