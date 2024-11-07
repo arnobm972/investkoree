@@ -86,10 +86,10 @@ export const router = createBrowserRouter([
       {
         path: "/founderdashboard",
         element: (
-          // <PrivateFounderRoute>
-          //   <FounderDashboard></FounderDashboard>
-          // </PrivateFounderRoute>
-          <FounderDashboard></FounderDashboard>
+          <PrivateFounderRoute>
+            <FounderDashboard></FounderDashboard>
+          </PrivateFounderRoute>
+          // <FounderDashboard></FounderDashboard>
         ),
       },
       {
