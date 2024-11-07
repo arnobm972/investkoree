@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (response.ok) {
-        const userData = { email };
+        const userData = { email, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token); // Update the token state
@@ -83,8 +83,8 @@ export const AuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (response.ok) {
-        const { userId } = result;
-        const userData = { email, userId };
+        const { userId, role } = result;
+        const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token); // Update the token state
