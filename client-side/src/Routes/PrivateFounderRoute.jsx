@@ -7,7 +7,7 @@ const PrivateFounderRoute = ({ children }) => {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
-  if (userdata.role !== "founder") {
+  if (!userdata || userdata.role !== "founder") {
     return <Navigate to="/founderlogin" />; // Redirect to login if not authenticated as founder
   }
 

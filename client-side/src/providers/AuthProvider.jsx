@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext(null);
 
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false); // Add loading state
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -94,6 +96,7 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
+        navigate("/founderdashboard");
       } else {
         throw new Error(result.message || "Login failed");
       }
