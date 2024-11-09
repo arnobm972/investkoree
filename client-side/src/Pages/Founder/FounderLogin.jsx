@@ -12,7 +12,7 @@ const FounderLogin = () => {
     register: false,
     confirm: false,
   });
-  const { createUser, foundersignIn, userdata, logOut } = useAuth();
+  const { createUser, foundersignIn } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -34,12 +34,9 @@ const FounderLogin = () => {
 
     try {
       await foundersignIn(email, password);
-      if (userdata?.role === "founder") {
-        toast.success("Login successful");
-        navigate("/founderdashboard");
-      } else {
-        logOut();
-      }
+
+      toast.success("Login successful");
+      navigate("/founderdashboard");
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");
