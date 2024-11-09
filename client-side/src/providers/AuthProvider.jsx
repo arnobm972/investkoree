@@ -91,12 +91,11 @@ export const AuthProvider = ({ children }) => {
         if (role !== "founder") {
           throw new Error("Access denied: Only founders can log in here.");
         }
-
+        navigate("/founderdashboard");
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
-        navigate("/founderdashboard");
       } else {
         throw new Error(result.message || "Login failed");
       }
