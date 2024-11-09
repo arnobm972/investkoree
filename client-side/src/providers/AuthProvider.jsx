@@ -87,6 +87,7 @@ export const AuthProvider = ({ children }) => {
 
         // Check if the role is "founder" before proceeding
         if (role !== "founder") {
+          throw new Error("Access denied: Only founders can log in here.");
         }
 
         const userData = { email, userId, role };
