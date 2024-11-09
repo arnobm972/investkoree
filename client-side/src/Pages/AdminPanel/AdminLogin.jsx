@@ -11,7 +11,7 @@ const AdminLogin = () => {
     register: false,
     confirm: false,
   });
-  const { createUser, signIn } = useAuth();
+  const { createUser, adminsignIn, userdata, logOut } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -32,9 +32,13 @@ const AdminLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      await signIn(email, password);
-      toast.success("Login successful");
-      navigate("/admindashboard");
+      await adminsignIn(email, password);
+      if (userdata?.role === "admin") {
+        toast.success("Login successful");
+        navigate("/admindashboard");
+      } else {
+        logOut();
+      }
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");

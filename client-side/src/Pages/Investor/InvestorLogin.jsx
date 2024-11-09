@@ -12,7 +12,7 @@ const InvestorLogin = () => {
     register: false,
     confirm: false,
   });
-  const { createUser, signIn } = useAuth();
+  const { createUser, investorsignIn, userdata, logOut } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -33,9 +33,13 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      await signIn(email, password);
-      toast.success("Login successful");
-      navigate("/investordashboard");
+      await investorsignIn(email, password);
+      if (userdata?.role === "investor") {
+        toast.success("Login successful");
+        navigate("/investordashboard");
+      } else {
+        logOut();
+      }
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");
