@@ -5,9 +5,7 @@ import { useState, useEffect } from "react";
 const FounderDashboard = () => {
   const { userdata } = useAuth();
   const [posts, setPosts] = useState([]); // State to hold user posts
-  const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  console.log(userdata);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -22,20 +20,12 @@ const FounderDashboard = () => {
           setPosts(data); // Set the fetched posts
         } catch (error) {
           console.error("Error fetching user posts:", error);
-        } finally {
-          setLoading(false); // Set loading to false after fetching
         }
-      } else {
-        setLoading(false); // Stop loading if userdata is not available
       }
     };
 
     fetchUserPosts();
   }, [userdata]);
-
-  if (loading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
-  }
 
   return (
     <div>

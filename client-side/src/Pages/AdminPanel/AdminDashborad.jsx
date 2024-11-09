@@ -44,7 +44,7 @@ const data = [
 const AdminDashboard = () => {
   const { userdata } = useAuth();
   if (!userdata) {
-    return <span className="loading loading-spinner loading-lg"></span>;
+    return <span className=" loading-spinner loading-lg"></span>;
   }
   return (
     <div>
