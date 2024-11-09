@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error("Access denied: Only founders can log in here.");
         }
         navigate("/founderdashboard");
+        toast.success("Login successful");
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
