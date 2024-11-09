@@ -12,7 +12,7 @@ const FounderLogin = () => {
     register: false,
     confirm: false,
   });
-  const { createUser, foundersignIn, userdata } = useAuth();
+  const { createUser, foundersignIn, userdata, logOut } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -38,6 +38,7 @@ const FounderLogin = () => {
         toast.success("Login successful");
         navigate("/founderdashboard");
       } else {
+        logOut();
         toast.error("Access denied: Only founders can log in here.");
       }
     } catch (err) {
