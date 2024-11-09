@@ -34,6 +34,8 @@ const FounderLogin = () => {
 
     try {
       await foundersignIn(email, password);
+      navigate("/founderdashboard");
+      toast.success("Login successful");
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");
