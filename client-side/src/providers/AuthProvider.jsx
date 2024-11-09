@@ -124,12 +124,11 @@ export const AuthProvider = ({ children }) => {
         if (role !== "investor") {
           throw new Error("Access denied: Only investors can log in here.");
         }
-
+        navigate("/investordashboard");
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
-        navigate("/investordashboard");
       } else {
         throw new Error(result.message || "Login failed");
       }
@@ -158,12 +157,11 @@ export const AuthProvider = ({ children }) => {
         if (role !== "admin") {
           throw new Error("Access denied: Only admins can log in here.");
         }
-
+        navigate("/admindashboard");
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
-        navigate("/admindashboard");
       } else {
         throw new Error(result.message || "Login failed");
       }

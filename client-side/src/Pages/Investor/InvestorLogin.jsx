@@ -34,7 +34,7 @@ const InvestorLogin = () => {
 
     try {
       await investorsignIn(email, password);
-      navigate("/investordashboard");
+
       toast.success("Login successful");
     } catch (err) {
       toast.error(err.message || "Login error");
