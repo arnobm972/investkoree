@@ -1,27 +1,17 @@
-// import { useContext } from "react";
-// import { AuthContext } from "../Providers/AuthProvider";
-// import PropTypes from "prop-types";
-// import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../providers/AuthProvider";
 
-// const PrivateAdminRoute = ({ children }) => {
-//   const { user, loading, userType } = useContext(AuthContext);
-//   const location = useLocation();
+const PrivateAdminRoute = ({ children }) => {
+  const { userdata, loading } = useAuth();
+  if (loading) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
 
-//   if (loading) {
-//     return <span className="loading loading-spinner loading-lg"></span>;
-//   }
+  if (!userdata || userdata.role !== "admin") {
+    return <Navigate to="/adminlogin" />; // Redirect to login if not authenticated as admin
+  }
 
-//   if (user && userType === "admin") {
-//     return children;
-//   }
+  return children; // Render the protected route for admins
+};
 
-//   return (
-//     <Navigate replace state={location.pathname} to="/adminlogin"></Navigate>
-//   );
-// };
-
-// PrivateAdminRoute.propTypes = {
-//   children: PropTypes.node.isRequired,
-// };
-
-// export default PrivateAdminRoute;
+export default PrivateAdminRoute;

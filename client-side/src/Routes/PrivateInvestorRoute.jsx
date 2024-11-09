@@ -1,20 +1,17 @@
-// import { useContext } from "react";
-// import { Navigate, Outlet, useLocation } from "react-router-dom";
-// import { AuthContext } from "../Providers/AuthProvider";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../providers/AuthProvider";
 
-// const PrivateInvestorRoute = () => {
-//   const { user, loading, isAuthenticated, userType } = useContext(AuthContext);
-//   const location = useLocation();
+const PrivateInvestorRoute = ({ children }) => {
+  const { userdata, loading } = useAuth();
+  if (loading) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
 
-//   if (loading) {
-//     return <span className="loading loading-spinner loading-lg"></span>;
-//   }
+  if (!userdata || userdata.role !== "investor") {
+    return <Navigate to="/investorlogin" />; // Redirect to login if not authenticated as investor
+  }
 
-//   if (user && isAuthenticated && userType === "investor") {
-//     return <Outlet />;
-//   } else {
-//     return <Navigate to="/investorlogin" state={{ from: location }} replace />;
-//   }
-// };
+  return children; // Render the protected route for investors
+};
 
-// export default PrivateInvestorRoute;
+export default PrivateInvestorRoute;

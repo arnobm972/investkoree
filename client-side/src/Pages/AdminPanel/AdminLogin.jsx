@@ -1,17 +1,18 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import "react-toastify/dist/ReactToastify.css";
+
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState({
     login: false,
     register: false,
     confirm: false,
   });
-  const { createUser, adminsignIn, userdata, logOut } = useAuth();
+  const { createUser, adminsignIn } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -33,12 +34,8 @@ const AdminLogin = () => {
 
     try {
       await adminsignIn(email, password);
-      if (userdata?.role === "admin") {
-        toast.success("Login successful");
-        navigate("/admindashboard");
-      } else {
-        logOut();
-      }
+      navigate("/admindashboard");
+      toast.success("Login successful");
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");

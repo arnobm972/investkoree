@@ -12,7 +12,7 @@ const InvestorLogin = () => {
     register: false,
     confirm: false,
   });
-  const { createUser, investorsignIn, userdata, logOut } = useAuth();
+  const { createUser, investorsignIn } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -33,13 +33,9 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      await investorsignIn(email, password, role);
-      if (userdata?.role === "investor") {
-        toast.success("Login successful");
-        navigate("/investordashboard");
-      } else {
-        logOut();
-      }
+      await investorsignIn(email, password);
+      navigate("/investordashboard");
+      toast.success("Login successful");
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");
@@ -95,7 +91,7 @@ const InvestorLogin = () => {
     }
 
     try {
-      await createUser(name, email, password, "investor"); // Use the createUser function from context
+      await createUser(name, email, password, "Investor"); // Use the createUser function from context
       toast.success("Registration successful");
       navigate("/investordashboard");
     } catch (err) {

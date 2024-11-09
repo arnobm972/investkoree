@@ -14,9 +14,9 @@ import Stocks from "../Pages/Stocks";
 import GetFunded from "../Pages/GetFunded";
 import FounderDashboard from "../Pages/Founder/FounderDashboard";
 import FounderPost from "../Pages/Founder/FounderPost";
-// import PrivateInvestorRoute from "./PrivateInvestorRoute";
+import PrivateInvestorRoute from "./PrivateInvestorRoute";
 import PrivateFounderRoute from "./PrivateFounderRoute";
-// import PrivateAdminRoute from "./PrivateAdminRoute";
+import PrivateAdminRoute from "./PrivateAdminRoute";
 import ProjectDetail from "../Pages/ProjectDetail";
 
 export const router = createBrowserRouter([
@@ -43,11 +43,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "/admindashboard",
-        element: <AdminDashborad></AdminDashborad>,
+        element: (
+          <PrivateAdminRoute>
+            <AdminDashborad></AdminDashborad>
+          </PrivateAdminRoute>
+        ),
       },
       {
         path: "/projectdetail/:id",
-        element: <ProjectDetail></ProjectDetail>,
+        element: (
+          //   <PrivateInvestorRoute>
+          //   <ProjectDetail></ProjectDetail>
+          // </PrivateInvestorRoute>
+          <ProjectDetail></ProjectDetail>
+        ),
       },
       {
         path: "/pendingprojects",
@@ -61,10 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "/investordashboard",
         element: (
-          // <PrivateInvestorRoute>
-          //   <InvestorDashboard></InvestorDashboard>
-          // </PrivateInvestorRoute>
-          <InvestorDashboard></InvestorDashboard>
+          <PrivateInvestorRoute>
+            <InvestorDashboard></InvestorDashboard>
+          </PrivateInvestorRoute>
+          // <InvestorDashboard></InvestorDashboard>
         ),
       },
       {
@@ -95,10 +104,10 @@ export const router = createBrowserRouter([
       {
         path: "/founderpost",
         element: (
-          // <PrivateFounderRoute>
-          //   <FounderPost></FounderPost>
-          // </PrivateFounderRoute>
-          <FounderPost></FounderPost>
+          <PrivateFounderRoute>
+            <FounderPost></FounderPost>
+          </PrivateFounderRoute>
+          // <FounderPost></FounderPost>
         ),
       },
     ],

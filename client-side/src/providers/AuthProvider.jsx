@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signIn = async (email, password) => {
+  const foundersignIn = async (email, password) => {
     setLoading(true); // Set loading to true when sign-in starts
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
@@ -104,15 +104,82 @@ export const AuthProvider = ({ children }) => {
       setLoading(false); // Set loading to false when sign-in completes
     }
   };
+  const investorsignIn = async (email, password) => {
+    setLoading(true); // Set loading to true when sign-in starts
+    try {
+      const response = await fetch(`${API_URL}/users/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
+      const result = await response.json();
+      if (response.ok) {
+        const { userId, role } = result;
+
+        if (role !== "investor") {
+          throw new Error("Access denied: Only investors can log in here.");
+        }
+
+        const userData = { email, userId, role };
+        setUser(userData);
+        localStorage.setItem("token", result.token);
+        setToken(result.token);
+      } else {
+        throw new Error(result.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error signing in:", error);
+      throw error;
+    } finally {
+      setLoading(false); // Set loading to false when sign-in completes
+    }
+  };
+  const adminsignIn = async (email, password) => {
+    setLoading(true); // Set loading to true when sign-in starts
+    try {
+      const response = await fetch(`${API_URL}/users/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        const { userId, role } = result;
+
+        if (role !== "admin") {
+          throw new Error("Access denied: Only admins can log in here.");
+        }
+
+        const userData = { email, userId, role };
+        setUser(userData);
+        localStorage.setItem("token", result.token);
+        setToken(result.token);
+      } else {
+        throw new Error(result.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error signing in:", error);
+      throw error;
+    } finally {
+      setLoading(false); // Set loading to false when sign-in completes
+    }
+  };
   const authInfo = {
     user,
     token,
     logOut,
     createUser,
-    signIn,
+    foundersignIn,
+    adminsignIn,
+    investorsignIn,
     userdata,
-    loading, // Expose loading state in the context
+    loading,
   };
 
   return (
