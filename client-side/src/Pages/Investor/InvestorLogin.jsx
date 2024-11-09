@@ -33,7 +33,7 @@ const InvestorLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      await investorsignIn(email, password);
+      await investorsignIn(email, password, role);
       if (userdata?.role === "investor") {
         toast.success("Login successful");
         navigate("/investordashboard");

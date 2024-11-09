@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -69,96 +68,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const foundersignIn = async (email, password) => {
+  const signIn = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        const { userId, role, token } = result;
-
-        // Check if the role is "founder"
-        if (role !== "founder") {
-          toast.error("Access denied: Only founders can log in here.");
-          return; // Exit without setting the token or user data
-        }
-
-        // Set user data and token only if role is "founder"
+        const { userId, role } = result;
         const userData = { email, userId, role };
         setUser(userData);
-        localStorage.setItem("token", token);
-        setToken(token);
-      } else {
-        throw new Error(result.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("Error signing in:", error);
-      throw error; // Rethrow the error to handle it in the component
-    }
-  };
-
-  const investorsignIn = async (email, password) => {
-    try {
-      const response = await fetch(`${API_URL}/users/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        const { userId, role, token } = result;
-
-        // Check if the role is "founder"
-        if (role !== "investor") {
-          toast.error("Access denied: Only Investors can log in here.");
-        }
-
-        // Set user data and token only if role is "founder"
-        const userData = { email, userId, role };
-        setUser(userData);
-        localStorage.setItem("token", token);
-        setToken(token);
-      } else {
-        throw new Error(result.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("Error signing in:", error);
-      throw error; // Rethrow the error to handle it in the component
-    }
-  };
-  const adminsignIn = async (email, password) => {
-    try {
-      const response = await fetch(`${API_URL}/users/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        const { userId, role, token } = result;
-
-        // Check if the role is "founder"
-        if (role !== "admin") {
-          toast.error("Access denied: Only Admins can log in here.");
-        }
-
-        // Set user data and token only if role is "founder"
-        const userData = { email, userId, role };
-        setUser(userData);
-        localStorage.setItem("token", token);
-        setToken(token);
+        localStorage.setItem("token", result.token);
+        setToken(result.token); // Update the token state
       } else {
         throw new Error(result.message || "Login failed");
       }
@@ -172,9 +101,7 @@ export const AuthProvider = ({ children }) => {
     token,
     logOut,
     createUser,
-    foundersignIn,
-    investorsignIn,
-    adminsignIn,
+    signIn,
     userdata,
   };
 
