@@ -39,7 +39,6 @@ const FounderLogin = () => {
         navigate("/founderdashboard");
       } else {
         logOut();
-        toast.error("Access denied: Only founders can log in here.");
       }
     } catch (err) {
       toast.error(err.message || "Login error");
