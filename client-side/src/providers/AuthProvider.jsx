@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
         // Check if the role is "founder"
         if (role !== "founder") {
-          throw new Error("Access denied: Only founders can log in here.");
+          toast.error("Access denied: Only founders can log in here.");
         }
 
         // Set user data and token only if role is "founder"
