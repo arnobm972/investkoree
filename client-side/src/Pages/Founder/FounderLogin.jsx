@@ -12,7 +12,7 @@ const FounderLogin = () => {
     register: false,
     confirm: false,
   });
-  const { createUser, signIn } = useAuth();
+  const { createUser, signIn, userdata } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const [error, setError] = useState(null);
@@ -33,15 +33,13 @@ const FounderLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      const user = await signIn(email, password);
-
-      if (user.role !== "founder") {
-        setError("Access restricted to founders only.");
-        toast.error("Access restricted to founders only.");
-        return;
+      await signIn(email, password);
+      if (userdata?.role === "founder") {
+        toast.success("Login successful");
+        navigate("/founderdashboard");
+      } else {
+        toast.error("Access denied: Only founders can log in here.");
       }
-      toast.success("Login successful");
-      navigate("/founderdashboard");
     } catch (err) {
       toast.error(err.message || "Login error");
       setError(err.message || "Login error");
