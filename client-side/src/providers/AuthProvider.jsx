@@ -7,11 +7,13 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userdata, setUserData] = useState(null);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false); // Add loading state
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const fetchUser = async () => {
       if (!token) return;
+      setLoading(true); // Set loading to true when fetching starts
 
       try {
         const response = await fetch(`${API_URL}/api/profile`, {
@@ -27,30 +29,29 @@ export const AuthProvider = ({ children }) => {
         setUserData(userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when fetching completes
       }
     };
 
     fetchUser();
-  }, [token, API_URL]); // Added API_URL to the dependency array
+  }, [token, API_URL]);
 
   const logOut = () => {
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
   };
+
   const createUser = async (name, email, password, role) => {
+    setLoading(true); // Set loading to true when registration starts
     try {
       const response = await fetch(`${API_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          name,
-          password,
-          role, // Adjust based on your role system
-        }),
+        body: JSON.stringify({ email, name, password, role }),
       });
 
       const result = await response.json();
@@ -58,34 +59,33 @@ export const AuthProvider = ({ children }) => {
         const userData = { email, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
-        setToken(result.token); // Update the token state
+        setToken(result.token);
       } else {
         throw new Error(result.message || "Registration failed");
       }
     } catch (error) {
       console.error("Error creating user:", error);
-      throw error; // Rethrow the error to handle it in the component
+      throw error;
+    } finally {
+      setLoading(false); // Set loading to false when registration completes
     }
   };
 
   const signIn = async (email, password) => {
+    setLoading(true); // Set loading to true when sign-in starts
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const result = await response.json();
       if (response.ok) {
         const { userId, role } = result;
 
-        // Check if the role is "founder" before proceeding
         if (role !== "founder") {
           throw new Error("Access denied: Only founders can log in here.");
         }
@@ -93,15 +93,18 @@ export const AuthProvider = ({ children }) => {
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
-        setToken(result.token); // Update the token state
+        setToken(result.token);
       } else {
         throw new Error(result.message || "Login failed");
       }
     } catch (error) {
       console.error("Error signing in:", error);
-      throw error; // Rethrow the error to handle it in the component
+      throw error;
+    } finally {
+      setLoading(false); // Set loading to false when sign-in completes
     }
   };
+
   const authInfo = {
     user,
     token,
@@ -109,10 +112,13 @@ export const AuthProvider = ({ children }) => {
     createUser,
     signIn,
     userdata,
+    loading, // Expose loading state in the context
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>
+      {loading ? <div>Loading...</div> : children}
+    </AuthContext.Provider>
   );
 };
 
@@ -120,8 +126,6 @@ AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export default AuthProvider;
