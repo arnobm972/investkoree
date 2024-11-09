@@ -130,8 +130,6 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
-        navigate("/investordashboard");
-        toast.success("Login successful");
       } else {
         throw new Error(result.message || "Login failed");
       }
@@ -165,8 +163,6 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
-        navigate("/admindashboard");
-        toast.success("Login successful");
       } else {
         throw new Error(result.message || "Login failed");
       }
