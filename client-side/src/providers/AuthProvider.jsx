@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AuthContext = createContext(null);
 
@@ -126,6 +128,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error("Access denied: Only investors can log in here.");
         }
         navigate("/investordashboard");
+        toast.success("Login successful");
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
@@ -159,6 +162,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error("Access denied: Only admins can log in here.");
         }
         navigate("/admindashboard");
+        toast.success("Login successful");
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
