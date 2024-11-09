@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
