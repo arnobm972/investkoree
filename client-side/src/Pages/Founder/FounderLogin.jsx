@@ -33,7 +33,13 @@ const FounderLogin = () => {
     const password = form.get("u_signin_pass");
 
     try {
-      await signIn(email, password);
+      const user = await signIn(email, password);
+
+      if (user.role !== "founder") {
+        setError("Access restricted to founders only.");
+        toast.error("Access restricted to founders only.");
+        return;
+      }
       toast.success("Login successful");
       navigate("/founderdashboard");
     } catch (err) {
