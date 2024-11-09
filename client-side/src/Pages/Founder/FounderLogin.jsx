@@ -47,6 +47,7 @@ const FounderLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);

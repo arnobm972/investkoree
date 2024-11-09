@@ -86,6 +86,7 @@ export const AuthProvider = ({ children }) => {
         // Check if the role is "founder"
         if (role !== "founder") {
           toast.error("Access denied: Only founders can log in here.");
+          return; // Exit without setting the token or user data
         }
 
         // Set user data and token only if role is "founder"
@@ -101,6 +102,7 @@ export const AuthProvider = ({ children }) => {
       throw error; // Rethrow the error to handle it in the component
     }
   };
+
   const investorsignIn = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
