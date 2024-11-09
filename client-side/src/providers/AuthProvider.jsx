@@ -97,7 +97,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", result.token);
         setToken(result.token);
         navigate("/founderdashboard");
-        toast.success("Login successful");
       } else {
         throw new Error(result.message || "Login failed");
       }
