@@ -68,26 +68,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signIn = async (email, password) => {
+  const foundersignIn = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        const { userId, role } = result;
+        const { userId, role, token } = result;
+
+        // Check if the role is "founder"
+        if (role !== "founder") {
+          throw new Error("Access denied: Only founders can log in here.");
+        }
+
+        // Set user data and token only if role is "founder"
         const userData = { email, userId, role };
         setUser(userData);
-        localStorage.setItem("token", result.token);
-        setToken(result.token); // Update the token state
+        localStorage.setItem("token", token);
+        setToken(token);
       } else {
         throw new Error(result.message || "Login failed");
       }
@@ -96,12 +100,13 @@ export const AuthProvider = ({ children }) => {
       throw error; // Rethrow the error to handle it in the component
     }
   };
+
   const authInfo = {
     user,
     token,
     logOut,
     createUser,
-    signIn,
+    foundersignIn,
     userdata,
   };
 
