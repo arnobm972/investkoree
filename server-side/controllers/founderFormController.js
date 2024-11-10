@@ -56,6 +56,7 @@ export const createFounderPost = async (req, res) => {
         fields[field] = fields[field][0];
       }
     });
+    
 
     // Destructure sanitized fields
     const {
@@ -69,20 +70,46 @@ export const createFounderPost = async (req, res) => {
     if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
-    
+   
     console.log(files);
     // Destructure file paths from the files object
     const businessPic = Array.isArray(files.businessPicture) 
       ? files.businessPicture.map(file => file.filepath) 
       : [files.businessPicture?.filepath || ''];
+
+      if (!businessPic.length) {
+        return res.status(400).json({ error: "At least one business picture is required." });
+      }
+      
     
-    const nidFile = files.nidCopy?.filepath || '';
-    const tinFile = files.tinCopy?.filepath || '';
-    const taxFile = files.taxCopy?.filepath || '';
-    const tradeLicenseFile = files.tradeLicense?.filepath || '';
-    const bankStatementFile = files.bankStatement?.filepath || '';
-    const securityFile = files.securityFile?.filepath || '';
-    const financialFile = files.financialFile?.filepath || '';
+      const nidFile = Array.isArray(files.nidCopy) 
+      ? files.nidCopy[0].filepath 
+      : files.nidCopy?.filepath || '';
+      const tinFile = Array.isArray(files.tinCopy) 
+      ? files.tinCopy[0].filepath 
+      : files.tinCopy?.filepath || '';
+    
+      const taxFile = Array.isArray(files.taxCopy) 
+      ? files.taxCopy[0].filepath 
+      : files.taxCopy?.filepath || '';
+    
+      const tradeLicenseFile = Array.isArray(files.tradeLicense) 
+      ? files.tradeLicense[0].filepath 
+      : files.tradeLicense?.filepath || '';
+    
+      const bankStatementFile = Array.isArray(files.bankStatement) 
+      ? files.bankStatement[0].filepath 
+      : files.bankStatement?.filepath || '';
+    
+      const securityFile = Array.isArray(files.securityFile) 
+      ? files.securityFile[0].filepath 
+      : files.securityFile?.filepath || '';
+    
+      const financialFile = Array.isArray(files.financialFile) 
+      ? files.financialFile[0].filepath 
+      : files.financialFile?.filepath || '';
+    
+    
 
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
