@@ -32,9 +32,8 @@ const FounderPost = () => {
   const navigate = useNavigate();
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
-  // const [images, setImages] = useState([]);
   const [nidFile, setNidFile] = useState(null);
-  const [businessPic, setbusinessPic] = useState(null);
+  const [businessPics, setBusinessPics] = useState([]); // Changed to handle multiple images
   const [tinFile, setTinFile] = useState(null);
   const [taxFile, setTaxFile] = useState(null);
   const [tradeLicenseFile, setTradeLicenseFile] = useState(null);
@@ -44,7 +43,8 @@ const FounderPost = () => {
 
   // Handle image file changes
   const handleFileChange = (e, setFile) => setFile(e.target.files[0]);
-  // const handleMultipleFileChange = (e) => setImages(Array.from(e.target.files));
+  const handleMultipleFileChange = (e) =>
+    setBusinessPics(Array.from(e.target.files));
 
   // Handle input change for text fields and selects
   const handleInputChange = (e) => {
@@ -83,15 +83,10 @@ const FounderPost = () => {
     });
 
     // Append multiple images for businessPicture
-    // images.forEach(
-    //   (image) => postData.append("businessPicture", image) // Append without index
-    // );
-    // for (let pair of postData.entries()) {
-    //   console.log(`${pair[0]}: ${pair[1]}`);
-    // }
+    businessPics.forEach((image) => postData.append("businessPicture", image)); // Append without index
+
     // Append single files for other fields
     postData.append("nidCopy", nidFile);
-    postData.append("businessPicture", businessPic);
     postData.append("tinCopy", tinFile);
     postData.append("taxCopy", taxFile);
     postData.append("tradeLicense", tradeLicenseFile);
@@ -99,11 +94,10 @@ const FounderPost = () => {
     postData.append("securityFile", securityFile);
     postData.append("financialFile", financialFile);
 
-    const token = localStorage.getItem("token");
-    // Adjust this based on your implementation
+    const token = localStorage.getItem("token"); // Adjust this based on your implementation
 
     try {
-      const response = await fetch(`${API_URL}/founderpost/postdata`, {
+      const response = await fetch(`${API_URL}/founderpost/upload`, {
         method: "POST",
         body: postData,
         headers: {
@@ -115,7 +109,10 @@ const FounderPost = () => {
         navigate("/");
         toast.success("Form submitted successfully!");
       } else {
-        toast.error("Failed to submit form.");
+        const errorData = await response.json();
+        toast.error(
+          `Failed to submit form: ${errorData.error || "Unknown error"}`
+        );
       }
     } catch (error) {
       toast.error("Error submitting form.");
@@ -130,7 +127,7 @@ const FounderPost = () => {
         encType="multipart/form-data"
         onSubmit={handleSubmit}
       >
-        <p className="lg:text-2xl xs:text-lg xxs:text-lg sm:text-lg  font-bold my-10">
+        <p className="lg:text-2xl xs:text-lg xxs:text-lg sm:text-lg font-bold my-10">
           For Business Investment
         </p>
 
@@ -194,7 +191,8 @@ const FounderPost = () => {
             name="businessPicture"
             accept="image/*"
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-            onChange={(e) => handleFileChange(e, setbusinessPic)}
+            onChange={handleMultipleFileChange} // Handle multiple file changes
+            multiple // Allow multiple file uploads
             required
           />
         </label>
@@ -238,7 +236,8 @@ const FounderPost = () => {
             type="file"
             name="tinCopy"
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-            onChange={(e) => handleFileChange(e, setTinFile)} // Pass the correct setter
+            onChange={(e) => handleFileChange(e, setTinFile)} // Pass the correct
+            // Pass the correct setter
             required
           />
         </label>
@@ -264,7 +263,7 @@ const FounderPost = () => {
           </div>
           <input
             type="file"
-            name="tradelicense"
+            name="tradeLicense" // Ensure this matches the backend
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
             onChange={(e) => handleFileChange(e, setTradeLicenseFile)} // Pass the correct setter
             required
@@ -346,9 +345,9 @@ const FounderPost = () => {
             <option disabled value="">
               Pick a Duration
             </option>
-            <option value="short-term">short-term(2 weeks to 1 month)</option>
-            <option value="mid-term">mid-term(2 months to 6 months)</option>
-            <option value="long-term">long-term(6 months+)</option>
+            <option value="short-term">short-term (2 weeks to 1 month)</option>
+            <option value="mid-term">mid-term (2 months to 6 months)</option>
+            <option value="long-term">long-term (6 months+)</option>
           </select>
         </label>
 
@@ -508,97 +507,23 @@ const FounderPost = () => {
           />
         </label>
 
-        {/* Funding Help */}
+        {/* Additional Information */}
         <label className="form-control my-3 w-full max-w-xs">
           <div className="label">
-            <span className="label-text">How Would The Funding Help You</span>
+            <span className="label-text">Additional Information</span>
           </div>
           <textarea
-            name="fundingHelp"
-            value={formData.fundingHelp}
+            name="additionalInfo"
+            value={formData.additionalInfo}
             onChange={handleInputChange}
             placeholder="Type here"
-            className="textarea textarea-warning w-full max-w-xs"
-            required
-          ></textarea>
-        </label>
-
-        {/* Return Plan */}
-        <label className="form-control my-3 w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">
-              How Do You Plan To Return The Investment
-            </span>
-          </div>
-          <textarea
-            name="returnPlan"
-            value={formData.returnPlan}
-            onChange={handleInputChange}
-            placeholder="Type here"
-            className="textarea textarea-warning w-full max-w-xs"
-            required
-          ></textarea>
-        </label>
-        <label className="form-control my-3 w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">When is Your Return Date</span>
-          </div>
-          <textarea
-            name="returndate"
-            value={formData.returndate}
-            onChange={handleInputChange}
-            placeholder="Type here"
-            className="textarea textarea-warning w-full max-w-xs"
-            required
-          ></textarea>
-        </label>
-        <label className="form-control my-3 w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">What is your projectedROI</span>
-          </div>
-          <textarea
-            name="projectedROI"
-            value={formData.projectedROI}
-            onChange={handleInputChange}
-            placeholder="Type here"
-            className="textarea textarea-warning w-full max-w-xs"
-            required
-          ></textarea>
-        </label>
-
-        {/* Business Safety */}
-        <label className="form-control my-3 w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">
-              How Safe Do You Consider Your Business To Be?
-            </span>
-          </div>
-          <textarea
-            name="businessSafety"
-            value={formData.businessSafety}
-            onChange={handleInputChange}
-            placeholder="Type here"
-            className="textarea textarea-warning w-full max-w-xs"
-            required
-          ></textarea>
-        </label>
-
-        {/* Additional Comments */}
-        <label className="form-control my-3 w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Any Additional Comments?</span>
-          </div>
-          <textarea
-            name="additionalComments"
-            value={formData.additionalComments}
-            onChange={handleInputChange}
-            placeholder="Type here"
-            className="textarea textarea-warning w-full max-w-xs"
-          ></textarea>
+            className="textarea textarea-bordered textarea-warning w-full max-w-xs"
+            rows="4"
+          />
         </label>
 
         {/* Submit Button */}
-        <button type="submit" className="btn btn-warning">
+        <button type="submit" className="btn btn-warning w-full max-w-xs">
           Submit
         </button>
       </form>

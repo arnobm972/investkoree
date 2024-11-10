@@ -50,7 +50,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use('/upload', express.static(path.join(__dirname, 'upload')))
+app.use('/upload', express.static(path.join(__dirname, '../../client-side/Public/upload')));
 
 // Route definitions
 app.use("/users", signupRoute);
