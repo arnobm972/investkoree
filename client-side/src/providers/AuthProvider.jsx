@@ -93,12 +93,13 @@ export const AuthProvider = ({ children }) => {
         if (role !== "founder") {
           throw new Error("Access denied: Only founders can log in here.");
         }
-        navigate("/founderdashboard");
-        toast.success("Login successful");
+
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
+        navigate("/founderdashboard");
+        toast.success("Login successful");
       } else {
         throw new Error(result.message || "Login failed");
       }
@@ -127,12 +128,13 @@ export const AuthProvider = ({ children }) => {
         if (role !== "investor") {
           throw new Error("Access denied: Only investors can log in here.");
         }
-        navigate("/investordashboard");
-        toast.success("Login successful");
+
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
+        navigate("/investordashboard");
+        toast.success("Login successful");
       } else {
         throw new Error(result.message || "Login failed");
       }
@@ -161,12 +163,13 @@ export const AuthProvider = ({ children }) => {
         if (role !== "admin") {
           throw new Error("Access denied: Only admins can log in here.");
         }
-        navigate("/admindashboard");
-        toast.success("Login successful");
+
         const userData = { email, userId, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
+        navigate("/admindashboard");
+        toast.success("Login successful");
       } else {
         throw new Error(result.message || "Login failed");
       }
