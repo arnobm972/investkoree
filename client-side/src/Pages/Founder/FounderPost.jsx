@@ -103,7 +103,7 @@ const FounderPost = () => {
     // Adjust this based on your implementation
 
     try {
-      const response = await fetch(`${API_URL}/founderpost/postdata`, {
+      const response = await fetch(`${API_URL}/founderpost/upload`, {
         method: "POST",
         body: postData,
         headers: {
