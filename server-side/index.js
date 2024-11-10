@@ -12,7 +12,7 @@ import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import founderPostRoute from './routes//founderPostRoute.js'
 import { fileURLToPath } from 'url';
 import userPostsRoute from './routes/userPostsRoute.js'
-import { authToken } from './utils/authMiddleware.js';
+
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -57,7 +57,7 @@ app.use('/upload', express.static(path.join(__dirname, '../../client-side/Public
 app.use("/users", signupRoute);
 app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
-app.use("/founderpost", founderFormPostRoute,authToken);
+app.use("/founderpost", founderFormPostRoute);
 // app.use('/users', userRoutes);
 app.use('/api', userSpecificRoute);
 app.use('/api', userPostsRoute);

@@ -4,7 +4,7 @@ import { authToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-// Use the createFounderPost controller directly as the route handler
-router.post('/upload', createFounderPost,authToken);
+// Apply authToken middleware before createFounderPost
+router.post('/upload', authToken, createFounderPost);
 
 export default router;
