@@ -64,7 +64,7 @@ export const createFounderPost = async (req, res) => {
     } = fields;
 
     // Validate required fields
-    if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety) {
+    if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
     
