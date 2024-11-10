@@ -15,7 +15,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 export const createFounderPost = async (req, res) => {
-  console.log(req.user)
+  console.log(req.user);
   const form = formidable({
     uploadDir: uploadDir,
     keepExtensions: true,
@@ -36,11 +36,26 @@ export const createFounderPost = async (req, res) => {
 
   try {
     const { fields, files } = await parseForm();
-    console.log(req.user)
+    console.log(req.user);
 
     const userId = req.user._id; // Make sure req.user is populated by authentication middleware
 
-    // Destructure fields from the form data
+    // Sanitize and ensure all required fields are strings (if they come as arrays)
+    const fieldsToCheck = [
+      "businessName", "email", "address", "phone", "businessCategory", "businessSector",
+      "investmentDuration", "securityOption", "otherSecurityOption", "documentationOption",
+      "otherDocumentationOption", "assets", "revenue", "fundingAmount", "fundingHelp", "returndate",
+      "projectedROI", "returnPlan", "businessSafety", "additionalComments"
+    ];
+
+    // Convert array fields to string if necessary
+    fieldsToCheck.forEach((field) => {
+      if (Array.isArray(fields[field])) {
+        fields[field] = fields[field][0];
+      }
+    });
+
+    // Destructure sanitized fields
     const {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
