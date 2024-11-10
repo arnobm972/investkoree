@@ -35,6 +35,7 @@ export const createFounderPost = async (req, res) => {
 
   try {
     const { fields, files } = await parseForm();
+    console.log(req.user)
 
     const userId = req.user._id; // Make sure req.user is populated by authentication middleware
 
