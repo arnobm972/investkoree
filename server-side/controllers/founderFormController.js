@@ -13,8 +13,9 @@ const uploadDir = path.join(__dirname, '../../client-side/Public/upload');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-console.log(req.user)
+
 export const createFounderPost = async (req, res) => {
+  console.log(req.user)
   const form = formidable({
     uploadDir: uploadDir,
     keepExtensions: true,
