@@ -4,29 +4,30 @@ import { useState, useEffect } from "react";
 
 const FounderDashboard = () => {
   const { userdata } = useAuth();
-  const [posts, setPosts] = useState([]); // State to hold user posts
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null); // State to hold any error messages
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const fetchUserPosts = async () => {
-      // Ensure userdata and userdata.id are available
       if (userdata && userdata._id) {
         try {
           const response = await fetch(`${API_URL}/api/${userdata._id}/posts`);
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error(`Network response was not ok: ${response.status}`);
           }
-          const data = await response.json(); // Parse the JSON response
-          setPosts(data); // Set the fetched posts
+          const data = await response.json();
+          setPosts(data);
+          setError(null); // Reset error state on successful fetch
         } catch (error) {
           console.error("Error fetching user posts:", error);
+          setError("Failed to load posts. Please try again later.");
         }
       }
     };
 
     fetchUserPosts();
   }, [userdata]);
-
   return (
     <div>
       <div className="drawer lg:drawer-open">
