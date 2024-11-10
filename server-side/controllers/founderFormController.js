@@ -2,12 +2,21 @@ import FounderPost from '../models/founderFormPostModels.js';
 import formidable from 'formidable';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
+// Define __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Define upload path and ensure it exists
+const uploadDir = path.join(__dirname, '../../client-side/Public/upload');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 export const createFounderPost = async (req, res) => {
   const form = formidable({
-    uploadDir: path.join(__dirname, '../../client-side/Public/upload'),
+    uploadDir: uploadDir,
     keepExtensions: true,
   });
 
