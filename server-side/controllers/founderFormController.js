@@ -15,7 +15,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 export const createFounderPost = async (req, res) => {
-  console.log(req.user);
+ 
   const form = formidable({
     uploadDir: uploadDir,
     keepExtensions: true,
@@ -64,10 +64,11 @@ export const createFounderPost = async (req, res) => {
     } = fields;
 
     // Validate required fields
-    if (!businessName || !email || !address || !phone || !businessCategory || !businessSector ||!fundingHelp ||!returnPlan||projectedROI||businessSafety) {
+    if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety) {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
-
+    
+    console.log(files);
     // Destructure file paths from the files object
     const businessPic = Array.isArray(files.businessPicture) 
       ? files.businessPicture.map(file => file.filepath) 
