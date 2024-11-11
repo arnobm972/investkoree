@@ -1,40 +1,40 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "@fortawesome/fontawesome-free/css/all.css";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+// import "react-toastify/dist/ReactToastify.css";
+// import { useNavigate } from "react-router-dom";
 
 const FounderPost = () => {
-  const [formData, setFormData] = useState({
-    // businessName: "",
-    // email: "",
-    // address: "",
-    // phone: "",
-    // businessCategory: "",
-    // businessSector: "",
-    // investmentDuration: "",
-    // securityOption: "",
-    // otherSecurityOption: "",
-    // documentationOption: "",
-    // otherDocumentationOption: "",
-    // assets: "",
-    // revenue: "",
-    // fundingAmount: "",
-    // fundingHelp: "",
-    // returnPlan: "",
-    // businessSafety: "",
-    // additionalComments: "",
-    // projectedROI: "",
-    // returndate: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   businessName: "",
+  //   email: "",
+  //   address: "",
+  //   phone: "",
+  //   businessCategory: "",
+  //   businessSector: "",
+  //   investmentDuration: "",
+  //   securityOption: "",
+  //   otherSecurityOption: "",
+  //   documentationOption: "",
+  //   otherDocumentationOption: "",
+  //   assets: "",
+  //   revenue: "",
+  //   fundingAmount: "",
+  //   fundingHelp: "",
+  //   returnPlan: "",
+  //   businessSafety: "",
+  //   additionalComments: "",
+  //   projectedROI: "",
+  //   returndate: "",
+  // });
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  const navigate = useNavigate();
+  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  // const navigate = useNavigate();
   // const [otherOption, setOtherOption] = useState(false);
   // const [otherDocumentation, setOtherDocumentation] = useState(false);
   // const [images, setImages] = useState([]);
   // const [nidFile, setNidFile] = useState(null);
-  const [businessPic, setbusinessPic] = useState(null);
+  // const [businessPic, setbusinessPic] = useState(null);
   // const [tinFile, setTinFile] = useState(null);
   // const [taxFile, setTaxFile] = useState(null);
   // const [tradeLicenseFile, setTradeLicenseFile] = useState(null);
@@ -43,7 +43,7 @@ const FounderPost = () => {
   // const [financialFile, setFinancialFile] = useState(null);
 
   // Handle image file changes
-  const handleFileChange = (e, setFile) => setFile(e.target.files[0]);
+  // const handleFileChange = (e, setFile) => setFile(e.target.files[0]);
   // const handleMultipleFileChange = (e) => setImages(Array.from(e.target.files));
 
   // Handle input change for text fields and selects
@@ -74,51 +74,51 @@ const FounderPost = () => {
   // };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    const postData = new FormData();
-    // Append form data fields
-    Object.keys(formData).forEach((key) => {
-      postData.append(key, formData[key]);
-      const value = Array.isArray(formData[key])
-        ? formData[key][0]
-        : formData[key];
-      postData.append(key, value);
-    });
+  //   const postData = new FormData();
+  //   // Append form data fields
+  //   Object.keys(formData).forEach((key) => {
+  //     postData.append(key, formData[key]);
+  //     const value = Array.isArray(formData[key])
+  //       ? formData[key][0]
+  //       : formData[key];
+  //     postData.append(key, value);
+  //   });
 
-    // Append single files for other fields
-    if (businessPic) postData.append("businessPicture", businessPic);
-    // if (nidFile) postData.append("nidCopy", nidFile);
-    // if (tinFile) postData.append("tinCopy", tinFile);
-    // if (taxFile) postData.append("taxCopy", taxFile);
-    // if (tradeLicenseFile) postData.append("tradeLicense", tradeLicenseFile);
-    // if (bankStatementFile) postData.append("bankStatement", bankStatementFile);
-    // if (securityFile) postData.append("securityFile", securityFile);
-    // if (financialFile) postData.append("financialFile", financialFile);
+  //   // Append single files for other fields
+  //   if (businessPic) postData.append("businessPicture", businessPic);
+  //   // if (nidFile) postData.append("nidCopy", nidFile);
+  //   // if (tinFile) postData.append("tinCopy", tinFile);
+  //   // if (taxFile) postData.append("taxCopy", taxFile);
+  //   // if (tradeLicenseFile) postData.append("tradeLicense", tradeLicenseFile);
+  //   // if (bankStatementFile) postData.append("bankStatement", bankStatementFile);
+  //   // if (securityFile) postData.append("securityFile", securityFile);
+  //   // if (financialFile) postData.append("financialFile", financialFile);
 
-    const token = localStorage.getItem("token");
-    // Adjust this based on your implementation
+  //   const token = localStorage.getItem("token");
+  //   // Adjust this based on your implementation
 
-    try {
-      const response = await fetch(`${API_URL}/founderpost/upload`, {
-        method: "POST",
-        body: postData,
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
-        },
-      });
+  //   try {
+  //     const response = await fetch(`${API_URL}/founderpost/upload`, {
+  //       method: "POST",
+  //       body: postData,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`, // Include the token in the headers
+  //       },
+  //     });
 
-      if (response.ok) {
-        navigate("/");
-        toast.success("Form submitted successfully!");
-      } else {
-        toast.error("Failed to submit form.");
-      }
-    } catch (error) {
-      toast.error("Error submitting form.");
-    }
-  };
+  //     if (response.ok) {
+  //       navigate("/");
+  //       toast.success("Form submitted successfully!");
+  //     } else {
+  //       toast.error("Failed to submit form.");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error submitting form.");
+  //   }
+  // };
 
   return (
     <div>
@@ -126,7 +126,7 @@ const FounderPost = () => {
         className="mb-10"
         method="POST"
         encType="multipart/form-data"
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         action="/upload"
       >
         <p className="lg:text-2xl xs:text-lg xxs:text-lg sm:text-lg  font-bold my-10">
