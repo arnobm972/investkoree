@@ -40,21 +40,31 @@ export const createFounderPost = async (req, res) => {
     const userId = req.user._id; // Make sure req.user is populated by authentication middleware
 
     // Validate required fields
-    const requiredFields = [
+    const fieldsToCheck = [
       "businessName", "email", "address", "phone", "businessCategory", "businessSector",
-      "fundingHelp", "returnPlan", "projectedROI", "businessSafety"
+      "investmentDuration", "securityOption", "otherSecurityOption", "documentationOption",
+      "otherDocumentationOption", "assets", "revenue", "fundingAmount", "fundingHelp", "returndate",
+      "projectedROI", "returnPlan", "businessSafety", "additionalComments"
     ];
-
-    for (const field of requiredFields) {
-      if (!fields[field]) {
-        return res.status(400).json({ error: `${field} is required.` });
+    fieldsToCheck.forEach((field) => {
+      if (Array.isArray(fields[field])) {
+        fields[field] = fields[field][0];
       }
+    });
+    const {
+      businessName, email, address, phone, businessCategory, businessSector,
+      investmentDuration, securityOption, otherSecurityOption, documentationOption,
+      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate,
+      projectedROI, returnPlan, businessSafety, additionalComments
+    } = fields;
+    if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
+      return res.status(400).json({ error: "Please fill in all required fields." });
     }
 
     // Handle file fields (support multiple files for businessPic)
     const businessPic = Array.isArray(files.businessPicture) 
-      ? files.businessPicture.map(file => file.filepath) 
-      : [files.businessPicture?.filepath || ''];
+    ? files.businessPicture[0].filepath 
+    : files.businessPicture?.filepath || '';
 
     if (!businessPic.length) {
       return res.status(400).json({ error: "At least one business picture is required." });
@@ -93,24 +103,24 @@ export const createFounderPost = async (req, res) => {
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
       userId,
-      businessName: fields.businessName,
-      email: fields.email,
-      address: fields.address,
-      phone: fields.phone,
-      businessCategory: fields.businessCategory,
-      businessSector: fields.businessSector,
-      investmentDuration: fields.investmentDuration,
-      securityOption: fields.securityOption,
-      otherSecurityOption: fields.otherSecurityOption,
-      documentationOption: fields.documentationOption,
-      otherDocumentationOption: fields.otherDocumentationOption,
-      assets: fields.assets,
-      revenue: fields.revenue,
-      fundingAmount: fields.fundingAmount,
-      fundingHelp: fields.fundingHelp,
-      returnPlan: fields.returnPlan,
-      businessSafety: fields.businessSafety,
-      additionalComments: fields.additionalComments,
+      businessName,
+      email,
+      address,
+      phone,
+      businessCategory,
+      businessSector,
+      investmentDuration,
+      securityOption,
+      otherSecurityOption,
+      documentationOption,
+      otherDocumentationOption,
+      assets,
+      revenue,
+      fundingAmount,
+      fundingHelp,
+      returnPlan,
+      businessSafety,
+      additionalComments,
       businessPic,
       nidFile,
       tinFile,
@@ -119,8 +129,8 @@ export const createFounderPost = async (req, res) => {
       bankStatementFile,
       securityFile,
       financialFile,
-      returndate: fields.returndate,
-      projectedROI: fields.projectedROI
+      returndate,
+      projectedROI
     });
 
     await newPost.save();

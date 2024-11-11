@@ -48,10 +48,11 @@ const FounderPost = () => {
 
   // Handle input change for text fields and selects
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // This assumes single value inputs
+    }));
   };
 
   const handleSecurityOptionChange = (e) => {
