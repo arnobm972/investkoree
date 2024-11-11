@@ -37,7 +37,6 @@ export const createFounderPost = async (req, res) => {
     console.log("Parsed fields:", fields);
     console.log("Parsed files:", files);
 
-    const userId = req.user._id; // Make sure req.user is populated by authentication middleware
 
     // Validate required fields
     const fieldsToCheck = [
@@ -60,12 +59,12 @@ export const createFounderPost = async (req, res) => {
     if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
-
+    const userId = req.user._id;
     // Handle file fields (support multiple files for businessPic)
     const businessPic = Array.isArray(files.businessPicture) 
     ? files.businessPicture[0].filepath 
     : files.businessPicture?.filepath || '';
-    
+
     // Handle other file fields
     const nidFile = Array.isArray(files.nidCopy) 
       ? files.nidCopy[0].filepath 
