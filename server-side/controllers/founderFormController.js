@@ -13,14 +13,12 @@ const uploadDir = path.join(__dirname, '../../client-side/Public/upload');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-
 export const createFounderPost = async (req, res) => {
   const form = formidable({
     uploadDir: uploadDir,
     keepExtensions: true,
   });
 
-  // Wrap form.parse in a Promise to use async/await
   const parseForm = () => {
     return new Promise((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
@@ -41,35 +39,17 @@ export const createFounderPost = async (req, res) => {
 
     const userId = req.user._id; // Make sure req.user is populated by authentication middleware
 
-    // Sanitize and ensure all required fields are strings (if they come as arrays)
-    const fieldsToCheck = [
+    // Validate required fields
+    const requiredFields = [
       "businessName", "email", "address", "phone", "businessCategory", "businessSector",
-      "investmentDuration", "securityOption", "otherSecurityOption", "documentationOption",
-      "otherDocumentationOption", "assets", "revenue", "fundingAmount", "fundingHelp", "returndate",
-      "projectedROI", "returnPlan", "businessSafety", "additionalComments"
+      "fundingHelp", "returnPlan", "projectedROI", "businessSafety"
     ];
 
-    // Convert array fields to string if necessary
-    fieldsToCheck.forEach((field) => {
-      if (Array.isArray(fields[field])) {
-        fields[field] = fields[field][0];
+    for (const field of requiredFields) {
+      if (!fields[field]) {
+        return res.status(400).json({ error: `${field} is required.` });
       }
-    });
-
-    // Destructure sanitized fields
-    const {
-      businessName, email, address, phone, businessCategory, businessSector,
-      investmentDuration, securityOption, otherSecurityOption, documentationOption,
-      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate,
-      projectedROI, returnPlan, businessSafety, additionalComments
-    } = fields;
-
-    // Validate required fields
-    if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
-      return res.status(400).json({ error: "Please fill in all required fields." });
     }
-
-    console.log("Files received:", files);
 
     // Handle file fields (support multiple files for businessPic)
     const businessPic = Array.isArray(files.businessPicture) 
@@ -84,8 +64,7 @@ export const createFounderPost = async (req, res) => {
     const nidFile = Array.isArray(files.nidCopy) 
       ? files.nidCopy[0].filepath 
       : files.nidCopy?.filepath || '';
-    
-    const tinFile = Array.isArray(files.tinCopy) 
+      const tinFile = Array.isArray(files.tinCopy) 
       ? files.tinCopy[0].filepath 
       : files.tinCopy?.filepath || '';
     
@@ -112,24 +91,24 @@ export const createFounderPost = async (req, res) => {
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
       userId,
-      businessName,
-      email,
-      address,
-      phone,
-      businessCategory,
-      businessSector,
-      investmentDuration,
-      securityOption,
-      otherSecurityOption,
-      documentationOption,
-      otherDocumentationOption,
-      assets,
-      revenue,
-      fundingAmount,
-      fundingHelp,
-      returnPlan,
-      businessSafety,
-      additionalComments,
+      businessName: fields.businessName,
+      email: fields.email,
+      address: fields.address,
+      phone: fields.phone,
+      businessCategory: fields.businessCategory,
+      businessSector: fields.businessSector,
+      investmentDuration: fields.investmentDuration,
+      securityOption: fields.securityOption,
+      otherSecurityOption: fields.otherSecurityOption,
+      documentationOption: fields.documentationOption,
+      otherDocumentationOption: fields.otherDocumentationOption,
+      assets: fields.assets,
+      revenue: fields.revenue,
+      fundingAmount: fields.fundingAmount,
+      fundingHelp: fields.fundingHelp,
+      returnPlan: fields.returnPlan,
+      businessSafety: fields.businessSafety,
+      additionalComments: fields.additionalComments,
       businessPic,
       nidFile,
       tinFile,
@@ -138,8 +117,8 @@ export const createFounderPost = async (req, res) => {
       bankStatementFile,
       securityFile,
       financialFile,
-      returndate,
-      projectedROI
+      returndate: fields.returndate,
+      projectedROI: fields.projectedROI
     });
 
     await newPost.save();

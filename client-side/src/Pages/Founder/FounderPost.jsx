@@ -82,22 +82,15 @@ const FounderPost = () => {
       postData.append(key, formData[key]);
     });
 
-    // Append multiple images for businessPicture
-    // images.forEach(
-    //   (image) => postData.append("businessPicture", image) // Append without index
-    // );
-    // for (let pair of postData.entries()) {
-    //   console.log(`${pair[0]}: ${pair[1]}`);
-    // }
     // Append single files for other fields
-    postData.append("nidCopy", nidFile);
-    postData.append("businessPicture", businessPic);
-    postData.append("tinCopy", tinFile);
-    postData.append("taxCopy", taxFile);
-    postData.append("tradeLicense", tradeLicenseFile);
-    postData.append("bankStatement", bankStatementFile);
-    postData.append("securityFile", securityFile);
-    postData.append("financialFile", financialFile);
+    if (businessPic) postData.append("businessPicture", businessPic);
+    if (nidFile) postData.append("nidCopy", nidFile);
+    if (tinFile) postData.append("tinCopy", tinFile);
+    if (taxFile) postData.append("taxCopy", taxFile);
+    if (tradeLicenseFile) postData.append("tradeLicense", tradeLicenseFile);
+    if (bankStatementFile) postData.append("bankStatement", bankStatementFile);
+    if (securityFile) postData.append("securityFile", securityFile);
+    if (financialFile) postData.append("financialFile", financialFile);
 
     const token = localStorage.getItem("token");
     // Adjust this based on your implementation
