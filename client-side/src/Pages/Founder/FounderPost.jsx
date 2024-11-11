@@ -80,6 +80,10 @@ const FounderPost = () => {
     // Append form data fields
     Object.keys(formData).forEach((key) => {
       postData.append(key, formData[key]);
+      const value = Array.isArray(formData[key])
+        ? formData[key][0]
+        : formData[key];
+      postData.append(key, value);
     });
 
     // Append single files for other fields

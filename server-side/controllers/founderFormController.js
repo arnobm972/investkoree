@@ -59,6 +59,7 @@ export const createFounderPost = async (req, res) => {
     if (!businessPic.length) {
       return res.status(400).json({ error: "At least one business picture is required." });
     }
+    
 
     // Handle other file fields
     const nidFile = Array.isArray(files.nidCopy) 
@@ -87,6 +88,7 @@ export const createFounderPost = async (req, res) => {
     const financialFile = Array.isArray(files.financialFile) 
       ? files.financialFile[0].filepath 
       : files.financialFile?.filepath || '';
+      
 
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
