@@ -13,12 +13,14 @@ const uploadDir = path.join(__dirname, '../../client-side/Public/upload');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
+
 export const createFounderPost = async (req, res) => {
   const form = formidable({
     uploadDir: uploadDir,
     keepExtensions: true,
   });
 
+  // Wrap form.parse in a Promise to use async/await
   const parseForm = () => {
     return new Promise((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
@@ -36,40 +38,54 @@ export const createFounderPost = async (req, res) => {
 
     console.log("Parsed fields:", fields);
     console.log("Parsed files:", files);
-    const userId = req.user._id;
 
-    // Validate required fields
+    const userId = req.user._id; // Ensure req.user is populated by authentication middleware
+
+    // Ensure all required fields are strings (they might be wrapped in arrays)
     const fieldsToCheck = [
       "businessName", "email", "address", "phone", "businessCategory", "businessSector",
       "investmentDuration", "securityOption", "otherSecurityOption", "documentationOption",
       "otherDocumentationOption", "assets", "revenue", "fundingAmount", "fundingHelp", "returndate",
       "projectedROI", "returnPlan", "businessSafety", "additionalComments"
     ];
+
+    // Convert array fields to string if necessary
     fieldsToCheck.forEach((field) => {
       if (Array.isArray(fields[field])) {
         fields[field] = fields[field][0];
       }
     });
+
+    // Destructure sanitized fields
     const {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate,
       projectedROI, returnPlan, businessSafety, additionalComments
     } = fields;
+
+    // Validate required fields
     if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
 
+    console.log("Files received:", files);
+
     // Handle file fields (support multiple files for businessPic)
     const businessPic = Array.isArray(files.businessPicture) 
-    ? files.businessPicture[0].filepath 
-    : files.businessPicture?.filepath || '';
+      ? files.businessPicture.map(file => file.filepath) 
+      : [files.businessPicture?.filepath || ''];
+
+    if (!businessPic.length) {
+      return res.status(400).json({ error: "At least one business picture is required." });
+    }
 
     // Handle other file fields
     const nidFile = Array.isArray(files.nidCopy) 
       ? files.nidCopy[0].filepath 
       : files.nidCopy?.filepath || '';
-      const tinFile = Array.isArray(files.tinCopy) 
+    
+    const tinFile = Array.isArray(files.tinCopy) 
       ? files.tinCopy[0].filepath 
       : files.tinCopy?.filepath || '';
     
@@ -92,7 +108,6 @@ export const createFounderPost = async (req, res) => {
     const financialFile = Array.isArray(files.financialFile) 
       ? files.financialFile[0].filepath 
       : files.financialFile?.filepath || '';
-      
 
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
