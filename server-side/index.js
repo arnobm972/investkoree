@@ -8,10 +8,15 @@ import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
 import bodyParser from 'body-parser';
 import loginRoute from '../server-side/routes/login.js';
-import founderFormPostRoute from './routes/founderFormPostRoutes.js';
+// import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import founderPostRoute from './routes//founderPostRoute.js'
 import { fileURLToPath } from 'url';
 import userPostsRoute from './routes/userPostsRoute.js'
+import multer from 'multer';
+import path from 'path';
+
+
+const upload = multer({ dest: 'uploads/' })
 
 
 dotenv.config();
@@ -50,17 +55,27 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.urlencoded({extended:false}));
 
-app.use('/upload', express.static(path.join(__dirname, '../../client-side/Public/upload')));
+// app.use('/upload', express.static(path.join(__dirname, '../../client-side/Public/upload')));
 
 // Route definitions
 app.use("/users", signupRoute);
 app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
-app.use("/founderpost", founderFormPostRoute);
+// app.use("/founderpost", founderFormPostRoute);
 // app.use('/users', userRoutes);
 app.use('/api', userSpecificRoute);
 app.use('/api', userPostsRoute);
+
+
+// upload form 
+app.post('/upload',upload.single("businessPicture"),(req, res) => {
+ console.log (req.body);
+ console.log(req.file);
+ return res.redirect("/")
+});
+
 
 // Root route
 app.get('/', (req, res) => {

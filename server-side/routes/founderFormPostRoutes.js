@@ -1,10 +1,10 @@
-import express from 'express';
-import { createFounderPost } from '../controllers/founderFormController.js'; 
-import { authToken } from '../utils/authMiddleware.js';
+// import express from 'express';
+// import { createFounderPost } from '../controllers/founderFormController.js'; 
+// import { authToken } from '../utils/authMiddleware.js';
 
-const router = express.Router();
+// const router = express.Router();
 
-// Apply authToken middleware before createFounderPost
-router.post('/upload', authToken, createFounderPost);
+// // Apply authToken middleware before createFounderPost
+// router.post('/upload', authToken, createFounderPost);
 
-export default router;
+// export default router;
