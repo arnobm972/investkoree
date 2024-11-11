@@ -15,7 +15,17 @@ import multer from 'multer';
 import path from 'path';
 
 
-const upload = multer({ dest: 'uploads/' })
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Specify the uploads directory
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to avoid name collisions
+  },
+});
+
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
 
 
 dotenv.config();
