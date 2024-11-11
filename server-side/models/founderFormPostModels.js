@@ -20,7 +20,7 @@ const founderPostSchema = new mongoose.Schema({
   returnPlan: { type: String, required: true },
   businessSafety: { type: String, required: true },
   additionalComments: { type: String },
-  businessPic: { type: [String], required: true }, // Array of strings for multiple images
+  businessPic:  { type: String }, // Array of strings for multiple images
   nidFile: { type: String },
   tinFile: { type: String },
   taxFile: { type: String },
