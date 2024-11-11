@@ -9,7 +9,7 @@ import bodyParser from 'body-parser';
 import loginRoute from '../server-side/routes/login.js';
 // import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import founderPostRoute from './routes//founderPostRoute.js'
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
 import userPostsRoute from './routes/userPostsRoute.js'
 import multer from 'multer';
 import path from 'path';
@@ -54,7 +54,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.urlencoded({extended:false}));
+
 
 // app.use('/upload', express.static(path.join(__dirname, '../../client-side/Public/upload')));
 

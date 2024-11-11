@@ -5,6 +5,37 @@ import "@fortawesome/fontawesome-free/css/all.css";
 // import { useNavigate } from "react-router-dom";
 
 const FounderPost = () => {
+  const [businessPic, setBusinessPic] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+  // Handle file change
+  const handleFileChange = (e) => {
+    setBusinessPic(e.target.files[0]);
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const postData = new FormData();
+    if (businessPic) postData.append("businessPicture", businessPic);
+
+    try {
+      const response = await fetch(`${API_URL}/upload`, {
+        method: "POST",
+        body: postData,
+      });
+
+      if (response.ok) {
+        console.log("File uploaded successfully!");
+        // Optionally redirect or show a success message
+      } else {
+        console.error("Failed to upload file.");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
   // const [formData, setFormData] = useState({
   //   businessName: "",
   //   email: "",
@@ -126,7 +157,7 @@ const FounderPost = () => {
         className="mb-10"
         method="POST"
         encType="multipart/form-data"
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         action="/upload"
       >
         <p className="lg:text-2xl xs:text-lg xxs:text-lg sm:text-lg  font-bold my-10">
@@ -193,7 +224,7 @@ const FounderPost = () => {
             name="businessPicture"
             accept="image/*"
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-            // onChange={(e) => handleFileChange(e, setbusinessPic)}
+            onChange={(e) => handleFileChange(e, setBusinessPic)}
             required
           />
         </label>
