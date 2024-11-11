@@ -65,12 +65,7 @@ export const createFounderPost = async (req, res) => {
     const businessPic = Array.isArray(files.businessPicture) 
     ? files.businessPicture[0].filepath 
     : files.businessPicture?.filepath || '';
-
-    if (!businessPic.length) {
-      return res.status(400).json({ error: "At least one business picture is required." });
-    }
     
-
     // Handle other file fields
     const nidFile = Array.isArray(files.nidCopy) 
       ? files.nidCopy[0].filepath 
