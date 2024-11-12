@@ -132,7 +132,8 @@ const FounderPost = () => {
         method: "POST",
         body: postData,
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
+          Authorization: `Bearer ${token}`, // Include the token here
+          "Content-Type": "multipart/form-data",
         },
       });
 
