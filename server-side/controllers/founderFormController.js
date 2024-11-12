@@ -4,7 +4,8 @@ import FormData from 'form-data';
 
 // Handle founder post creation
 export const createFounderPost = async (req, res) => {
-  console.log("Files received:", JSON.stringify(req.files, null, 2));
+    console.log("Request Body:", req.body);
+    console.log("Request Files:", req.files);
   console.log("User  ID:", req.user?._id);
   
   try {

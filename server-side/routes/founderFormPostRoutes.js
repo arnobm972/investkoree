@@ -35,6 +35,9 @@ const cpUpload = upload.fields([
 ]);
 
 // Define the route for creating a founder post
-router.post("/postdata", authToken, cpUpload, createFounderPost);
+router.post("/postdata", authToken, cpUpload, (req, res, next) => {
+    console.log("Files in req.files:", req.files);
+    next();
+  }, createFounderPost);
 
 export default router;
