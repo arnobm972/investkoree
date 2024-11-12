@@ -8,7 +8,7 @@ import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import userSpecificRoute from './routes/userRoutes.js';
 import userPostsRoute from './routes/userPostsRoute.js';
 import founderPostRoute from './routes//founderPostRoute.js'
-import bodyParser from 'body-parser';
+
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ connectDB();
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json()); 
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -49,7 +49,7 @@ app.use(cors(corsOptions));
 app.use("/users", signupRoute);
 app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
-app.use("/founderpost", founderFormPostRoute);
+app.use("/founderposts", founderFormPostRoute);
 // app.use('/users', userRoutes);
 app.use('/api', userSpecificRoute);
 app.use('/api', userPostsRoute);

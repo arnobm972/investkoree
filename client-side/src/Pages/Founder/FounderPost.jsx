@@ -104,7 +104,7 @@ const FounderPost = () => {
       const businessPicUrls = await Promise.all(
         businessPictures.map((file) => uploadImageToImgBB(file))
       );
-      postData.append("businessPicture", JSON.stringify(businessPicUrls));
+      postData.append("businessPicture", JSON.stringify(businessPicUrls)); // Ensure this matches your backend expectations
 
       // Upload other files and get their URLs
       const nidUrl = nidFile && (await uploadImageToImgBB(nidFile));
@@ -120,17 +120,17 @@ const FounderPost = () => {
         financialFile && (await uploadImageToImgBB(financialFile));
 
       // Append image URLs to postData
-      nidUrl && postData.append("nidCopy", nidUrl);
-      tinUrl && postData.append("tinCopy", tinUrl);
-      taxUrl && postData.append("taxCopy", taxUrl);
-      tradeLicenseUrl && postData.append("tradeLicense", tradeLicenseUrl);
-      bankStatementUrl && postData.append("bankStatement", bankStatementUrl);
-      securityFileUrl && postData.append("securityFile", securityFileUrl);
-      financialFileUrl && postData.append("financialFile", financialFileUrl);
+      if (nidUrl) postData.append("nidCopy", nidUrl);
+      if (tinUrl) postData.append("tinCopy", tinUrl);
+      if (taxUrl) postData.append("taxCopy", taxUrl);
+      if (tradeLicenseUrl) postData.append("tradeLicense", tradeLicenseUrl);
+      if (bankStatementUrl) postData.append("bankStatement", bankStatementUrl);
+      if (securityFileUrl) postData.append("securityFile", securityFileUrl);
+      if (financialFileUrl) postData.append("financialFile", financialFileUrl);
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`${API_URL}/founderpost/postdata`, {
+      const response = await fetch(`${API_URL}/founderposts/postdata`, {
         method: "POST",
         body: postData,
         headers: {
@@ -142,10 +142,13 @@ const FounderPost = () => {
         navigate("/");
         toast.success("Form submitted successfully!");
       } else {
-        toast.error("Failed to submit form.");
+        const errorData = await response.json();
+        toast.error(
+          `Failed to submit form: ${errorData.message || "Unknown error"}`
+        );
       }
     } catch (error) {
-      toast.error("Error submitting form.");
+      toast.error(`Error submitting form: ${error.message}`);
     }
   };
   return (

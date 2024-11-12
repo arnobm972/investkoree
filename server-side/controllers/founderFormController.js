@@ -36,13 +36,18 @@ export const createFounderPost = async (req, res) => {
     const businessPictures = req.files.businessPicture ? await Promise.all(req.files.businessPicture.map(uploadToImgbb)) : [];
 
     // Upload single files and get their URLs
-    const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? await uploadToImgbb(req.files.nidCopy[0]) : "";
-    const tinFile = req.files.tinCopy && req.files.tinCopy.length > 0 ? await uploadToImgbb(req.files.tinCopy[0]) : "";
-    const taxFile = req.files.taxCopy && req.files.taxCopy.length > 0 ? await uploadToImgbb(req.files.taxCopy[0]) : "";
-    const tradeLicenseFile = req.files.tradeLicense && req.files.tradeLicense.length > 0 ? await uploadToImgbb(req.files.tradeLicense[0]) : "";
-    const bankStatementFile = req.files.bankStatement && req.files.bankStatement.length > 0 ? await uploadToImgbb(req.files.bankStatement[0]) : "";
-    const securityFile = req.files.securityFile && req.files.securityFile.length > 0 ? await uploadToImgbb(req.files.securityFile[0]) : "";
-    const financialFile = req.files.financialFile && req.files.financialFile.length > 0 ? await uploadToImgbb(req.files.financialFile[0]) : "";
+// Upload single files and get their URLs
+const uploadSingleFile = async (file) => {
+    return file && file.length > 0 ? await uploadToImgbb(file[0]) : "";
+  };
+  
+  const nidFile = await uploadSingleFile(req.files.nidCopy);
+  const tinFile = await uploadSingleFile(req.files.tinCopy);
+  const taxFile = await uploadSingleFile(req.files.taxCopy);
+  const tradeLicenseFile = await uploadSingleFile(req.files.tradeLicense);
+  const bankStatementFile = await uploadSingleFile(req.files.bankStatement);
+  const securityFile = await uploadSingleFile(req.files.securityFile);
+  const financialFile = await uploadSingleFile(req.files.financialFile);
 
     // Create a new FounderPost document in MongoDB
     const newPost = new FounderPost({
