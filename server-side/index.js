@@ -13,7 +13,16 @@ import founderPostRoute from './routes//founderPostRoute.js'
 import userPostsRoute from './routes/userPostsRoute.js'
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+
+const uploadDir = path.join(__dirname, 'upload');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -79,6 +88,7 @@ app.use('/api', userPostsRoute);
 
 
 // upload form 
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 app.post('/upload',upload.single("businessPicture"),(req, res) => {
  console.log (req.body);
  console.log(req.file);
