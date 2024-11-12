@@ -581,7 +581,7 @@ const FounderPost = () => {
             required
           ></textarea>
         </label>
-        s{/* Additional Information */}
+        {/* Additional Information */}
         <label className="form-control my-3 w-full max-w-xs">
           <div className="label">
             <span className="label-text">Additional Information</span>
