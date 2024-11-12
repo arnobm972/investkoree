@@ -506,7 +506,7 @@ const FounderPost = () => {
             value={formData.fundingAmount}
             onChange={handleInputChange}
             placeholder="Type here"
-            className="input input-bordered input-warning w-full max             .max-w-xs"
+            className="input input-bordered input-warning w-full max-w-xs"
             required
           />
         </label>
