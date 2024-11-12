@@ -1,13 +1,28 @@
 import express from 'express';
 import multer from 'multer';
-
+import path from 'path';
+import fs from 'fs';
 import { createFounderPost } from '../controllers/founderFormController.js';
 import { authToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-// Configure multer for file upload
-const storage = multer.memoryStorage(); // Store files in memory
+// Configure multer for file upload using disk storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = 'uploads/'; // Ensure this directory exists
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir); // Create the directory if it doesn't exist
+    }
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname)); // Preserve the original file extension
+  }
+});
+
+// Create the multer instance
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
@@ -38,6 +53,6 @@ const cpUpload = upload.fields([
 router.post("/postdata", authToken, cpUpload, (req, res, next) => {
     console.log("Files in req.files:", req.files);
     next();
-  }, createFounderPost);
+}, createFounderPost);
 
 export default router;
