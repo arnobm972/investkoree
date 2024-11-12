@@ -1,149 +1,84 @@
-// import FounderPost from '../models/founderFormPostModels.js';
-// import formidable from 'formidable';
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-// import fs from 'fs';
+import FounderPost from '../models/founderFormPostModels.js';
+import axios from 'axios';
 
-// // Define __dirname in ES modules
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+// Handle founder post creation
+export const createFounderPost = async (req, res) => {
+  console.log("Files received:", JSON.stringify(req.files, null, 2));
+  try {
+    // Extract userId from the authenticated user
+    const userId = req.user._id; // Assuming req.user is populated by your authentication middleware
 
-// // Define upload path and ensure it exists
-// const uploadDir = path.join(__dirname, '../../client-side/Public/upload');
-// if (!fs.existsSync(uploadDir)) {
-//   fs.mkdirSync(uploadDir, { recursive: true });
-// }
+    const {
+      businessName, email, address, phone, businessCategory, businessSector,
+      investmentDuration, securityOption, otherSecurityOption, documentationOption,
+      otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate, projectedROI,
+      returnPlan, businessSafety, additionalComments
+    } = req.body;
 
-// export const createFounderPost = async (req, res) => {
-//   const form = formidable({
-//     uploadDir: uploadDir,
-//     keepExtensions: true,
-//   });
+    // Handle file uploads to Imgbb
+    const uploadToImgbb = async (file) => {
+      const formData = new FormData();
+      formData.append('image', file.buffer); // Use the buffer directly
 
-//   // Wrap form.parse in a Promise to use async/await
-//   const parseForm = () => {
-//     return new Promise((resolve, reject) => {
-//       form.parse(req, (err, fields, files) => {
-//         if (err) {
-//           console.error("Error parsing the files:", err);
-//           return reject(new Error("File upload failed"));
-//         }
-//         resolve({ fields, files });
-//       });
-//     });
-//   };
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, formData, {
+        headers: {
+          ...formData.getHeaders(),
+        },
+      });
 
-//   try {
-//     const { fields, files } = await parseForm();
+      return response.data.data.url; // Return the image URL
+    };
 
-//     console.log("Parsed fields:", fields);
-//     console.log("Parsed files:", files);
+    // Upload business pictures (multiple)
+    const businessPics = req.files.businessPicture ? await Promise.all(req.files.businessPicture.map(uploadToImgbb)) : [];
 
-//     const userId = req.user._id; // Ensure req.user is populated by authentication middleware
+    // Upload single files
+    const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? await uploadToImgbb(req.files.nidCopy[0]) : "";
+    const tinFile = req.files.tinCopy && req.files.tinCopy.length > 0 ? await uploadToImgbb(req.files.tinCopy[0]) : "";
+    const taxFile = req.files.taxCopy && req.files.taxCopy.length > 0 ? await uploadToImgbb(req.files.taxCopy[0]) : "";
+    const tradeLicenseFile = req.files.tradeLicense && req.files.tradeLicense.length > 0 ? await uploadToImgbb(req.files.tradeLicense[0]) : "";
+    const bankStatementFile = req.files.bankStatement && req.files.bankStatement.length > 0 ? await uploadToImgbb(req.files.bankStatement[0]) : "";
+    const securityFile = req.files.securityFile && req.files.securityFile.length > 0 ? await uploadToImgbb(req.files.securityFile[0]) : "";
+    const financialFile = req.files.financialFile && req.files.financialFile.length > 0 ? await uploadToImgbb(req.files.financialFile[0]) : "";
 
-//     // Ensure all required fields are strings (they might be wrapped in arrays)
-//     const fieldsToCheck = [
-//       "businessName", "email", "address", "phone", "businessCategory", "businessSector",
-//       "investmentDuration", "securityOption", "otherSecurityOption", "documentationOption",
-//       "otherDocumentationOption", "assets", "revenue", "fundingAmount", "fundingHelp", "returndate",
-//       "projectedROI", "returnPlan", "businessSafety", "additionalComments"
-//     ];
+    // Create a new FounderPost document in MongoDB
+    const newPost = new FounderPost({
+      userId,
+      businessName,
+      email,
+      address,
+      phone,
+      businessCategory,
+      businessSector,
+      investmentDuration,
+      securityOption,
+      otherSecurityOption,
+      documentationOption,
+      otherDocumentationOption,
+      assets,
+      revenue,
+      fundingAmount,
+      fundingHelp,
+      returnPlan,
+      businessSafety,
+      additionalComments,
+      businessPics, // Store array of URLs
+      nidFile,
+      tinFile,
+      taxFile,
+      tradeLicenseFile,
+      bankStatementFile,
+      securityFile,
+      financialFile,
+      returndate,
+      projectedROI,
+    });
 
-//     // Convert array fields to string if necessary
-//     fieldsToCheck.forEach((field) => {
-//       if (Array.isArray(fields[field])) {
-//         fields[field] = fields[field][0];
-//       }
-//     });
+    await newPost.save();
 
-//     // Destructure sanitized fields
-//     const {
-//       businessName, email, address, phone, businessCategory, businessSector,
-//       investmentDuration, securityOption, otherSecurityOption, documentationOption,
-//       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate,
-//       projectedROI, returnPlan, businessSafety, additionalComments
-//     } = fields;
-
-//     // Validate required fields
-//     if (!businessName || !email || !address || !phone || !businessCategory || !businessSector || !fundingHelp || !returnPlan || !projectedROI || !businessSafety || !userId) {
-//       return res.status(400).json({ error: "Please fill in all required fields." });
-//     }
-
-//     console.log("Files received:", files);
-
-//     // Handle file fields (support multiple files for businessPic)
-//     const businessPic = Array.isArray(files.businessPicture) 
-//       ? files.businessPicture[0].filepath  
-//       : [files.businessPicture?.filepath || ''];
-
-
-//     // Handle other file fields
-//     const nidFile = Array.isArray(files.nidCopy) 
-//       ? files.nidCopy[0].filepath 
-//       : files.nidCopy?.filepath || '';
-    
-//     const tinFile = Array.isArray(files.tinCopy) 
-//       ? files.tinCopy[0].filepath 
-//       : files.tinCopy?.filepath || '';
-    
-//     const taxFile = Array.isArray(files.taxCopy) 
-//       ? files.taxCopy[0].filepath 
-//       : files.taxCopy?.filepath || '';
-    
-//     const tradeLicenseFile = Array.isArray(files.tradeLicense) 
-//       ? files.tradeLicense[0].filepath 
-//       : files.tradeLicense?.filepath || '';
-    
-//     const bankStatementFile = Array.isArray(files.bankStatement) 
-//       ? files.bankStatement[0].filepath 
-//       : files.bankStatement?.filepath || '';
-    
-//     const securityFile = Array.isArray(files.securityFile) 
-//       ? files.securityFile[0].filepath 
-//       : files.securityFile?.filepath || '';
-    
-//     const financialFile = Array.isArray(files.financialFile) 
-//       ? files.financialFile[0].filepath 
-//       : files.financialFile?.filepath || '';
-
-//     // Create a new FounderPost document in MongoDB
-//     const newPost = new FounderPost({
-//       userId,
-//       businessName,
-//       email,
-//       address,
-//       phone,
-//       businessCategory,
-//       businessSector,
-//       investmentDuration,
-//       securityOption,
-//       otherSecurityOption,
-//       documentationOption,
-//       otherDocumentationOption,
-//       assets,
-//       revenue,
-//       fundingAmount,
-//       fundingHelp,
-//       returnPlan,
-//       businessSafety,
-//       additionalComments,
-//       businessPic,
-//       nidFile,
-//       tinFile,
-//       taxFile,
-//       tradeLicenseFile,
-//       bankStatementFile,
-//       securityFile,
-//       financialFile,
-//       returndate,
-//       projectedROI
-//     });
-
-//     await newPost.save();
-
-//     res.status(201).json({ message: "Founder post created successfully!" });
-//   } catch (error) {
-//     console.error("Error creating founder post:", error);
-//     res.status(500).json({ error: error.message || "Server error" });
-//   }
-// };
+    res.status(201).json({ message: "Founder post created successfully!" });
+  } catch (error) {
+    console.error("Error creating founder post:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
