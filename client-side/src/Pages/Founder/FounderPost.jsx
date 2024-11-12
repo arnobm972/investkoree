@@ -4,6 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import FormData from "form-data";
 
 const FounderPost = () => {
   const [formData, setFormData] = useState({
@@ -78,15 +79,6 @@ const FounderPost = () => {
   };
 
   // Function to upload an image to ImgBB
-  const uploadImageToImgBB = async (image) => {
-    const formData = new FormData();
-    formData.append("image", image);
-
-    const response = await axios.post(image_hosting_api, formData);
-
-    return response.data.data.url; // Return the image URL
-  };
-
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,12 +91,22 @@ const FounderPost = () => {
         postData.append(key, formData[key]);
       });
 
+      // Function to upload an image to ImgBB
+      const uploadImageToImgBB = async (image) => {
+        const formData = new FormData();
+        formData.append("image", image);
+
+        const response = await axios.post(image_hosting_api, formData);
+        return response.data.data.url; // Return the image URL
+      };
+
       // Upload each file to ImgBB and append URLs to postData
       const businessPicUrls = await Promise.all(
         businessPictures.map((file) => uploadImageToImgBB(file))
       );
       postData.append("businessPicture", JSON.stringify(businessPicUrls));
 
+      // Upload other files and get their URLs
       const nidUrl = nidFile && (await uploadImageToImgBB(nidFile));
       const tinUrl = tinFile && (await uploadImageToImgBB(tinFile));
       const taxUrl = taxFile && (await uploadImageToImgBB(taxFile));
@@ -133,7 +135,6 @@ const FounderPost = () => {
         body: postData,
         headers: {
           Authorization: `Bearer ${token}`, // Include the token here
-          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -147,7 +148,6 @@ const FounderPost = () => {
       toast.error("Error submitting form.");
     }
   };
-
   return (
     <div>
       <form

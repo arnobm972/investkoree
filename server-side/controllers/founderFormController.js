@@ -5,7 +5,8 @@ import FormData from 'form-data';
 // Handle founder post creation
 export const createFounderPost = async (req, res) => {
   console.log("Files received:", JSON.stringify(req.files, null, 2));
-  console.log("User ID:", req.user?._id);
+  console.log("User  ID:", req.user?._id);
+  
   try {
     // Extract userId from the authenticated user
     const userId = req.user._id; // Assuming req.user is populated by your authentication middleware
@@ -17,10 +18,10 @@ export const createFounderPost = async (req, res) => {
       returnPlan, businessSafety, additionalComments
     } = req.body;
 
-    // Handle file uploads to Imgbb
+    // Function to handle file uploads to ImgBB
     const uploadToImgbb = async (file) => {
       const formData = new FormData();
-      formData.append('image', file.buffer); // Use the buffer directlya
+      formData.append('image', file.buffer); // Use the buffer directly
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, formData, {
         headers: {
@@ -34,7 +35,7 @@ export const createFounderPost = async (req, res) => {
     // Upload business pictures (multiple)
     const businessPictures = req.files.businessPicture ? await Promise.all(req.files.businessPicture.map(uploadToImgbb)) : [];
 
-    // Upload single files
+    // Upload single files and get their URLs
     const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? await uploadToImgbb(req.files.nidCopy[0]) : "";
     const tinFile = req.files.tinCopy && req.files.tinCopy.length > 0 ? await uploadToImgbb(req.files.tinCopy[0]) : "";
     const taxFile = req.files.taxCopy && req.files.taxCopy.length > 0 ? await uploadToImgbb(req.files.taxCopy[0]) : "";
@@ -76,8 +77,10 @@ export const createFounderPost = async (req, res) => {
       projectedROI,
     });
 
+    // Save the new post to the database
     await newPost.save();
 
+    // Respond with success message
     res.status(201).json({ message: "Founder post created successfully!" });
   } catch (error) {
     console.error("Error creating founder post:", error);
