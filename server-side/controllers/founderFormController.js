@@ -5,6 +5,7 @@ import FormData from 'form-data';
 // Handle founder post creation
 export const createFounderPost = async (req, res) => {
   console.log("Files received:", JSON.stringify(req.files, null, 2));
+  console.log("User ID:", req.user?._id);
   try {
     // Extract userId from the authenticated user
     const userId = req.user._id; // Assuming req.user is populated by your authentication middleware
