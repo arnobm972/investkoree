@@ -20,7 +20,7 @@ export const createFounderPost = async (req, res) => {
     // Handle file uploads to Imgbb
     const uploadToImgbb = async (file) => {
       const formData = new FormData();
-      formData.append('image', file.buffer); // Use the buffer directly
+      formData.append('image', file.buffer); // Use the buffer directlya
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, formData, {
         headers: {
@@ -32,7 +32,7 @@ export const createFounderPost = async (req, res) => {
     };
 
     // Upload business pictures (multiple)
-    const businessPics = req.files.businessPicture ? await Promise.all(req.files.businessPicture.map(uploadToImgbb)) : [];
+    const businessPictures = req.files.businessPicture ? await Promise.all(req.files.businessPicture.map(uploadToImgbb)) : [];
 
     // Upload single files
     const nidFile = req.files.nidCopy && req.files.nidCopy.length > 0 ? await uploadToImgbb(req.files.nidCopy[0]) : "";
@@ -64,7 +64,7 @@ export const createFounderPost = async (req, res) => {
       returnPlan,
       businessSafety,
       additionalComments,
-      businessPics, // Store array of URLs
+      businessPictures, // Store array of URLs
       nidFile,
       tinFile,
       taxFile,

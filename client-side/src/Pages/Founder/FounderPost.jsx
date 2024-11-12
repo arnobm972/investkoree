@@ -103,7 +103,7 @@ const FounderPost = () => {
       const businessPicUrls = await Promise.all(
         businessPictures.map((file) => uploadImageToImgBB(file))
       );
-      postData.append("businessPictures", JSON.stringify(businessPicUrls));
+      postData.append("businessPicture", JSON.stringify(businessPicUrls));
 
       const nidUrl = nidFile && (await uploadImageToImgBB(nidFile));
       const tinUrl = tinFile && (await uploadImageToImgBB(tinFile));
@@ -587,8 +587,8 @@ const FounderPost = () => {
             <span className="label-text">Additional Information</span>
           </div>
           <textarea
-            name="additionalInfo"
-            value={formData.additionalInfo}
+            name="additionalComments" // Change this to match the backend
+            value={formData.additionalComments} // Update state accordingly
             onChange={handleInputChange}
             placeholder="Type here"
             className="textarea textarea-bordered textarea-warning w-full max-w-xs"
