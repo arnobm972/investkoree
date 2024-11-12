@@ -1,5 +1,6 @@
 import FounderPost from '../models/founderFormPostModels.js';
 import axios from 'axios';
+import FormData from 'form-data';
 
 // Handle founder post creation
 export const createFounderPost = async (req, res) => {

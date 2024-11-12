@@ -28,7 +28,8 @@ const FounderPost = () => {
     projectedROI: "",
     returndate: "",
   });
-
+  const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+  const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
   const [otherOption, setOtherOption] = useState(false);
@@ -81,10 +82,7 @@ const FounderPost = () => {
     const formData = new FormData();
     formData.append("image", image);
 
-    const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY`,
-      formData
-    );
+    const response = await axios.post(image_hosting_api, formData);
 
     return response.data.data.url; // Return the image URL
   };
@@ -95,30 +93,38 @@ const FounderPost = () => {
 
     try {
       const postData = new FormData();
+
       // Append form data fields
       Object.keys(formData).forEach((key) => {
         postData.append(key, formData[key]);
       });
 
-      // Upload images to ImgBB and append URLs to postData
-      const businessPicUrl = await uploadImageToImgBB(businessPictures);
-      const nidUrl = await uploadImageToImgBB(nidFile);
-      const tinUrl = await uploadImageToImgBB(tinFile);
-      const taxUrl = await uploadImageToImgBB(taxFile);
-      const tradeLicenseUrl = await uploadImageToImgBB(tradeLicenseFile);
-      const bankStatementUrl = await uploadImageToImgBB(bankStatementFile);
-      const securityFileUrl = await uploadImageToImgBB(securityFile);
-      const financialFileUrl = await uploadImageToImgBB(financialFile);
+      // Upload each file to ImgBB and append URLs to postData
+      const businessPicUrls = await Promise.all(
+        businessPictures.map((file) => uploadImageToImgBB(file))
+      );
+      postData.append("businessPictures", JSON.stringify(businessPicUrls));
+
+      const nidUrl = nidFile && (await uploadImageToImgBB(nidFile));
+      const tinUrl = tinFile && (await uploadImageToImgBB(tinFile));
+      const taxUrl = taxFile && (await uploadImageToImgBB(taxFile));
+      const tradeLicenseUrl =
+        tradeLicenseFile && (await uploadImageToImgBB(tradeLicenseFile));
+      const bankStatementUrl =
+        bankStatementFile && (await uploadImageToImgBB(bankStatementFile));
+      const securityFileUrl =
+        securityFile && (await uploadImageToImgBB(securityFile));
+      const financialFileUrl =
+        financialFile && (await uploadImageToImgBB(financialFile));
 
       // Append image URLs to postData
-      postData.append("businessPicture", businessPicUrl);
-      postData.append("nidCopy", nidUrl);
-      postData.append("tinCopy", tinUrl);
-      postData.append("taxCopy", taxUrl);
-      postData.append("tradeLicense", tradeLicenseUrl);
-      postData.append("bankStatement", bankStatementUrl);
-      postData.append("securityFile", securityFileUrl);
-      postData.append("financialFile", financialFileUrl);
+      nidUrl && postData.append("nidCopy", nidUrl);
+      tinUrl && postData.append("tinCopy", tinUrl);
+      taxUrl && postData.append("taxCopy", taxUrl);
+      tradeLicenseUrl && postData.append("tradeLicense", tradeLicenseUrl);
+      bankStatementUrl && postData.append("bankStatement", bankStatementUrl);
+      securityFileUrl && postData.append("securityFile", securityFileUrl);
+      financialFileUrl && postData.append("financialFile", financialFileUrl);
 
       const token = localStorage.getItem("token");
 
