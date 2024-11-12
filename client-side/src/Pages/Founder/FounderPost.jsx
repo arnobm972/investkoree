@@ -96,7 +96,9 @@ const FounderPost = () => {
         const formData = new FormData();
         formData.append("image", image);
 
-        const response = await axios.post(image_hosting_api, formData);
+        const response = await axios.post(image_hosting_api, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         return response.data.data.url; // Return the image URL
       };
 
