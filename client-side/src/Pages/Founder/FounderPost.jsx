@@ -130,7 +130,7 @@ const FounderPost = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`${API_URL}/founderposts/postdata`, {
+      const response = await fetch(`${API_URL}/founderpost/postdata`, {
         method: "POST",
         body: postData,
         headers: {

@@ -49,7 +49,7 @@ app.use(cors(corsOptions));
 app.use("/users", signupRoute);
 app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
-app.use("/founderposts", founderFormPostRoute);
+app.use("/founderpost", founderFormPostRoute);
 // app.use('/users', userRoutes);
 app.use('/api', userSpecificRoute);
 app.use('/api', userPostsRoute);
