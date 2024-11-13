@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
@@ -122,9 +122,11 @@ const ProjectDetail = () => {
                 </div>
               </div>
             </div>
-            <button className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn">
-              Invest
-            </button>
+            <Link to="/payment">
+              <button className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn">
+                Invest
+              </button>
+            </Link>
           </div>
         </div>
       </div>
