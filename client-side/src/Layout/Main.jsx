@@ -6,7 +6,7 @@ import AuthProvider from "../providers/AuthProvider";
 
 const Main = () => {
   return (
-    <div className="roboto-regular bg-gray-100">
+    <div className="roboto-regular ">
       <AuthProvider>
         <Navbar></Navbar>
         <ToastContainer></ToastContainer>
