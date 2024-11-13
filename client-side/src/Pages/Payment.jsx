@@ -1,4 +1,4 @@
-import bkash from "../assets/bkash.png";
+// import bkash from "../assets/bkash.png";
 
 const Payment = () => {
   return (
