@@ -1,7 +1,7 @@
 import bkash from "../assets/bkash.png";
 const Payment = () => {
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+    <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen w-20">
       <h1 className="text-2xl font-semibold mb-4">Payment Methods</h1>
       <p className="text-gray-600 mb-8">More methods will be added soon.</p>
       <div className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-lg">
