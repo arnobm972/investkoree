@@ -1,26 +1,12 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 import { createFounderPost } from '../controllers/founderFormController.js';
 import { authToken } from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-// Configure multer for file upload using disk storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = 'uploads/'; // Ensure this directory exists
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir); // Create the directory if it doesn't exist
-    }
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname)); // Preserve the original file extension
-  }
-});
+// Configure multer for file upload using memory storage
+const storage = multer.memoryStorage(); // Files are stored in memory as Buffer objects
 
 // Create the multer instance
 const upload = multer({
@@ -51,7 +37,7 @@ const cpUpload = upload.fields([
 
 // Define the route for creating a founder post
 router.post("/postdata", authToken, cpUpload, (req, res, next) => {
-    console.log("Files in req.files:", req.files);
+    console.log("Files in req.files:", req.files); // Files should now be Buffer objects
     next();
 }, createFounderPost);
 

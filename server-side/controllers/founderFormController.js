@@ -1,13 +1,12 @@
 import FounderPost from '../models/founderFormPostModels.js';
 import axios from 'axios';
 import FormData from 'form-data';
-import fs from 'fs';
 
 // Handle founder post creation
 export const createFounderPost = async (req, res) => {
   console.log("Request Body:", req.body);
   console.log("Request Files:", req.files);
-  console.log("User  ID:", req.user?._id);
+  console.log("User ID:", req.user?._id);
   
   try {
     const userId = req.user._id; // Assuming req.user is populated by your authentication middleware
@@ -20,9 +19,12 @@ export const createFounderPost = async (req, res) => {
     } = req.body;
 
     // Function to handle file uploads to ImgBB
-    const uploadToImgbb = async (filePath) => {
+    const uploadToImgbb = async (fileBuffer) => {
       const formData = new FormData();
-      formData.append('image', fs.createReadStream(filePath)); // Use fs to read the file
+      formData.append('image', fileBuffer, {
+        filename: 'image.jpg', // Provide a filename for buffer uploads
+        contentType: 'image/jpeg' // Specify the content type
+      });
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, formData, {
         headers: {
@@ -34,15 +36,15 @@ export const createFounderPost = async (req, res) => {
     };
 
     // Upload business pictures (multiple)
-    const businessPictures = req.files.businessPicture ? await Promise.all(req.files.businessPicture.map(file => uploadToImgbb(file.path))) : [];
+    const businessPictures = req.files.businessPicture 
+      ? await Promise.all(req.files.businessPicture.map(file => uploadToImgbb(file.buffer))) 
+      : [];
 
     // Function to upload single files and get their URLs
     const uploadSingleFile = async (file) => {
       if (file && file.length > 0) {
-        const filePath = file[0].path; // Get the file path
-        const fileUrl = await uploadToImgbb(filePath); // Upload to ImgBB
-        fs.unlinkSync(filePath); // Delete the file after uploading
-        return fileUrl; // Return the uploaded file URL
+        const fileBuffer = file[0].buffer; // Use the file buffer
+        return await uploadToImgbb(fileBuffer); // Upload to ImgBB and return URL
       }
       return ""; // Return empty string if no file
     };
