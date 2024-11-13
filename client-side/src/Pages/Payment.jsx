@@ -9,7 +9,7 @@ const Payment = () => {
         <img src={bkash} alt="bKash logo" className="h-12 w-20" />
         <span className="text-xl font-medium">+8801XXXXXXX</span>
       </div>
-      <div className="flex items-center space-x-4 bg-white p-4   rounded-lg shadow-lg">
+      <div className="flex items-center space-x-4 mt-4 bg-white p-4   rounded-lg shadow-lg">
         <img src={city} alt="bKash logo" className="h-12 w-20" />
         <span className="text-xl font-medium">+8801XXXXXXX</span>
       </div>
