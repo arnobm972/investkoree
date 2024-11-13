@@ -4,7 +4,17 @@ import { Link } from "react-router-dom";
 const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
-  const [currentSlide, setCurrentSlide] = useState(0); // State for the current slide
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const { selectPost } = useAuth(); // Get selectPost from context
+
+  const handleInvestClick = () => {
+    // Create a post object or just pass the ID
+    const post = { _id: id }; // You can fetch more details if needed
+    selectPost(post); // Set the selected post in context
+    // Optionally navigate to InvestorDashboard
+    // navigate("/investordashboard");
+  };
+  // State for the current slide
 
   useEffect(() => {
     // Fetch project details from the backend
@@ -122,7 +132,7 @@ const ProjectDetail = () => {
                 </div>
               </div>
             </div>
-            <Link to="/payment">
+            <Link to="/payment" onClick={handleInvestClick}>
               <button className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn">
                 Invest
               </button>

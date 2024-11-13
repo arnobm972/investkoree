@@ -84,7 +84,29 @@ const chartData2 = {
 const InvestorDashboard = () => {
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
-  const { userdata } = useAuth();
+  const { userdata, selectedPost } = useAuth();
+  const [post, setPost] = useState(null);
+  useEffect(() => {
+    const fetchPostDetails = async () => {
+      if (!selectedPost) return; // If no post is selected, do nothing
+
+      try {
+        const response = await fetch(
+          `${API_URL}/founderpost/projectdetail/${selectedPost._id}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch post details");
+
+        const data = await response.json();
+        setPost(data); // Set the fetched post data
+      } catch (error) {
+        console.error("Error fetching post details:", error);
+      } finally {
+        setLoading(false); // Set loading to false when fetching completes
+      }
+    };
+
+    fetchPostDetails(); // Call the function to fetch post details
+  }, [selectedPost, API_URL]);
 
   if (!userdata) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -127,7 +149,7 @@ const InvestorDashboard = () => {
             </div>
           </div>
           <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl">
-            Invested Project List
+            Invested Project List {post.businessName}
           </p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y sm:w-[40%] xs:w-[40%] xxs:w-[30%] divide-gray-200">

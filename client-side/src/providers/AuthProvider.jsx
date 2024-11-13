@@ -10,9 +10,17 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userdata, setUserData] = useState(null);
   const [user, setUser] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
   const [loading, setLoading] = useState(false); // Add loading state
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
+  const selectPost = (post) => {
+    setSelectedPost(post); // Set the selected post
+  };
+
+  const clearSelectedPost = () => {
+    setSelectedPost(null); // Clear the selected post
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -190,6 +198,9 @@ export const AuthProvider = ({ children }) => {
     investorsignIn,
     userdata,
     loading,
+    selectedPost,
+    selectPost,
+    clearSelectedPost,
   };
 
   return (
