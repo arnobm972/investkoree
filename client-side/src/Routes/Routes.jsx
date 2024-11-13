@@ -18,7 +18,7 @@ import FounderPost from "../Pages/Founder/FounderPost";
 // import PrivateFounderRoute from "./PrivateFounderRoute";
 // import PrivateAdminRoute from "./PrivateAdminRoute";
 import ProjectDetail from "../Pages/ProjectDetail";
-// import Payment from "../Pages/Payment";
+import Payment from "../Pages/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -94,10 +94,10 @@ export const router = createBrowserRouter([
         path: "/getfunded",
         element: <GetFunded></GetFunded>,
       },
-      // {
-      //   path: "/payment",
-      //   element: <Payment></Payment>,
-      // },
+      {
+        path: "/payment",
+        element: <Payment></Payment>,
+      },
       {
         path: "/founderdashboard",
         element: (
