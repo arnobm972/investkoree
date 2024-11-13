@@ -32,13 +32,14 @@ export const createFounderPost = async (req, res) => {
         },
       });
 
+      console.log("Uploaded Image URL:", response.data.data.url); // Log the URL
       return response.data.data.url; // Return the image URL
     };
-
     // Upload business pictures (multiple)
     const businessPictures = req.files.businessPicture 
       ? await Promise.all(req.files.businessPicture.map(file => uploadToImgbb(file.buffer))) 
       : [];
+      console.log("Business Pictures URLs:", businessPictures); 
 
     // Function to upload single files and get their URLs
     const uploadSingleFile = async (file) => {
