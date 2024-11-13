@@ -9,7 +9,7 @@ export const createFounderPost = async (req, res) => {
   console.log("User ID:", req.user?._id);
   
   try {
-    const userId = req.user.id; // Assuming req.user is populated by your authentication middleware
+    const userId = req.user._id; // Assuming req.user is populated by your authentication middleware
 
     const {
       businessName, email, address, phone, businessCategory, businessSector,
