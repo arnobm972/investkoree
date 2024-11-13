@@ -1,8 +1,8 @@
-import User from '../models/userModel.js';
+// import User from '../models/userModel.js';
 
-async function getUsers() {
-    const users = await User.find({});
-    return users;
-}
+// async function getUsers() {
+//     const users = await User.find({});
+//     return users;
+// }
 
-export default { getUsers };
+// export default { getUsers };
