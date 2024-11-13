@@ -22,7 +22,7 @@ export const createFounderPost = async (req, res) => {
     const uploadToImgbb = async (fileBuffer) => {
       const formData = new FormData();
       formData.append('image', fileBuffer, {
-        filename: 'image.jpg', // Provide a filename for buffer uploads
+        filename: 'image.jpg', 
         contentType: 'image/jpeg' // Specify the content type
       });
 
