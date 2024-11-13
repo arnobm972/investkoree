@@ -15,7 +15,7 @@ export const createFounderPost = async (req, res) => {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate, projectedROI,
-      returnPlan, businessSafety, additionalComments
+      returnPlan, businessSafety, additionalComments,description
     } = req.body;
 
     // Function to handle file uploads to ImgBB
@@ -83,6 +83,7 @@ export const createFounderPost = async (req, res) => {
       businessPictures, // Store array of URLs
       nidFile,
       tinFile,
+      description,
       taxFile,
       tradeLicenseFile,
       bankStatementFile,

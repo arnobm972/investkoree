@@ -134,7 +134,7 @@ const ProjectDetail = () => {
         <div className="flex flex-col lg:w-[50%]">
           <h2 className="font-bold xs:mb-2 xxs:mb-2 sm:mb-2">Overview</h2>
           <p className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-            {project.desciption}
+            {project.description}
           </p>
         </div>
         <div>

@@ -9,6 +9,7 @@ import FormData from "form-data";
 const FounderPost = () => {
   const [formData, setFormData] = useState({
     businessName: "",
+    description: "",
     email: "",
     address: "",
     phone: "",
@@ -177,6 +178,20 @@ const FounderPost = () => {
             placeholder="Type here"
             className="input input-bordered input-warning w-full max-w-xs"
             required
+          />
+        </label>
+        {/* description*/}
+        <label className="form-control my-3 w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Details of the Business</span>
+          </div>
+          <textarea
+            name="description" // Change this to match the backend
+            value={formData.description} // Update state accordingly
+            onChange={handleInputChange}
+            placeholder="Type here"
+            className="textarea textarea-bordered textarea-warning w-full max-w-xs"
+            rows="4"
           />
         </label>
         {/* Email */}

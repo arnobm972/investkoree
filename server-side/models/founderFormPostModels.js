@@ -6,6 +6,7 @@ const founderPostSchema = new mongoose.Schema({
   email: { type: String, required: true, match: /.+\@.+\..+/ },
   address: { type: String, required: true },
   phone: { type: String, required: true },
+  description :{type: String, required: true },
   businessCategory: { type: String, required: true },
   businessSector: { type: String, required: true },
   investmentDuration: { type: String, required: true },
