@@ -109,7 +109,7 @@ const LatestPost = ({ item }) => {
     <div className="mx-auto">
       <Link to={`/projectdetail/${_id}`}>
         <div
-          className="bg-white h-[450px] lg:my-24  lg:w-[320px] sm:w-[290px] xs:w-[290px] xxs:w-[290px]  rounded-2xl shadow-md overflow-hidden
+          className="bg-white h-[450px] lg:mt-24  lg:w-[320px] sm:w-[290px] xs:w-[290px] xxs:w-[290px]  rounded-2xl shadow-md overflow-hidden
         transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
         >
           <img
