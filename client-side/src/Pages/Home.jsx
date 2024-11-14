@@ -38,16 +38,6 @@ const Home = () => {
         { pageLanguage: "en" },
         "google_translate_element"
       );
-
-      // Hide the Google Translate widget's sticky button
-      const interval = setInterval(() => {
-        const googleTranslateElement =
-          document.querySelector(".goog-te-gadget");
-        if (googleTranslateElement) {
-          googleTranslateElement.style.display = "none"; // Hide the button
-          clearInterval(interval);
-        }
-      }, 1000); // Check every 1 second
     };
 
     loadGoogleTranslateScript();

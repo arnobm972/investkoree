@@ -507,10 +507,6 @@ form.sign-up-form {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.goog-te-gadget {
-  display: none !important; /* Hide the default Google Translate gadget */
-}
-
 .goog-te-menu-value {
   color: #333; /* Change text color */
   font-weight: bold; /* Make text bold */
