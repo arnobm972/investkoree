@@ -493,3 +493,29 @@ form.sign-up-form {
 .signcontainer.sign-up-mode .right-panel {
   pointer-events: all;
 }
+.google-translate-container {
+  position: relative;
+  margin: 20px 0; /* Adjust margin as needed */
+  text-align: right; /* Align to the right or center as needed */
+}
+
+#google_translate_element {
+  display: inline-block; /* Make it inline-block to fit the design */
+  background-color: #f8f9fa; /* Light background color */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding around the element */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.goog-te-gadget {
+  display: none !important; /* Hide the default Google Translate gadget */
+}
+
+.goog-te-menu-value {
+  color: #333; /* Change text color */
+  font-weight: bold; /* Make text bold */
+}
+
+.goog-te-menu-frame {
+  border: none; /* Remove border */
+}

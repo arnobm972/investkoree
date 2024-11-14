@@ -65,7 +65,9 @@ const Home = () => {
 
   return (
     <div>
-      <div id="google_translate_element"></div>
+      <div className="google-translate-container">
+        <div id="google_translate_element"></div>
+      </div>
 
       {/* Hero Section */}
       <div className="hero banner-img bg-salmon">
