@@ -93,7 +93,7 @@ const InvestorDashboard = () => {
 
       try {
         const response = await fetch(
-          `${API_URL}/api/${selectedPost._id}/posts`
+          `${API_URL}/api/founderposts/${selectedPost._id}`
         );
         if (!response.ok) throw new Error("Failed to fetch post details");
 
