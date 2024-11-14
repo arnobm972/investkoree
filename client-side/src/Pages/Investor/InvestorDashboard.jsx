@@ -153,6 +153,8 @@ const InvestorDashboard = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {selectedPost.map((row, index) => {
+                  const investedAmount = 70000;
+
                   return (
                     <tr key={row._id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -162,13 +164,13 @@ const InvestorDashboard = () => {
                         {row.businessName}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {row.startDate}
+                        {new Date(row.startDate).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {row.returndate}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                        70000
+                        {investedAmount}
                       </td>
                     </tr>
                   );
