@@ -3,11 +3,9 @@ import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
-  const { t } = useTranslation();
 
   // Fetch the latest posts when the component mounts
   useEffect(() => {
@@ -40,6 +38,16 @@ const Home = () => {
         { pageLanguage: "en" },
         "google_translate_element"
       );
+
+      // Hide the Google Translate widget's sticky button
+      const interval = setInterval(() => {
+        const googleTranslateElement =
+          document.querySelector(".goog-te-gadget");
+        if (googleTranslateElement) {
+          googleTranslateElement.style.display = "none"; // Hide the button
+          clearInterval(interval);
+        }
+      }, 1000); // Check every 1 second
     };
 
     loadGoogleTranslateScript();
@@ -57,7 +65,6 @@ const Home = () => {
 
   return (
     <div>
-      <div>{t("welcomMessage")}</div>
       <div id="google_translate_element"></div>
 
       {/* Hero Section */}
