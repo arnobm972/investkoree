@@ -9,7 +9,12 @@ const ProjectDetail = () => {
 
   const handleInvestClick = () => {
     // Create a post object or just pass the ID
-    const post = { _id: id }; // You can fetch more details if needed
+    const post = {
+      _id: id,
+      businessName: project.businessName,
+      returndate: project.returndate,
+      startDate: project.startDate,
+    }; // You can fetch more details if needed
     selectPost(post); // Set the selected post in context
     // Optionally navigate to InvestorDashboard
     // navigate("/investordashboard");
