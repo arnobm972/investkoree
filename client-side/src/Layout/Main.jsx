@@ -3,7 +3,7 @@ import Navbar from "../shared/Navbar";
 import Footer from "../shared/Footer";
 import { ToastContainer } from "react-toastify";
 import AuthProvider from "../providers/AuthProvider";
-import "../utils/i18n.js";
+// import "../utils/i18n.js";
 
 const Main = () => {
   return (
