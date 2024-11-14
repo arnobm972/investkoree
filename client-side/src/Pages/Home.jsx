@@ -23,7 +23,6 @@ const Home = () => {
 
     fetchPosts();
 
-    // Load Google Translate script dynamically
     const loadGoogleTranslateScript = () => {
       const script = document.createElement("script");
       script.src =
@@ -38,6 +37,26 @@ const Home = () => {
         { pageLanguage: "en" },
         "google_translate_element"
       );
+
+      // Add an event listener to hide elements after language selection
+      const observer = new MutationObserver(() => {
+        const selectedLanguage = document.querySelector(
+          ".VIpgJd-ZVi9od-ORHb-bN97Pc"
+        );
+        if (selectedLanguage) {
+          // Hide the specific elements after language selection
+          const elementsToHide = document.querySelectorAll(
+            ".VIpgJd-ZVi9od-ORHb"
+          );
+          elementsToHide.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
+      });
+
+      // Observe changes in the Google Translate element
+      const targetNode = document.getElementById("google_translate_element");
+      observer.observe(targetNode, { childList: true, subtree: true });
     };
 
     loadGoogleTranslateScript();
