@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { useAuth } from "../../providers/AuthProvider";
 import Chart from "chart.js/auto";
