@@ -152,25 +152,27 @@ const InvestorDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((row) => (
-                  <tr key={row.Serial}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Serial}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {row.ProjectTitle}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.ProjectOwner}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Organization}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
-                    </td>
-                  </tr>
-                ))}
+                {selectedPost.map((row, index) => {
+                  return (
+                    <tr key={row._id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {row.businessName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {row.startDate}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {row.returndate}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        70000
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
