@@ -26,17 +26,27 @@ const ProjectDetail = () => {
 
     fetchProjectDetails();
   }, [id]);
+  console.log(project.businessName);
   const handleInvestClick = () => {
-    if (!project && !userdata) return; // Ensure project is loaded
+    console.log("Button clicked"); // Check if button is triggering
+    if (!project || !userdata) {
+      console.log("Project or userdata is missing"); // Debugging the condition
+      return;
+    }
+
     const post = {
       _id: id,
       businessName: project.businessName,
       returndate: project.returndate,
       startDate: project.startDate,
     };
+
+    console.log("Selected post:", post); // Check the selected post object
+
     selectPost(post);
-    console.log(post.businessName); // Set the selected post in context
+    console.log("Selected post business name:", post.businessName); // Log the business name
   };
+
   // If project data is not yet loaded, show a loading message
   if (!project) {
     return <div>Loading...</div>;
