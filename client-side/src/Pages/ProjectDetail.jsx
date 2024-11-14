@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
 const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { selectPost, userdata } = useAuth(); // Get selectPost from context
+  const { selectPost, userdata } = useAuth();
+  const navigate = useNavigate();
 
   // State for the current slide
 
@@ -44,6 +44,7 @@ const ProjectDetail = () => {
     console.log("Selected post:", post); // Check the selected post object
 
     selectPost(post);
+    navigate("/payment");
     console.log("Selected post business name:", post.businessName); // Log the business name
   };
 
@@ -146,11 +147,13 @@ const ProjectDetail = () => {
                 </div>
               </div>
             </div>
-            <Link to="/payment" onClick={handleInvestClick}>
-              <button className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn">
-                Invest
-              </button>
-            </Link>
+
+            <button
+              onClick={handleInvestClick}
+              className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn"
+            >
+              Invest
+            </button>
           </div>
         </div>
       </div>
