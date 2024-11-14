@@ -6,7 +6,7 @@ const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { selectPost } = useAuth(); // Get selectPost from context
+  const { selectPost, userdata } = useAuth(); // Get selectPost from context
 
   // State for the current slide
 
@@ -27,7 +27,7 @@ const ProjectDetail = () => {
     fetchProjectDetails();
   }, [id]);
   const handleInvestClick = () => {
-    if (!project) return; // Ensure project is loaded
+    if (!project && !userdata) return; // Ensure project is loaded
     const post = {
       _id: id,
       businessName: project.businessName,
