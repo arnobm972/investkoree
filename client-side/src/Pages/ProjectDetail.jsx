@@ -34,7 +34,8 @@ const ProjectDetail = () => {
       returndate: project.returndate,
       startDate: project.startDate,
     };
-    selectPost(post); // Set the selected post in context
+    selectPost(post);
+    console.log(post.businessName); // Set the selected post in context
   };
   // If project data is not yet loaded, show a loading message
   if (!project) {

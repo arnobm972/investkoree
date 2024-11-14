@@ -201,7 +201,6 @@ export const AuthProvider = ({ children }) => {
     selectedPost,
     selectPost,
     clearSelectedPost,
-    selectedPost,
   };
 
   return (
