@@ -164,9 +164,9 @@ const ProjectDetail = () => {
             </span>
           </div>
           <div>
-            <span className="font-bold">Projected ROI :</span>
+            <span className="font-bold">Investment Startdate:</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.startDate}%
+              {project.startDate}
             </span>
           </div>
           <div>
