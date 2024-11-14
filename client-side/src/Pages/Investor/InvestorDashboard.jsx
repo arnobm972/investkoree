@@ -152,29 +152,39 @@ const InvestorDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {selectedPost.map((row, index) => {
-                  const investedAmount = 70000;
-
-                  return (
-                    <tr key={row._id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {index + 1}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {row.businessName}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(row.startDate).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {row.returndate}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                        {investedAmount}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {Array.isArray(selectedPost) && selectedPost.length > 0 ? (
+                  selectedPost.map((row, index) => {
+                    const investedAmount = row.investedAmount || 70000; // If there's an investedAmount in the data, use it.
+                    return (
+                      <tr key={row._id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {index + 1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {row.businessName}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(row.startDate).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {row.returndate}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                          {investedAmount}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="5"
+                      className="px-6 py-4 text-center text-gray-500"
+                    >
+                      No invested projects available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
