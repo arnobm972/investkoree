@@ -32,6 +32,14 @@ const Home = () => {
       document.body.appendChild(script);
     };
 
+    // Initialize Google Translate when the script loads
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        { pageLanguage: "en" },
+        "google_translate_element"
+      );
+    };
+
     loadGoogleTranslateScript();
 
     // Cleanup the Google Translate script on unmount
