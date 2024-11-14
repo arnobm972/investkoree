@@ -167,6 +167,12 @@ const ProjectDetail = () => {
             </span>
           </div>
           <div>
+            <span className="font-bold">Projected ROI :</span>
+            <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
+              {project.startDate}%
+            </span>
+          </div>
+          <div>
             <span className="font-bold">Risk Grade :</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
               A
