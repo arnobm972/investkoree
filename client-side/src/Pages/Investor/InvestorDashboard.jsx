@@ -128,7 +128,8 @@ const InvestorDashboard = () => {
             </div>
           </div>
           <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl">
-            Invested Project list
+            Invested Project list{" "}
+            {selectedPost ? selectedPost.businessName : "Loading..."}
           </p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y sm:w-[40%] xs:w-[40%] xxs:w-[30%] divide-gray-200">
@@ -151,7 +152,7 @@ const InvestorDashboard = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              {/* <tbody className="bg-white divide-y divide-gray-200">
                 {Array.isArray(selectedPost) && selectedPost.length > 0 ? (
                   selectedPost.map((row, index) => {
                     const investedAmount = row.investedAmount || 70000; // If there's an investedAmount in the data, use it.
@@ -185,6 +186,27 @@ const InvestorDashboard = () => {
                     </td>
                   </tr>
                 )}
+              </tbody> */}
+              <tbody className="bg-white divide-y divide-gray-200">
+                {data.map((row) => (
+                  <tr key={row.Serial}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {row.Serial}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {row.ProjectTitle}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {row.ProjectOwner}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {row.Organization}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                      {row.Value}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
