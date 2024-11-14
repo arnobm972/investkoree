@@ -38,14 +38,6 @@ const Home = () => {
         { pageLanguage: "en" },
         "google_translate_element"
       );
-
-      // Hide the Google Translate element after it is loaded
-      const translateElement = document.getElementById(
-        "google_translate_element"
-      );
-      if (translateElement) {
-        translateElement.style.display = "none"; // Hide the translate element
-      }
     };
 
     loadGoogleTranslateScript();
