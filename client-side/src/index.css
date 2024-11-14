@@ -511,7 +511,10 @@ form.sign-up-form {
   color: #333; /* Change text color */
   font-weight: bold; /* Make text bold */
 }
-
+/* Hide the specific Google Translate element */
+.VIpgJd-ZVi9od-ORHb {
+  display: none !important; /* Use !important to override inline styles */
+}
 .goog-te-menu-frame {
   border: none; /* Remove border */
 }
