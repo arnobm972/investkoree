@@ -26,7 +26,7 @@ const ProjectDetail = () => {
 
     fetchProjectDetails();
   }, [id]);
-  console.log(project.businessName);
+  console.log(project);
   const handleInvestClick = () => {
     console.log("Button clicked"); // Check if button is triggering
     if (!project || !userdata) {
