@@ -85,10 +85,11 @@ const InvestorDashboard = () => {
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
   const { userdata, selectedPost } = useAuth();
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const [post, setPost] = useState(null);
   useEffect(() => {
     const fetchPostDetails = async () => {
-      if (!selectedPost) return; // If no post is selected, do nothing
+      if (!selectedPost) return;
 
       try {
         const response = await fetch(
