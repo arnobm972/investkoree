@@ -8,18 +8,6 @@ const ProjectDetail = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { selectPost } = useAuth(); // Get selectPost from context
 
-  const handleInvestClick = () => {
-    // Create a post object or just pass the ID
-    const post = {
-      _id: id,
-      businessName: project.businessName,
-      returndate: project.returndate,
-      startDate: project.startDate,
-    }; // You can fetch more details if needed
-    selectPost(post); // Set the selected post in context
-    // Optionally navigate to InvestorDashboard
-    // navigate("/investordashboard");
-  };
   // State for the current slide
 
   useEffect(() => {
@@ -38,7 +26,16 @@ const ProjectDetail = () => {
 
     fetchProjectDetails();
   }, [id]);
-
+  const handleInvestClick = () => {
+    if (!project) return; // Ensure project is loaded
+    const post = {
+      _id: id,
+      businessName: project.businessName,
+      returndate: project.returndate,
+      startDate: project.startDate,
+    };
+    selectPost(post); // Set the selected post in context
+  };
   // If project data is not yet loaded, show a loading message
   if (!project) {
     return <div>Loading...</div>;
