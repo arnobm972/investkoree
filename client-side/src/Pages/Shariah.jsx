@@ -184,12 +184,12 @@ const Shariah = () => {
             <div className="mt-6">
               {/* <p className="font-bold  text-xl">Selected Filters:</p> */}
               {selectedSector && (
-                <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ">
+                <li className="text-lg font-bold rounded-lg text-white bg-salmon  my-2">
                   <a>Sector: {selectedSector}</a>
                 </li>
               )}
               {selectedDuration && (
-                <li className="text-lg mb-2 rounded-lg text-white bg-salmon">
+                <li className="text-lg font-bold rounded-lg text-white bg-salmon">
                   <a>Duration: {selectedDuration}</a>
                 </li>
               )}
