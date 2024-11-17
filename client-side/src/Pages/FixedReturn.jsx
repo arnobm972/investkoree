@@ -101,55 +101,70 @@ const FixedReturn = () => {
             </li>
             {/* Add onClick handlers to filter posts by sector */}
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ${
+                selectedSector === "Retail" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleSectorClick("Retail")}
             >
               <a>Retail</a>
             </li>
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ${
+                selectedSector === "Financial" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleSectorClick("Financial")}
             >
               <a>Financial</a>
             </li>
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ${
+                selectedSector === "Farming" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleSectorClick("Farming")}
             >
               <a>Farming</a>
             </li>
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ${
+                selectedSector === "Clothing" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleSectorClick("Clothing")}
             >
               <a>Clothing</a>
             </li>
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ${
+                selectedSector === "Health" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleSectorClick("Health")}
             >
               <a>Health</a>
             </li>
-            {/* Add more sectors as needed */}
 
             <li className="font-extrabold text-salmon hover:text-white text-lg mb-2 mt-6">
               <a>Duration</a>
             </li>
             {/* Add onClick handlers to filter posts by duration */}
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg ${
+                selectedDuration === "short-term" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleDurationClick("short-term")}
             >
               <a>Short term</a>
             </li>
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg rounded-lg ${
+                selectedDuration === "mid-term" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleDurationClick("mid-term")}
             >
               <a>Mid term</a>
             </li>
             <li
-              className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg"
+              className={`font-bold hover:bg-salmon hover:text-white text-lg rounded-lg ${
+                selectedDuration === "long-term" ? "bg-salmon text-white" : ""
+              }`}
               onClick={() => handleDurationClick("long-term")}
             >
               <a>Long term</a>
