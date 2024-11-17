@@ -1,7 +1,7 @@
 import Investment from '../models/investmentModel.js';
 import express from 'express';
 const router = express.Router();
-router.post("/invest", async (req, res) => {
+router.post("/post", async (req, res) => {
     const { _id, businessName, returndate, startDate, userId } = req.body;
   
     try {
@@ -21,7 +21,7 @@ router.post("/invest", async (req, res) => {
       res.status(500).json({ message: "Error saving investment" });
     }
   });
-  router.get('/investments', async (req, res) => {
+  router.get('/get', async (req, res) => {
     try {
       const investments = await Investment.find();
       res.status(200).json(investments);

@@ -86,19 +86,15 @@ const InvestorDashboard = () => {
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
   const [investments, setInvestments] = useState([]);
-  const [businessName, setBusinessName] = useState("No Investments");
 
   useEffect(() => {
     const fetchInvestments = async () => {
       try {
         const response = await fetch(
-          "https://investkoree-backend.onrender.com/api/investments"
-        );
+          "https://investkoree-backend.onrender.com/investments/get"
+        ); // Adjust the endpoint as needed
         const data = await response.json();
         setInvestments(data);
-        if (data.length > 0) {
-          setBusinessName(data[0].businessName);
-        }
       } catch (error) {
         console.error("Error fetching investments:", error);
       }
@@ -110,7 +106,6 @@ const InvestorDashboard = () => {
   if (!userdata) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
-
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -149,7 +144,7 @@ const InvestorDashboard = () => {
             </div>
           </div>
           <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl">
-            {businessName}
+            {investments.businessName}
           </p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y sm:w-[40%] xs:w-[40%] xxs:w-[30%] divide-gray-200">
@@ -220,7 +215,7 @@ const InvestorDashboard = () => {
               <a>WatchList</a>
             </li>
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a>Settings</a>
+              <a>Rewards</a>
             </li>
           </ul>
         </div>
