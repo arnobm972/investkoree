@@ -86,17 +86,19 @@ const InvestorDashboard = () => {
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
   const [investments, setInvestments] = useState([]);
-  const businessName =
-    investments.length > 0 ? investments[0].businessName : "No Investments";
+  const [businessName, setBusinessName] = useState("No Investments");
 
   useEffect(() => {
     const fetchInvestments = async () => {
       try {
         const response = await fetch(
           "https://investkoree-backend.onrender.com/api/investments"
-        ); // Adjust the endpoint as needed
+        );
         const data = await response.json();
         setInvestments(data);
+        if (data.length > 0) {
+          setBusinessName(data[0].businessName);
+        }
       } catch (error) {
         console.error("Error fetching investments:", error);
       }
@@ -108,6 +110,7 @@ const InvestorDashboard = () => {
   if (!userdata) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
+
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -217,7 +220,7 @@ const InvestorDashboard = () => {
               <a>WatchList</a>
             </li>
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a>Rewards</a>
+              <a>Settings</a>
             </li>
           </ul>
         </div>
