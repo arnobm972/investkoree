@@ -525,3 +525,6 @@ iframe.goog-te-banner-frame,
 .goog-te-menu-frame {
   border: none; /* Remove border */
 }
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}

@@ -8,62 +8,78 @@ const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
 
   // Fetch the latest posts when the component mounts
-  useEffect(() => {
-    const loadGoogleTranslateScript = () => {
-      // Avoid adding the script multiple times
-      if (!document.querySelector("script[src*='google.com/translate']")) {
-        const script = document.createElement("script");
-        script.src =
-          "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-        script.async = true;
-        document.body.appendChild(script);
-      }
-    };
+  // useEffect(() => {
+  //   const loadGoogleTranslateScript = () => {
+  //     // Avoid adding the script multiple times
+  //     if (!document.querySelector("script[src*='google.com/translate']")) {
+  //       const script = document.createElement("script");
+  //       script.src =
+  //         "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  //       script.async = true;
+  //       document.body.appendChild(script);
+  //     }
+  //   };
 
-    // Initialize Google Translate when the script loads
-    window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement(
-        { pageLanguage: "en" },
-        "google_translate_element"
-      );
+  //   // Initialize Google Translate when the script loads
+  //   window.googleTranslateElementInit = () => {
+  //     new window.google.translate.TranslateElement(
+  //       { pageLanguage: "en" },
+  //       "google_translate_element"
+  //     );
 
-      // Observe changes in the DOM to hide unwanted elements
-      const observer = new MutationObserver(() => {
-        // Hide the sticky bar
-        const stickyBar = document.querySelector(".goog-te-banner-frame");
-        if (stickyBar) {
-          stickyBar.style.display = "none";
-        }
+  //     // Observe changes in the DOM to hide unwanted elements
+  //     const observer = new MutationObserver(() => {
+  //       // Hide the sticky bar
+  //       const stickyBar = document.querySelector(".goog-te-banner-frame");
+  //       if (stickyBar) {
+  //         stickyBar.style.display = "none";
+  //       }
 
-        // Hide the placeholder overlay if present
-        const placeholderOverlay = document.querySelector(
-          ".goog-te-menu-frame"
-        );
-        if (placeholderOverlay) {
-          placeholderOverlay.style.display = "none";
-        }
-      });
+  //       // Hide the placeholder overlay if present
+  //       const placeholderOverlay = document.querySelector(
+  //         ".goog-te-menu-frame"
+  //       );
+  //       if (placeholderOverlay) {
+  //         placeholderOverlay.style.display = "none";
+  //       }
+  //     });
 
-      // Observe the body for changes
-      observer.observe(document.body, { childList: true, subtree: true });
-    };
+  //     // Observe the body for changes
+  //     observer.observe(document.body, { childList: true, subtree: true });
+  //   };
 
-    loadGoogleTranslateScript();
+  //   loadGoogleTranslateScript();
 
-    // Cleanup the Google Translate script and MutationObserver on unmount
-    return () => {
-      const script = document.querySelector(
-        "script[src*='google.com/translate']"
-      );
-      if (script) {
-        script.remove();
-      }
-      delete window.googleTranslateElementInit; // Remove the global function
-    };
-  }, []);
-
+  //   // Cleanup the Google Translate script and MutationObserver on unmount
+  //   return () => {
+  //     const script = document.querySelector(
+  //       "script[src*='google.com/translate']"
+  //     );
+  //     if (script) {
+  //       script.remove();
+  //     }
+  //     delete window.googleTranslateElementInit; // Remove the global function
+  //   };
+  // }, []);
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en', 
+        layout:     google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false, 
+        includedLanguages: ''}, 'google_translate_element');}
+</script>
+<script type="text/javascript" src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   return (
     <div>
+      <div style="" class="skiptranslate">
+        <iframe
+          frameborder="0"
+          style="visibility:visible"
+          src="javascript:''"
+          class="goog-te-banner-frame skiptranslate"
+          id=":2.container"
+        ></iframe>
+      </div>
       <div className="google-translate-container">
         <div id="google_translate_element"></div>
       </div>
