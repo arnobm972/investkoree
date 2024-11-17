@@ -44,4 +44,4 @@ const projectSchema = new mongoose.Schema({
 // Create the Project model
 const Project = mongoose.model("Project", projectSchema);
 
-module.exports = Project;
+export default Project;
