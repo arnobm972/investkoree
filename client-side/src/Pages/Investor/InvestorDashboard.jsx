@@ -86,7 +86,8 @@ const InvestorDashboard = () => {
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
   const [investments, setInvestments] = useState([]);
-  const { businessName } = investments;
+  const businessName =
+    investments.length > 0 ? investments[0].businessName : "No Investments";
 
   useEffect(() => {
     const fetchInvestments = async () => {
