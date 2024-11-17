@@ -1,7 +1,7 @@
 import Investment from '../models/investmentModel.js';
 
 router.post("/invest", async (req, res) => {
-    const { _id, businessName, returndate, startDate, userId, investmentAmount } = req.body;
+    const { _id, businessName, returndate, startDate, userId } = req.body;
   
     try {
       const newInvestment = new Investment({
