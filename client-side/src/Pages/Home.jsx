@@ -10,11 +10,14 @@ const Home = () => {
   // Fetch the latest posts when the component mounts
   useEffect(() => {
     const loadGoogleTranslateScript = () => {
-      const script = document.createElement("script");
-      script.src =
-        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-      script.async = true;
-      document.body.appendChild(script);
+      // Avoid adding the script multiple times
+      if (!document.querySelector("script[src*='google.com/translate']")) {
+        const script = document.createElement("script");
+        script.src =
+          "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        script.async = true;
+        document.body.appendChild(script);
+      }
     };
 
     // Initialize Google Translate when the script loads
@@ -24,7 +27,7 @@ const Home = () => {
         "google_translate_element"
       );
 
-      // Hide unwanted elements
+      // Observe changes in the DOM to hide unwanted elements
       const observer = new MutationObserver(() => {
         // Hide the sticky bar
         const stickyBar = document.querySelector(".goog-te-banner-frame");
@@ -32,22 +35,22 @@ const Home = () => {
           stickyBar.style.display = "none";
         }
 
-        // Hide other Google Translate controls if needed
-        const translateControls = document.querySelectorAll(
-          ".goog-te-menu-frame, .goog-te-gadget-icon"
+        // Hide the placeholder overlay if present
+        const placeholderOverlay = document.querySelector(
+          ".goog-te-menu-frame"
         );
-        translateControls.forEach((control) => {
-          control.style.display = "none";
-        });
+        if (placeholderOverlay) {
+          placeholderOverlay.style.display = "none";
+        }
       });
 
-      // Observe the body for changes (Google Translate dynamically injects elements)
+      // Observe the body for changes
       observer.observe(document.body, { childList: true, subtree: true });
     };
 
     loadGoogleTranslateScript();
 
-    // Cleanup the Google Translate script on unmount
+    // Cleanup the Google Translate script and MutationObserver on unmount
     return () => {
       const script = document.querySelector(
         "script[src*='google.com/translate']"
@@ -55,6 +58,7 @@ const Home = () => {
       if (script) {
         script.remove();
       }
+      delete window.googleTranslateElementInit; // Remove the global function
     };
   }, []);
 
