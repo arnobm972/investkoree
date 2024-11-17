@@ -35,5 +35,4 @@ const investmentSchema = new mongoose.Schema({
 
 // Create the Investment model
 const Investment = mongoose.model("Investment", investmentSchema);
-
-module.exports = Investment;
+export default Investment;

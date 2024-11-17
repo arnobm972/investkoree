@@ -91,7 +91,7 @@ const InvestorDashboard = () => {
     const fetchInvestments = async () => {
       try {
         const response = await fetch(
-          "https://investkoree-backend.onrender.com/investments"
+          "https://investkoree-backend.onrender.com/api/investments"
         ); // Adjust the endpoint as needed
         const data = await response.json();
         setInvestments(data);
