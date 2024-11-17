@@ -3,13 +3,11 @@ import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
-  const [code, setCode] = useState([]);
 
-  // Fetch the late
+  // Fetch the latest posts when the component mounts
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -28,7 +26,7 @@ const Home = () => {
     const loadGoogleTranslateScript = () => {
       const script = document.createElement("script");
       script.src =
-        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
       document.body.appendChild(script);
     };
@@ -36,12 +34,29 @@ const Home = () => {
     // Initialize Google Translate when the script loads
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
-        {
-          pageLanguage: "en",
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-        },
+        { pageLanguage: "en" },
         "google_translate_element"
       );
+
+      // Add an event listener to hide elements after language selection
+      const observer = new MutationObserver(() => {
+        const selectedLanguage = document.querySelector(
+          ".VIpgJd-ZVi9od-ORHb-bN97Pc"
+        );
+        if (selectedLanguage) {
+          // Hide the specific elements after language selection
+          const elementsToHide = document.querySelectorAll(
+            ".VIpgJd-ZVi9od-ORHb"
+          );
+          elementsToHide.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
+      });
+
+      // Observe changes in the Google Translate element
+      const targetNode = document.getElementById("google_translate_element");
+      observer.observe(targetNode, { childList: true, subtree: true });
     };
 
     loadGoogleTranslateScript();
@@ -57,31 +72,11 @@ const Home = () => {
     };
   }, []);
 
-  const setGoogleTrans = () => {
-    document.cookie =
-      "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    Cookies.set("googtrans", `/en/${code}`, {
-      domain: `${window.location.hostname}`,
-      path: "/",
-    });
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    const googtrans = Cookies.get("googtrans");
-    const languageCode = googtrans ? googtrans.split("/")[2] : "en"; // Default to 'en' if not set
-    setCode(languageCode);
-    setGoogleTrans();
-  }, [code]);
-
   return (
     <div>
       <div className="google-translate-container">
         <div id="google_translate_element"></div>
       </div>
-      <button onClick={() => setCode(code === "en" ? "tl" : "en")}>
-        Change language
-      </button>
 
       {/* Hero Section */}
       <div className="hero banner-img bg-salmon">
