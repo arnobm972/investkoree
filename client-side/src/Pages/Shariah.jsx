@@ -189,7 +189,7 @@ const Shariah = () => {
                 </li>
               )}
               {selectedDuration && (
-                <li className="text-lg font-bold rounded-lg text-white mt-2 bg-salmon">
+                <li className="text-lg font-bold rounded-lg text-white mt-4 bg-salmon">
                   <a>{selectedDuration}</a>
                 </li>
               )}
