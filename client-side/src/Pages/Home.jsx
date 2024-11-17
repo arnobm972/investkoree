@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
+  const [code, setCode] = useState([]);
 
   // Fetch the latest posts when the component mounts
   useEffect(() => {
