@@ -179,17 +179,6 @@ const Shariah = () => {
                 Clear Filters
               </button>
             </li>
-
-            {/* Display selected filters */}
-            <div className="mt-6">
-              <p className="font-bold text-salmon text-lg">Selected Filters:</p>
-              {selectedSector && (
-                <p className="text-sm">Sector: {selectedSector}</p>
-              )}
-              {selectedDuration && (
-                <p className="text-sm">Duration: {selectedDuration}</p>
-              )}
-            </div>
           </ul>
         </div>
       </div>
