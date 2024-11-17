@@ -1,5 +1,6 @@
 import Investment from '../models/investmentModel.js';
-
+import express from 'express';
+const router = express.Router();
 router.post("/invest", async (req, res) => {
     const { _id, businessName, returndate, startDate, userId } = req.body;
   
