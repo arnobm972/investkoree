@@ -44,9 +44,7 @@ const Home = () => {
         .goog-te-banner-frame {
           display: none !important;
         }
-        .goog-te-gadget {
-          display: none !important;
-        }
+   
       `;
       document.head.appendChild(style);
     };
