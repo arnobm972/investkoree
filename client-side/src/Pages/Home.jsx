@@ -9,7 +9,7 @@ const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
   const [code, setCode] = useState([]);
 
-  // Fetch the latest posts when the component mounts
+  // Fetch the late
   useEffect(() => {
     const fetchPosts = async () => {
       try {
