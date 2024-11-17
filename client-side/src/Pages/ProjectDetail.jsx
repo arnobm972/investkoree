@@ -40,14 +40,14 @@ const ProjectDetail = () => {
       businessName: project.businessName,
       returndate: project.returndate,
       startDate: project.startDate,
-      userId: userdata.id,
+      userId: userdata._id,
     };
 
     console.log("Selected post:", post); // Check the selected post object
 
     try {
       const response = await fetch(
-        "https://investkoree-backend.onrender.com/invesments/post",
+        "https://investkoree-backend.onrender.com/invesment/post",
         {
           method: "POST",
           headers: {
