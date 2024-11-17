@@ -38,25 +38,17 @@ const Home = () => {
         "google_translate_element"
       );
 
-      // Add an event listener to hide elements after language selection
-      const observer = new MutationObserver(() => {
-        const selectedLanguage = document.querySelector(
-          ".VIpgJd-ZVi9od-ORHb-bN97Pc"
-        );
-        if (selectedLanguage) {
-          // Hide the specific elements after language selection
-          const elementsToHide = document.querySelectorAll(
-            ".VIpgJd-ZVi9od-ORHb"
-          );
-          elementsToHide.forEach((element) => {
-            element.style.display = "none";
-          });
+      // Dynamically inject CSS to hide unwanted elements
+      const style = document.createElement("style");
+      style.textContent = `
+        .goog-te-banner-frame {
+          display: none !important;
         }
-      });
-
-      // Observe changes in the Google Translate element
-      const targetNode = document.getElementById("google_translate_element");
-      observer.observe(targetNode, { childList: true, subtree: true });
+        .goog-te-gadget {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
     };
 
     loadGoogleTranslateScript();
@@ -68,6 +60,11 @@ const Home = () => {
       );
       if (script) {
         script.remove();
+      }
+
+      const style = document.head.querySelector("style");
+      if (style) {
+        style.remove();
       }
     };
   }, []);
