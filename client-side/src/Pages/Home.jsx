@@ -3,6 +3,7 @@ import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -59,7 +60,7 @@ const Home = () => {
   const setGoogleTrans = () => {
     document.cookie =
       "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    cookies.set("googtrans", `/en/${code}`, {
+    Cookies.set("googtrans", `/en/${code}`, {
       domain: `${window.location.hostname}`,
       path: "/",
     });
@@ -67,7 +68,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const googtrans = cookies.get("googtrans");
+    const googtrans = Cookies.get("googtrans");
     const languageCode = googtrans ? googtrans.split("/")[2] : "en"; // Default to 'en' if not set
     setCode(languageCode);
     setGoogleTrans();

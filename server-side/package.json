@@ -27,6 +27,7 @@
     "firebase-admin": "^12.6.0",
     "formidable": "^3.5.2",
     "http": "^0.0.1-security",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "memory-store": "^0.0.1",
     "memorystore": "^1.6.7",
