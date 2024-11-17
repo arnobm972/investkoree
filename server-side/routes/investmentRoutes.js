@@ -1,24 +1,29 @@
-import { authToken } from '../utils/authMiddleware.js';
-import User from '../models/userModel.js';
-router.post('/invest', authToken, async (req, res) => {
-    const { postId, postDetails } = req.body; // Include the needed details
-    const userId = req.user._id; // Ensure user is authenticated with authToken
-
+router.post("/invest", async (req, res) => {
+    const { _id, businessName, returndate, startDate, userId, investmentAmount } = req.body;
+  
     try {
-        const user = await User.findById(userId);
-        user.investments.push({ postId, ...postDetails });
-        await user.save();
-        res.status(200).json({ message: 'Investment added successfully' });
+      const newInvestment = new Investment({
+        projectId: _id,
+        businessName,
+        returndate,
+        startDate,
+        userId, // Include userId if you want to track which user made the investment
+        // investmentAmount, // Include investment amount
+      });
+  
+      await newInvestment.save();
+      res.status(201).json({ message: "Investment recorded successfully", investment: newInvestment });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to add investment' });
+      console.error("Error saving investment:", error);
+      res.status(500).json({ message: "Error saving investment" });
     }
-});
-// In routes/investmentRoutes.js
-router.get('/investments', authToken, async (req, res) => {
+  });
+  router.get('/investments', async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
-        res.status(200).json(user.investments);
+      const investments = await Investment.find();
+      res.status(200).json(investments);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to retrieve investments' });
+      console.error('Error fetching investments:', error);
+      res.status(500).json({ message: 'Error fetching investments' });
     }
-});
+  });

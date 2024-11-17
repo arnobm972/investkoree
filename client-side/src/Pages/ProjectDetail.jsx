@@ -27,7 +27,7 @@ const ProjectDetail = () => {
     fetchProjectDetails();
   }, [id]);
   console.log(project);
-  const handleInvestClick = () => {
+  const handleInvestClick = async () => {
     console.log("Button clicked"); // Check if button is triggering
     if (!project || !userdata) {
       console.log("Project or userdata is missing"); // Debugging the condition
@@ -43,9 +43,29 @@ const ProjectDetail = () => {
 
     console.log("Selected post:", post); // Check the selected post object
 
-    selectPost(post);
-    navigate("/payment");
-    console.log("Selected post business name:", post.businessName); // Log the business name
+    try {
+      const response = await fetch(
+        "https://investkoree-backend.onrender.com/invest",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(post),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send investment data");
+      }
+
+      const result = await response.json();
+      console.log("Investment data sent successfully:", result);
+      selectPost(post);
+      navigate("/payment");
+    } catch (error) {
+      console.error("Error sending investment data:", error);
+    }
   };
 
   // If project data is not yet loaded, show a loading message

@@ -84,8 +84,24 @@ const chartData2 = {
 const InvestorDashboard = () => {
   const [data1] = useState(chartData1);
   const [data2] = useState(chartData2);
-  const { userdata, selectedPost } = useAuth();
-  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const { userdata } = useAuth();
+  const [investments, setInvestments] = useState([]);
+
+  useEffect(() => {
+    const fetchInvestments = async () => {
+      try {
+        const response = await fetch(
+          "https://investkoree-backend.onrender.com/investments"
+        ); // Adjust the endpoint as needed
+        const data = await response.json();
+        setInvestments(data);
+      } catch (error) {
+        console.error("Error fetching investments:", error);
+      }
+    };
+
+    fetchInvestments();
+  }, []);
 
   if (!userdata) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -128,7 +144,7 @@ const InvestorDashboard = () => {
             </div>
           </div>
           <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl">
-            {selectedPost ? selectedPost.businessName : "Loading..."}
+            {investments.businessName}
           </p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y sm:w-[40%] xs:w-[40%] xxs:w-[30%] divide-gray-200">

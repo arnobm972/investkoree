@@ -8,6 +8,7 @@ import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import userSpecificRoute from './routes/userRoutes.js';
 import userPostsRoute from './routes/userPostsRoute.js';
 import founderPostRoute from './routes//founderPostRoute.js'
+import investmentRoute from './routes/investmentRoutes.js';
 
 
 dotenv.config();
@@ -52,6 +53,7 @@ app.use("/users/auth", loginRoute);
 app.use("/founderpost", founderFormPostRoute);
 // app.use('/users', userRoutes);
 app.use('/api', userSpecificRoute);
+app.use('/api', investmentRoute); 
 app.use('/api', userPostsRoute);
 
 
