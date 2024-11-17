@@ -28,7 +28,8 @@ const ProjectDetail = () => {
   }, [id]);
   console.log(project);
   const handleInvestClick = async () => {
-    console.log("Button clicked"); // Check if button is triggering
+    console.log("Button clicked");
+    navigate("/payment"); // Check if button is triggering
     if (!project || !userdata) {
       console.log("Project or userdata is missing"); // Debugging the condition
       return;
