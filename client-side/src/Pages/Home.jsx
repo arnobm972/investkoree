@@ -9,20 +9,6 @@ const Home = () => {
 
   // Fetch the latest posts when the component mounts
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(
-          "https://investkoree-backend.onrender.com/founderpost/latestposts"
-        );
-        const data = await response.json();
-        setLatestPosts(data);
-      } catch (error) {
-        console.error("Error fetching latest posts:", error);
-      }
-    };
-
-    fetchPosts();
-
     const loadGoogleTranslateScript = () => {
       const script = document.createElement("script");
       script.src =
@@ -38,15 +24,25 @@ const Home = () => {
         "google_translate_element"
       );
 
-      // Dynamically inject CSS to hide unwanted elements
-      const style = document.createElement("style");
-      style.textContent = `
-        .goog-te-banner-frame {
-          display: none !important;
+      // Hide unwanted elements
+      const observer = new MutationObserver(() => {
+        // Hide the sticky bar
+        const stickyBar = document.querySelector(".goog-te-banner-frame");
+        if (stickyBar) {
+          stickyBar.style.display = "none";
         }
-   
-      `;
-      document.head.appendChild(style);
+
+        // Hide other Google Translate controls if needed
+        const translateControls = document.querySelectorAll(
+          ".goog-te-menu-frame, .goog-te-gadget-icon"
+        );
+        translateControls.forEach((control) => {
+          control.style.display = "none";
+        });
+      });
+
+      // Observe the body for changes (Google Translate dynamically injects elements)
+      observer.observe(document.body, { childList: true, subtree: true });
     };
 
     loadGoogleTranslateScript();
@@ -58,11 +54,6 @@ const Home = () => {
       );
       if (script) {
         script.remove();
-      }
-
-      const style = document.head.querySelector("style");
-      if (style) {
-        style.remove();
       }
     };
   }, []);
