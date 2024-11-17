@@ -1,3 +1,5 @@
+import Investment from '../models/investmentModel.js';
+
 router.post("/invest", async (req, res) => {
     const { _id, businessName, returndate, startDate, userId, investmentAmount } = req.body;
   
@@ -27,3 +29,5 @@ router.post("/invest", async (req, res) => {
       res.status(500).json({ message: 'Error fetching investments' });
     }
   });
+  
+export default router;
