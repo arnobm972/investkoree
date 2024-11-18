@@ -35,14 +35,13 @@ const ProjectDetail = () => {
   console.log(project);
   const handleInvestClick = async () => {
     console.log("Button clicked");
-    navigate("/payment"); // Check if button is triggering
 
     const post = {
       _id: id,
       businessName: project.businessName,
       returndate: project.returndate,
       startDate: project.startDate,
-      userId: userdata.id,
+      userId: userdata._id,
     };
     // Check the selected post object
 
