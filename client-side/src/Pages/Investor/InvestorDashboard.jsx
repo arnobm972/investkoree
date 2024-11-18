@@ -145,7 +145,7 @@ const InvestorDashboard = () => {
             </div>
           </div>
           <p className="lg:text-3xl font-bold mb-12 mt-16 sm:mx-auto xs:mx-auto xxs:mx-auto sm:text-xl xs:text-xl xxs:text-xl">
-            {investments.businessName}
+            Invested Project List
           </p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y sm:w-[40%] xs:w-[40%] xxs:w-[30%] divide-gray-200">
