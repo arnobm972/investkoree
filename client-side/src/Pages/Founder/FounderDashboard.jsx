@@ -42,7 +42,7 @@ const FounderDashboard = () => {
             </label>
           </div>
           <div className="flex lg:flex-row lg:justify-between sm:flex-col xs:flex-col xxs:flex-col">
-            <div className="flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col gap-16 my-10">
+            <div className="flex lg:flex-row sm:flex-row xs:flex-row xxs:flex-row gap-16 my-10">
               <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
                 <p className="lg:text-3xl font-bold sm:mx-auto sm:text-lg xs:text-lg xxs:text-lg ">
                   Total Invested Amount
