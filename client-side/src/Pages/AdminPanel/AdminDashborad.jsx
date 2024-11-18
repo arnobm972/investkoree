@@ -123,7 +123,11 @@ const AdminDashboard = () => {
                   const leftForInvestment = fundingAmount - investedAmount;
 
                   return (
-                    <tr key={row._id}>
+                    <tr
+                      key={row._id}
+                      className="cursor-pointer hover:bg-gray-100"
+                      onClick={() => navigate(`/posts/${row._id}`)}
+                    >
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {index + 1}
                       </td>
