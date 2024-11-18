@@ -29,7 +29,7 @@ const ProjectDetail = () => {
   }, [id]);
 
   // If project data is not yet loaded, show a loading message
-  if (!project && !userdata) {
+  if (!project) {
     return <div>Loading...</div>;
   }
   console.log(project);
