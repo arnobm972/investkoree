@@ -4,9 +4,11 @@ import { FcDonate } from "react-icons/fc";
 import { useAuth } from "../../providers/AuthProvider";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { userdata } = useAuth();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
