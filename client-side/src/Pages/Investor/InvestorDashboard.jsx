@@ -103,7 +103,7 @@ const InvestorDashboard = () => {
     fetchInvestments();
   }, []);
 
-  if (!userdata) {
+  if (!userdata && !investments) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
   return (
