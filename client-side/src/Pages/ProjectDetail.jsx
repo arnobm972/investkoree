@@ -6,6 +6,7 @@ const ProjectDetail = () => {
   const [project, setProject] = useState(null); // State to hold project data
   const [currentSlide, setCurrentSlide] = useState(0);
   const { userdata } = useAuth();
+  const { post, selectPost } = useState();
   const navigate = useNavigate();
 
   // State for the current slide
