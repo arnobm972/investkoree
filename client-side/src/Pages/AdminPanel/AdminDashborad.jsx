@@ -3,6 +3,7 @@ import { FcIdea } from "react-icons/fc";
 import { FcDonate } from "react-icons/fc";
 import { useAuth } from "../../providers/AuthProvider";
 import { AiFillDollarCircle } from "react-icons/ai";
+import { useState } from "react";
 
 const data = [
   {
@@ -43,6 +44,31 @@ const data = [
 
 const AdminDashboard = () => {
   const { userdata } = useAuth();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  useEffect(() => {
+    const fetchAllPosts = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/allposts`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllPosts();
+  }, [API_URL]);
+
+  if (loading) {
+    return <span className="loading-spinner loading-lg"></span>;
+  }
   if (!userdata) {
     return <span className=" loading-spinner loading-lg"></span>;
   }
@@ -105,9 +131,6 @@ const AdminDashboard = () => {
                     Project Title
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Project Owner
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Organization
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
@@ -120,7 +143,10 @@ const AdminDashboard = () => {
                     Remaining Amount
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Date
+                    Start Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Return Date
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Status
@@ -128,37 +154,43 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((row) => (
-                  <tr key={row.Serial}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Serial}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {row.ProjectTitle}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.ProjectOwner}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Organization}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Number}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-orange-500">
-                      {row.Left}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Date}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Status}
-                    </td>
-                  </tr>
-                ))}
+                {posts.map((row, index) => {
+                  const investedAmount = 70000;
+                  const fundingAmount = parseFloat(row.fundingAmount) || 0;
+                  const leftForInvestment = fundingAmount - investedAmount;
+
+                  return (
+                    <tr key={row._id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {row.businessName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        HP
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        15
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        {fundingAmount}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {leftForInvestment}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(row.startDate).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {row.returndate}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        Ongoing
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

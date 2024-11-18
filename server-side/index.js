@@ -9,6 +9,7 @@ import userSpecificRoute from './routes/userRoutes.js';
 import userPostsRoute from './routes/userPostsRoute.js';
 import founderPostRoute from './routes//founderPostRoute.js'
 import investmentRoute from './routes/investmentRoutes.js';
+import allPostsRoute from './routes/allPostRoute.js';
 
 
 dotenv.config();
@@ -55,6 +56,7 @@ app.use("/founderpost", founderFormPostRoute);
 app.use('/api', userSpecificRoute);
 app.use('/investments', investmentRoute); 
 app.use('/api', userPostsRoute);
+app.use('/api', allPostsRoute);
 
 
 // Root route
