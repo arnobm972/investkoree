@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   const logOut = () => {
     localStorage.removeItem("token");
     setToken(null);
-    setUser(null);
+    setUserData(null);
   };
 
   const createUser = async (name, email, password, role) => {
