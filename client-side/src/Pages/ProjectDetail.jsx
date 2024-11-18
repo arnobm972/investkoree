@@ -5,7 +5,7 @@ const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { selectPost, userdata } = useAuth();
+  const { userdata } = useAuth();
   const navigate = useNavigate();
 
   // State for the current slide
@@ -42,8 +42,7 @@ const ProjectDetail = () => {
       startDate: project.startDate,
       userId: userdata._id,
     };
-
-    console.log("Selected post:", post); // Check the selected post object
+    // Check the selected post object
 
     try {
       const response = await fetch(
