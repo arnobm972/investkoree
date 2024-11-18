@@ -47,7 +47,7 @@ const ProjectDetail = () => {
 
     try {
       const response = await fetch(
-        "https://investkoree-backend.onrender.com/invesments/post",
+        "https://investkoree-backend.onrender.com/investments/post",
         {
           method: "POST",
           headers: {

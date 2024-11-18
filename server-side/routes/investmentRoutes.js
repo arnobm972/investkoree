@@ -3,6 +3,7 @@ import express from 'express';
 const router = express.Router();
 router.post("/post", async (req, res) => {
     const { _id, businessName, returndate, startDate, userId } = req.body;
+    console.log(req.body);
   
     try {
       const newInvestment = new Investment({
