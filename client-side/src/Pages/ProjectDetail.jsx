@@ -5,8 +5,8 @@ const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { userdata } = useAuth();
-  const { post, selectPost } = useState();
+  // const { userdata } = useAuth();
+
   const navigate = useNavigate();
 
   // State for the current slide
@@ -63,7 +63,7 @@ const ProjectDetail = () => {
 
       const result = await response.json();
       console.log("Investment data sent successfully:", result);
-      selectPost(post);
+
       navigate("/payment");
     } catch (error) {
       console.error("Error sending investment data:", error);
