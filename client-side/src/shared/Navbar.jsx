@@ -234,6 +234,15 @@ const Navbar = () => {
                         MyProfile
                       </NavLink>
                     )}
+                    {userdata.role === "admin" && (
+                      <NavLink
+                        to="/admindashboard"
+                        onClick={toggleMenu}
+                        className="hover:bg-salmon transition p-2 rounded"
+                      >
+                        MyProfile
+                      </NavLink>
+                    )}
                     <div
                       onClick={handleSignOut}
                       className="hover:bg-salmon transition  p-2 rounded cursor-pointer"
