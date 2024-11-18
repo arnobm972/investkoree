@@ -236,7 +236,7 @@ const Navbar = () => {
                     )}
                     <div
                       onClick={handleSignOut}
-                      className="hover:bg-salmon transition p-2 rounded cursor-pointer"
+                      className="hover:bg-salmon transition lg:mr-2 p-2 rounded cursor-pointer"
                     >
                       Log Out
                     </div>
