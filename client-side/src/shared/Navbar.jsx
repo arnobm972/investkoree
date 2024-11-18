@@ -105,7 +105,7 @@ const Navbar = () => {
                       to="/investordashboard"
                       className="hover:bg-salmon transition hover:text-white p-2 rounded"
                     >
-                      My Profile
+                      MyProfile
                     </Link>
                   )}
                   {userdata.role === "founder" && (
@@ -113,12 +113,12 @@ const Navbar = () => {
                       to="/founderdashboard"
                       className="hover:bg-salmon transition hover:text-white p-2 rounded"
                     >
-                      My Profile
+                      MyProfile
                     </Link>
                   )}
                   <div
                     onClick={handleSignOut}
-                    className="hover:bg-salmon transition lg:ml-2 hover:text-white p-2 rounded cursor-pointer"
+                    className="hover:bg-salmon transition lg:ml-4 hover:text-white p-2 rounded cursor-pointer"
                   >
                     Logout
                   </div>
@@ -222,7 +222,7 @@ const Navbar = () => {
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
-                        My Profile
+                        MyProfile
                       </NavLink>
                     )}
                     {userdata.role === "founder" && (
@@ -231,7 +231,7 @@ const Navbar = () => {
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
-                        My Profile
+                        MyProfile
                       </NavLink>
                     )}
                     <div
