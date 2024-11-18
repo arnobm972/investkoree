@@ -243,7 +243,7 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <details>
-                    <summary className="hover:bg-salmon transition p-2 rounded">
+                    <summary className="hover:bg-salmon  hover:text-white transition p-2 rounded">
                       Login
                     </summary>
                     <ul className="bg-base-100 p-2">
