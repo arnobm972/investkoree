@@ -222,7 +222,7 @@ const Navbar = () => {
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
-                        Dashboard
+                        MyProfile
                       </NavLink>
                     )}
                     {userdata.role === "founder" && (
@@ -231,7 +231,7 @@ const Navbar = () => {
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
-                        Dashboard
+                        MyProfile
                       </NavLink>
                     )}
                     <div
