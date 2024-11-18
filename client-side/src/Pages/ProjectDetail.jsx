@@ -30,10 +30,6 @@ const ProjectDetail = () => {
   const handleInvestClick = async () => {
     console.log("Button clicked");
     navigate("/payment"); // Check if button is triggering
-    if (!project || !userdata) {
-      console.log("Project or userdata is missing"); // Debugging the condition
-      return;
-    }
 
     const post = {
       _id: id,
@@ -88,6 +84,11 @@ const ProjectDetail = () => {
 
   const handleDotClick = (index) => {
     setCurrentSlide(index);
+  };
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", options); // Example: 'DD/MM/YYYY'
   };
 
   return (
@@ -201,7 +202,7 @@ const ProjectDetail = () => {
           <div>
             <span className="font-bold">Investment Startdate:</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {project.startDate}
+              {formatDate(project.startDate)}
             </span>
           </div>
           <div>
