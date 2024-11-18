@@ -43,12 +43,12 @@ const FounderDashboard = () => {
           </div>
           <div className="flex lg:flex-row lg:justify-between sm:flex-col xs:flex-col xxs:flex-col">
             <div className="flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col gap-16 my-10">
-              <div className="flex lg:flex-col lg:justify-center sm:justify-center xs:justify-center xxs:justify-center  lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
+              <div className="flex lg:flex-col lg:justify-center lg:items-center sm:flex-col xs:flex-col xxs:flex-col">
                 <p className="lg:text-3xl font-bold sm:mx-auto sm:text-lg xs:text-lg xxs:text-lg ">
                   Total Invested Amount
                 </p>
                 <div
-                  className="radial-progress  text-primary mt-4"
+                  className="radial-progress text-primary mt-4"
                   style={{ "--value": 70 }}
                   role="progressbar"
                 >
