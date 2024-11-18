@@ -120,7 +120,7 @@ const Navbar = () => {
                     <NavLink
                       to="/admindashboard"
                       onClick={toggleMenu}
-                      className="hover:bg-salmon transition p-2 rounded"
+                      className="hover:bg-salmon  hover:text-white transition p-2 rounded"
                     >
                       MyProfile
                     </NavLink>
@@ -229,7 +229,7 @@ const Navbar = () => {
                       <NavLink
                         to="/investordashboard"
                         onClick={toggleMenu}
-                        className="hover:bg-salmon transition p-2 rounded"
+                        className="hover:bg-salmon hover:text-white transition p-2 rounded"
                       >
                         MyProfile
                       </NavLink>
@@ -238,7 +238,7 @@ const Navbar = () => {
                       <NavLink
                         to="/founderdashboard"
                         onClick={toggleMenu}
-                        className="hover:bg-salmon transition p-2 rounded"
+                        className="hover:bg-salmon hover:text-white transition p-2 rounded"
                       >
                         MyProfile
                       </NavLink>
@@ -247,7 +247,7 @@ const Navbar = () => {
                       <NavLink
                         to="/admindashboard"
                         onClick={toggleMenu}
-                        className="hover:bg-salmon transition p-2 rounded"
+                        className="hover:bg-salmon hover:text-white transition p-2 rounded"
                       >
                         MyProfile
                       </NavLink>
