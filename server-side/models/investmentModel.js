@@ -22,11 +22,11 @@ const investmentSchema = new mongoose.Schema({
     required: true,
   },
   // Add any other fields you need, such as userId, investmentAmount, etc.
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User ", // Assuming you have a User model
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   required: true,
+  //   ref: "User ", // Assuming you have a User model
+  // },
   // investmentAmount: {
   //   type: Number,
   //   required: true,

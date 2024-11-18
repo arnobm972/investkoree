@@ -2,7 +2,7 @@ import Investment from '../models/investmentModel.js';
 import express from 'express';
 const router = express.Router();
 router.post("/post", async (req, res) => {
-    const { _id, businessName, returndate, startDate, userId } = req.body;
+    const { _id, businessName, returndate, startDate } = req.body;
     console.log(req.body);
   
     try {
@@ -11,7 +11,7 @@ router.post("/post", async (req, res) => {
         businessName,
         returndate,
         startDate,
-        userId, // Include userId if you want to track which user made the investment
+        // userId, // Include userId if you want to track which user made the investment
         // investmentAmount, // Include investment amount
       });
   
