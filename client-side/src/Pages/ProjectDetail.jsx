@@ -27,6 +27,11 @@ const ProjectDetail = () => {
 
     fetchProjectDetails();
   }, [id]);
+
+  // If project data is not yet loaded, show a loading message
+  if (!project) {
+    return <div>Loading...</div>;
+  }
   console.log(project);
   const handleInvestClick = async () => {
     console.log("Button clicked");
@@ -65,11 +70,6 @@ const ProjectDetail = () => {
       console.error("Error sending investment data:", error);
     }
   };
-
-  // If project data is not yet loaded, show a loading message
-  if (!project) {
-    return <div>Loading...</div>;
-  }
 
   // Image sources from the project data
   // const images = project.images || [];
