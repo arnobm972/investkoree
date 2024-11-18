@@ -41,7 +41,7 @@ const Navbar = () => {
 
         {/* Full Navbar for Larger Screens */}
         <div className={`hidden lg:flex flex-1 justify-center items-center`}>
-          <ul className="font-bold text-lg menu menu-horizontal gap-8 px-1 flex">
+          <ul className="font-bold text-lg sm:text-base xs:text-base xxs:text-base sm:font-medium xs:font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex">
             <li>
               <NavLink
                 to="/"
@@ -157,7 +157,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden flex flex-col items-start p-4 bg-white shadow-lg">
-            <ul className="font-bold text-lg gap-4">
+            <ul className="font-bold sm:text-base xs:text-base xxs:text-base sm:font-medium xs:font-medium xxs:font-medium text-lg gap-4">
               <li>
                 <NavLink
                   to="/"
@@ -167,7 +167,7 @@ const Navbar = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="xxs:mt-2 xs:mt-2 sm-mt-2">
+              <li className="xxs:mt-2 xs:mt-2 sm-mt-2 ">
                 <NavLink
                   to="/founderlogin"
                   onClick={toggleMenu}
