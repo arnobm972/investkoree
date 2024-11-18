@@ -42,7 +42,7 @@ const ProjectDetail = () => {
       businessName: project.businessName,
       returndate: project.returndate,
       startDate: project.startDate,
-      userId: userdata._id,
+      userId: userdata.id,
     };
     // Check the selected post object
 
