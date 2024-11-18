@@ -214,7 +214,7 @@ const Navbar = () => {
               </li>
               <li>
                 {userdata ? (
-                  <div className="flex items-center">
+                  <div className="flex items-center sm:flex-col xs:flex-col xxs:flex-col">
                     {/* Conditional rendering for Dashboard link based on role */}
                     {userdata.role === "investor" && (
                       <Link
