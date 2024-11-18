@@ -3,7 +3,7 @@ import { FcIdea } from "react-icons/fc";
 import { FcDonate } from "react-icons/fc";
 import { useAuth } from "../../providers/AuthProvider";
 import { AiFillDollarCircle } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const data = [
   {
