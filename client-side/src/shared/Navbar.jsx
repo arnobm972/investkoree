@@ -41,7 +41,7 @@ const Navbar = () => {
 
         {/* Full Navbar for Larger Screens */}
         <div className={`hidden lg:flex flex-1 justify-center items-center`}>
-          <ul className="lg:font-bold lg:text-lg sm:text-base xs:text-base xxs:text-base sm:font-medium xs:font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex">
+          <ul className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex">
             <li>
               <NavLink
                 to="/"
@@ -157,7 +157,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden flex flex-col items-start p-4 bg-white shadow-lg">
-            <ul className="lg:font-bold sm:text-base xs:text-base xxs:text-base sm:font-medium xs:font-medium xxs:font-medium lg:text-lg gap-4">
+            <ul className="lg:font-bold sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium lg:text-lg gap-4">
               <li>
                 <NavLink
                   to="/"
