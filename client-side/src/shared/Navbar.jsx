@@ -217,22 +217,22 @@ const Navbar = () => {
                   <div className="flex items-center sm:flex-col xs:flex-col xxs:flex-col">
                     {/* Conditional rendering for Dashboard link based on role */}
                     {userdata.role === "investor" && (
-                      <Link
+                      <NavLink
                         to="/investordashboard"
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
                         Dashboard
-                      </Link>
+                      </NavLink>
                     )}
                     {userdata.role === "founder" && (
-                      <Link
+                      <NavLink
                         to="/founderdashboard"
                         onClick={toggleMenu}
                         className="hover:bg-salmon transition p-2 rounded"
                       >
                         Dashboard
-                      </Link>
+                      </NavLink>
                     )}
                     <div
                       onClick={handleSignOut}
