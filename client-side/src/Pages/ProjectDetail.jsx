@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../providers/AuthProvider";
+// import { useAuth } from "../providers/AuthProvider";
+import useFormatDate from "../hooks/useFormatDate";
 const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
@@ -85,11 +86,7 @@ const ProjectDetail = () => {
   const handleDotClick = (index) => {
     setCurrentSlide(index);
   };
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", options); // Example: 'DD/MM/YYYY'
-  };
+  const formattedStartDate = useFormatDate(project.startDate);
 
   return (
     <div className="min-h-screen">
@@ -202,7 +199,7 @@ const ProjectDetail = () => {
           <div>
             <span className="font-bold">Investment Startdate:</span>
             <span className="text-slate-500 xs:text-sm xxs:text-sm sm:text-sm">
-              {formatDate(project.startDate)}
+              {formattedStartDate}
             </span>
           </div>
           <div>

@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from "react"; // Import useContext
+import { useState } from "react"; // Import useState
 import logo from "../assets/ll.png";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, Link } from "react-router-dom"; // Import Link
 import { toast } from "react-toastify";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useAuth } from "../providers/AuthProvider";
@@ -10,7 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   // Destructure user and logOut from AuthContext
-  const { user, logOut } = useAuth();
+  const { userdata, logOut } = useAuth();
 
   const handleSignOut = () => {
     logOut(); // Call the logout function from context
@@ -94,8 +94,25 @@ const Navbar = () => {
               </details>
             </li>
             <li>
-              {user ? (
+              {userdata ? (
                 <div className="flex items-center logout-container">
+                  {/* Conditional rendering for Dashboard link based on role */}
+                  {userdata.role === "investor" && (
+                    <Link
+                      to="/investordashboard"
+                      className="hover:bg-salmon transition hover:text-white p-2 rounded"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  {userdata.role === "founder" && (
+                    <Link
+                      to="/founderdashboard"
+                      className="hover:bg-salmon transition hover:text-white p-2 rounded"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                   <div
                     onClick={handleSignOut}
                     className="hover:bg-salmon transition hover:text-white p-2 rounded cursor-pointer"
@@ -193,8 +210,27 @@ const Navbar = () => {
                 </details>
               </li>
               <li>
-                {user ? (
+                {userdata ? (
                   <div className="flex items-center">
+                    {/* Conditional rendering for Dashboard link based on role */}
+                    {userdata.role === "investor" && (
+                      <Link
+                        to="/investordashboard"
+                        onClick={toggleMenu}
+                        className="hover:bg-salmon transition p-2 rounded"
+                      >
+                        Dashboard
+                      </Link>
+                    )}
+                    {userdata.role === "founder" && (
+                      <Link
+                        to="/founderdashboard"
+                        onClick={toggleMenu}
+                        className="hover:bg-salmon transition p-2 rounded"
+                      >
+                        Dashboard
+                      </Link>
+                    )}
                     <div
                       onClick={handleSignOut}
                       className="hover:bg-salmon transition p-2 rounded cursor-pointer"
@@ -221,7 +257,7 @@ const Navbar = () => {
                         <NavLink
                           to="/founderlogin"
                           onClick={toggleMenu}
-                          className="hover:bg-salmon transition p-2 xxs:mt-4 xs:mt-4 rounded"
+                          className="hover:bg-salmon transition p-2 rounded"
                         >
                           Founder
                         </NavLink>
