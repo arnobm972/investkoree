@@ -95,6 +95,7 @@ const InvestorDashboard = () => {
         ); // Adjust the endpoint as needed
         const data = await response.json();
         setInvestments(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching investments:", error);
       }
@@ -168,25 +169,29 @@ const InvestorDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((row) => (
-                  <tr key={row.Serial}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Serial}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {row.ProjectTitle}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.ProjectOwner}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.Organization}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
-                      {row.Value}
-                    </td>
-                  </tr>
-                ))}
+                {investments.map((row, index) => {
+                  const investedAmount = 70000;
+
+                  return (
+                    <tr key={row._id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {row.businessName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(row.startDate).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {row.returndate}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        {investedAmount}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
