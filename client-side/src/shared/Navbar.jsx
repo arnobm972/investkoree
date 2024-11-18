@@ -191,7 +191,7 @@ const Navbar = () => {
                         Shariah
                       </NavLink>
                     </li>
-                    <li className="xxs:mt-4 xs:mt-4 sm-mt-4">
+                    <li className="xxs:mt-2 xs:mt-2 sm:mt-2">
                       <NavLink
                         to="/stocks"
                         onClick={toggleMenu}
@@ -200,7 +200,7 @@ const Navbar = () => {
                         Stocks
                       </NavLink>
                     </li>
-                    <li className="xxs:mt-4 xs:mt-4 sm-mt-4">
+                    <li className="xxs:mt-2 xs:mt-2 sm:mt-2">
                       <NavLink
                         to="/fixedreturn"
                         onClick={toggleMenu}
@@ -256,7 +256,7 @@ const Navbar = () => {
                           Investor
                         </NavLink>
                       </li>
-                      <li className="xxs:mt-4 xs:mt-4 sm-mt-4">
+                      <li className="xxs:mt-2 xs:mt-2 sm:mt-2">
                         <NavLink
                           to="/founderlogin"
                           onClick={toggleMenu}
