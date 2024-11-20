@@ -8,12 +8,18 @@ import PendingPost from '../models/pendingPost.js';
 import FounderPost from '../models/founderFormPostModels.js';
 import Notification from '../models/notification.js';
 
+const app = express(); // Create an Express application
+const server = http.createServer(app); // Create HTTP server using Express app
+const io = new Server(server, {
+  cors: {
+    origin: ['http://localhost:3000', 'https://investkoree.onrender.com'], // Allow your frontend origins
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
 
-const router = express.Router();
-const server = http.createServer(router); // Create HTTP server
-const io = new Server(server); 
 
-// Configure multer for file upload using memory storage
+
 const storage = multer.memoryStorage(); // Files are stored in memory as Buffer objects
 
 // Create the multer instance
@@ -43,11 +49,15 @@ const cpUpload = upload.fields([
   { name: "financialFile", maxCount: 1 },
 ]);
 
+// Define your routes here
+const router = express.Router();
+
 // Define the route for creating a founder post
 router.post("/pendingpost", authToken, cpUpload, (req, res, next) => {
     console.log("Files in req.files:", req.files); // Files should now be Buffer objects
     next();
 }, createFounderPost);
+
 router.get('/pending', async (req, res) => {
   try {
     const posts = await PendingPost.find();
@@ -122,6 +132,8 @@ router.get('/notifications/:userId', async (req, res) => {
     res.status(500).json({ message: 'Error fetching notifications: ' + error.message });
   }
 });
+
+// Socket.IO connection handling
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
@@ -136,6 +148,12 @@ io.on('connection', (socket) => {
   });
 });
 
+// Use the router
+app.use('/api', router);
 
-
+// Start the server
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 export default router;
