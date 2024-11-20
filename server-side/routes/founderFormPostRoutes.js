@@ -5,7 +5,7 @@ import multer from 'multer';
 import { createFounderPost } from '../controllers/founderFormController.js';
 import { authToken } from '../utils/authMiddleware.js';
 import PendingPost from '../models/pendingPost.js';
-import FounderPost from '../models/founderPost.js';
+import FounderPost from '../models/founderFormPostModels.js';
 import Notification from '../models/notification.js';
 
 const server = http.createServer(app); // Create HTTP server
