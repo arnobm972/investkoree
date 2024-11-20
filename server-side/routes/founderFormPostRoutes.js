@@ -68,7 +68,7 @@ router.get('/pending', async (req, res) => {
 });
 
 router.post('/accept', async (req, res) => {
-  const { postId, userId } = req.body;
+  const { postId, userId } = req.body; // Ensure userId is coming from the request body
   try {
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) {
@@ -76,7 +76,8 @@ router.post('/accept', async (req, res) => {
     }
 
     const newFounderPost = new FounderPost({
-      ...pendingPost.toObject(),
+      ...pendingPost.toObject(), // Spread the properties of pendingPost
+      userId: pendingPost.userId, // Explicitly set userId from pendingPost
     });
 
     await newFounderPost.save();
