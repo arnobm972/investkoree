@@ -13,11 +13,11 @@ import userPostsRoute from './routes/userPostsRoute.js';
 import founderPostRoute from './routes/founderPostRoute.js';
 import investmentRoute from './routes/investmentRoutes.js';
 import allPostsRoute from './routes/allPostRoute.js';
-import { createFounderPost } from '../controllers/founderFormController.js';
-import { authToken } from '../utils/authMiddleware.js';
-import PendingPost from '../models/pendingPost.js';
-import FounderPost from '../models/founderFormPostModels.js';
-import Notification from '../models/notification.js';
+import { createFounderPost } from './controllers/founderFormController.js';
+import { authToken } from './utils/authMiddleware.js';
+import PendingPost from './models/pendingPost.js';
+import FounderPost from './models/founderFormPostModels.js';
+import Notification from './models/notification.js';
 
 dotenv.config();
 
