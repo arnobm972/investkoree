@@ -213,7 +213,7 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <div className="relative hover:bg-salmon mr-2">
+              <div className="relative hover:bg-salmon ">
                 <AiOutlineBell
                   className="text-2xl  transition mt-2 cursor-pointer"
                   onClick={handleNotificationClick}
@@ -224,7 +224,7 @@ const Navbar = () => {
                   </span>
                 )}
                 {showNotifications && (
-                  <div className="absolute right-0 bg-white shadow-lg rounded mt-2 p-2">
+                  <div className="absolute  bg-white shadow-lg rounded mt-2 p-2 mr-2">
                     {notifications.length > 0 ? (
                       notifications.map((notification) => (
                         <div key={notification._id} className="p-2 border-b">
