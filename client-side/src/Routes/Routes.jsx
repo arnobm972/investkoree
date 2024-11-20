@@ -20,6 +20,7 @@ import FounderPost from "../Pages/Founder/FounderPost";
 import ProjectDetail from "../Pages/ProjectDetail";
 import Payment from "../Pages/Payment";
 import PostDetail from "../Pages/PostDetail";
+import AdminPostDetail from "../Pages/AdminPostDetail";
 
 export const router = createBrowserRouter([
   {
@@ -63,7 +64,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/posts/:id",
-        element: <PostDetail></PostDetail>,
+        element: <AdminPostDetail></AdminPostDetail>,
       },
       {
         path: "/pendingprojects",
