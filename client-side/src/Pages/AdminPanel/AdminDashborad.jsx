@@ -4,7 +4,7 @@ import { FcDonate } from "react-icons/fc";
 import { useAuth } from "../../providers/AuthProvider";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { userdata } = useAuth();
