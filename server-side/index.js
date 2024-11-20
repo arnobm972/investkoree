@@ -21,8 +21,7 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 // Middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json()); 
+
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -30,19 +29,27 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin) || !origin) {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  optionsSuccessStatus: 200,
+  credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Headers to allow
 };
 
-app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight requests globally
+ // Ensure this is above all routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  console.log('CORS Middleware triggered for:', req.method, req.path);
+  next();
+});
 
 
 // app.use('/upload', express.static(path.join(__dirname, '../../client-side/Public/upload')));
