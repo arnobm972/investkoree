@@ -7,7 +7,7 @@ import multer from 'multer';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
 import loginRoute from '../server-side/routes/login.js';
-import founderFormPostRoute from './routes/founderFormPostRoutes.js';
+// import founderFormPostRoute from './routes/founderFormPostRoutes.js';
 import userSpecificRoute from './routes/userRoutes.js';
 import userPostsRoute from './routes/userPostsRoute.js';
 import founderPostRoute from './routes/founderPostRoute.js';
@@ -59,7 +59,7 @@ const upload = multer({
 app.use("/users", signupRoute);
 app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
-app.use("/adminpost", founderFormPostRoute);
+// app.use("/adminpost", founderFormPostRoute);
 app.use('/api', userSpecificRoute);
 app.use('/investments', investmentRoute);
 app.use('/api', userPostsRoute);
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
 });
 
 // Define the route for creating a founder post
-app.post("/api/pendingpost", authToken, upload.fields([
+app.post("/adminpost/pendingpost", authToken, upload.fields([
   { name: "businessPicture", maxCount: 10 },
   { name: " nidCopy", maxCount: 1 },
   { name: "tinCopy", maxCount: 1 },
@@ -95,7 +95,7 @@ app.post("/api/pendingpost", authToken, upload.fields([
 }, createFounderPost);
 
 // Additional routes for pending posts
-app.get('/api/pending', async (req, res) => {
+app.get('/adminpost/pending', async (req, res) => {
   try {
     const posts = await PendingPost.find();
     res.status(200).json(posts);
@@ -104,7 +104,7 @@ app.get('/api/pending', async (req, res) => {
   }
 });
 
-app.post('/api/accept', async (req, res) => {
+app.post('/adminpost/accept', async (req, res) => {
   const { postId, userId } = req.body;
   try {
     const pendingPost = await PendingPost.findById(postId);
@@ -134,7 +134,7 @@ app.post('/api/accept', async (req, res) => {
   }
 });
 
-app.post('/api/deny', async (req, res) => {
+app.post('/adminpost/deny', async (req, res) => {
   const { postId, userId } = req.body;
   try {
     const pendingPost = await PendingPost.findById(postId);
@@ -157,7 +157,7 @@ app.post('/api/deny', async (req, res) => {
   }
 });
 
-app.get('/api/notifications/:userId', async (req, res) => {
+app.get('/adminpost/notifications/:userId', async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.params.userId }).sort({ createdAt: -1 });
     res.status(200).json(notifications);
