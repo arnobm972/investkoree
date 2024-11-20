@@ -51,7 +51,7 @@ app.use(cors(corsOptions));
 app.use("/users", signupRoute);
 app.use("/founderpost", founderPostRoute);
 app.use("/users/auth", loginRoute);
-app.use("/founderpost", founderFormPostRoute);
+app.use("/adminpost", founderFormPostRoute);
 // app.use('/users', userRoutes);
 app.use('/api', userSpecificRoute);
 app.use('/investments', investmentRoute); 

@@ -180,12 +180,17 @@ const AdminDashboard = () => {
                 {userdata.name || "Admin"}!
               </li>
             )}
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
-              <a>Dashboard</a>
-            </li>
-            {/* <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li>
+            <Link to="#">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+                <a>Dashboard</a>
+              </li>
+            </Link>
+            <Link to="/adminpending">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+                <a>Pending Posts</a>
+              </li>
+            </Link>
+            {/*
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
               <a></a>
             </li>

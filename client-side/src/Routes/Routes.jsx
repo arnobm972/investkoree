@@ -19,8 +19,8 @@ import FounderPost from "../Pages/Founder/FounderPost";
 // import PrivateAdminRoute from "./PrivateAdminRoute";
 import ProjectDetail from "../Pages/ProjectDetail";
 import Payment from "../Pages/Payment";
-import PostDetail from "../Pages/PostDetail";
 import AdminPostDetail from "../Pages/AdminPostDetail";
+import AdminPending from "../Pages/AdminPending";
 
 export const router = createBrowserRouter([
   {
@@ -103,6 +103,10 @@ export const router = createBrowserRouter([
       {
         path: "/payment",
         element: <Payment></Payment>,
+      },
+      {
+        path: "/adminpending",
+        element: <AdminPending></AdminPending>,
       },
       {
         path: "/founderdashboard",

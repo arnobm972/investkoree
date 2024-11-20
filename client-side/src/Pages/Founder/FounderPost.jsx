@@ -133,7 +133,7 @@ const FounderPost = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`${API_URL}/founderpost/postdata`, {
+      const response = await fetch(`${API_URL}/adminpost/pendingpost`, {
         method: "POST",
         body: postData,
         headers: {
@@ -143,7 +143,7 @@ const FounderPost = () => {
 
       if (response.ok) {
         navigate("/");
-        toast.success("Form submitted successfully!");
+        toast.success("Your post has been submitted for review!");
       } else {
         const errorData = await response.json();
         toast.error(

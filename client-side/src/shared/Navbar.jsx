@@ -2,20 +2,72 @@ import { useState } from "react"; // Import useState
 import logo from "../assets/ll.png";
 import { useNavigate, NavLink, Link } from "react-router-dom"; // Import Link
 import { toast } from "react-toastify";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineClose, AiOutlineBell } from "react-icons/ai"; // Import notification icon
 import { useAuth } from "../providers/AuthProvider";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
-
-  // Destructure user and logOut from AuthContext
   const { userdata, logOut } = useAuth();
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0); // Track unread notifications
+  const [showNotifications, setShowNotifications] = useState(false); // State to toggle notification display
+
+  useEffect(() => {
+    const socket = io(`${API_URL}`);
+
+    // Ensure userId is available from userdata
+    const userId = userdata ? userdata._id : null; // Assuming userdata has _id property
+
+    if (userId) {
+      socket.emit("join", userId);
+
+      socket.on("notification", (notification) => {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          notification,
+        ]);
+        setUnreadCount((prevCount) => prevCount + 1); // Increment unread count
+        toast(notification.message); // Show toast notification
+      });
+
+      const fetchNotifications = async () => {
+        try {
+          const response = await axios.get(
+            `${API_URL}/adminpost/notifications/${userId}`
+          );
+          setNotifications(response.data);
+          setUnreadCount(response.data.filter((n) => !n.read).length); // Count unread notifications
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+        }
+      };
+
+      fetchNotifications();
+    }
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [userdata, API_URL]); // Added userdata to dependencies
 
   const handleSignOut = () => {
-    logOut(); // Call the logout function from context
+    logOut();
     toast.success("Signed Out Successfully");
     navigate("/");
+  };
+
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications);
+    if (showNotifications) {
+      // If notifications are being viewed, mark them as read
+      setUnreadCount(0);
+      // Optionally, you can mark notifications as read in the backend
+      // axios.post(`${API_URL}/api/notifications/read`, { userId: userdata._id });
+    }
   };
 
   const toggleMenu = () => {
@@ -159,6 +211,32 @@ const Navbar = () => {
                   </ul>
                 </details>
               )}
+            </li>
+            <li>
+              <div className="relative">
+                <AiOutlineBell
+                  className="text-2xl cursor-pointer"
+                  onClick={handleNotificationClick}
+                />
+                {unreadCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
+                    {unreadCount}
+                  </span>
+                )}
+                {showNotifications && (
+                  <div className="absolute right-0 bg-white shadow-lg rounded mt-2 p-2">
+                    {notifications.length > 0 ? (
+                      notifications.map((notification) => (
+                        <div key={notification._id} className="p-2 border-b">
+                          {notification.message}
+                        </div>
+                      ))
+                    ) : (
+                      <div>No notifications</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </li>
           </ul>
         </div>
