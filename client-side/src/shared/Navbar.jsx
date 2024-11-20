@@ -213,7 +213,7 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <div className="relative hover:bg-salmon">
+              <div className="relative hover:bg-salmon mr-2">
                 <AiOutlineBell
                   className="text-2xl  transition mt-2 cursor-pointer"
                   onClick={handleNotificationClick}
