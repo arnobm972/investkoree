@@ -98,6 +98,16 @@ router.post('/accept', async (req, res) => {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
 });
+io.on('error', (error) => {
+  console.error('Socket.IO error:', error);
+});
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 // Define the route for denying a pending post
 router.post('/deny', async (req, res) => {
