@@ -8,9 +8,10 @@ import PendingPost from '../models/pendingPost.js';
 import FounderPost from '../models/founderFormPostModels.js';
 import Notification from '../models/notification.js';
 
-const server = http.createServer(app); // Create HTTP server
-const io = new Server(server); 
+
 const router = express.Router();
+const server = http.createServer(router); // Create HTTP server
+const io = new Server(server); 
 
 // Configure multer for file upload using memory storage
 const storage = multer.memoryStorage(); // Files are stored in memory as Buffer objects
