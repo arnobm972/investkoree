@@ -22,7 +22,7 @@ const pendingPostSchema = new mongoose.Schema({
   returnPlan: { type: String, required: true },
   businessSafety: { type: String, required: true },
   additionalComments: { type: String },
-  businessPictures: [{ type: String }], // Array of image URLs
+  businessPictures: [{ type: String }], 
   nidFile: { type: String },
   tinFile: { type: String },
   taxFile: { type: String },
