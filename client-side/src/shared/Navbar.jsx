@@ -214,10 +214,17 @@ const Navbar = () => {
                   <li>
                     {notifications.length > 0 ? (
                       notifications.map((notification) => (
-                        <li key={notification._id}>{notification.message}</li>
+                        <li
+                          className="hover:bg-salmon transition hover:text-white p-2 rounded"
+                          key={notification._id}
+                        >
+                          {notification.message}
+                        </li>
                       ))
                     ) : (
-                      <li>No notifications</li>
+                      <li className="hover:bg-salmon transition hover:text-white p-2 rounded">
+                        No notifications
+                      </li>
                     )}
                   </li>
                 </ul>
