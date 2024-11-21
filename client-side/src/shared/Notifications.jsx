@@ -51,7 +51,7 @@ const Notifications = ({ API_URL, userId }) => {
           </span>
         )}
       </summary>
-      <div className="absolute right-0 top-6 bg-white shadow-lg rounded w-64">
+      <div className="absolute right-0 top-20 bg-white shadow-lg rounded w-64">
         <div className="p-4">
           {notifications.length > 0 ? (
             <div>
