@@ -6,16 +6,19 @@ import FormData from 'form-data';
 export const createFounderPost = async (req, res) => {
   console.log("Request Body:", req.body);
   console.log("Request Files:", req.files);
-  console.log("User ID:", req.user?._id);
+  console.log("User  ID:", req.user?._id);
   
   try {
-    const userId = req.user._id; // Assuming req.user is populated by your authentication middleware
+    const userId = req.user?._id; // Assuming req.user is populated by your authentication middleware
+    if (!userId) {
+      return res.status(400).json({ error: "User  ID is required." });
+    }
 
     const {
       businessName, email, address, phone, businessCategory, businessSector,
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate, projectedROI,
-      returnPlan, businessSafety, additionalComments,description
+      returnPlan, businessSafety, additionalComments, description
     } = req.body;
 
     // Function to handle file uploads to ImgBB
@@ -35,15 +38,16 @@ export const createFounderPost = async (req, res) => {
       console.log("Uploaded Image URL:", response.data.data.url); // Log the URL
       return response.data.data.url; // Return the image URL
     };
+
     // Upload business pictures (multiple)
     const businessPictures = req.files.businessPicture 
       ? await Promise.all(req.files.businessPicture.map(file => uploadToImgbb(file.buffer))) 
       : [];
-      console.log("Business Pictures URLs:", businessPictures); 
+    console.log("Business Pictures URLs:", businessPictures); 
 
     // Function to upload single files and get their URLs
     const uploadSingleFile = async (file) => {
-      if (file && file.length > 0) {
+      if (file && file.length > 0 && file[0].buffer) {
         const fileBuffer = file[0].buffer; // Use the file buffer
         return await uploadToImgbb(fileBuffer); // Upload to ImgBB and return URL
       }
@@ -59,7 +63,7 @@ export const createFounderPost = async (req, res) => {
     const securityFile = await uploadSingleFile(req.files.securityFile);
     const financialFile = await uploadSingleFile(req.files.financialFile);
 
-    // Create a new FounderPost document in MongoDB
+    // Create a new PendingPost document in MongoDB
     const newPost = new PendingPost({
       userId,
       businessName,

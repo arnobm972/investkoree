@@ -105,7 +105,7 @@ app.get('/adminpost/pending', async (req, res) => {
 });
 
 app.post('/adminpost/accept', async (req, res) => {
-  const { postId, userId } = req.body;
+  const { postId, userId } = req.body; // Ensure userId is coming from the request body
   try {
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) {
@@ -114,7 +114,7 @@ app.post('/adminpost/accept', async (req, res) => {
 
     const newFounderPost = new FounderPost({
       ...pendingPost.toObject(),
-      userId: pendingPost.userId,
+      userId: pendingPost.userId || userId, // Use pendingPost.userId or fallback to userId from request
     });
 
     await newFounderPost.save();
@@ -133,7 +133,6 @@ app.post('/adminpost/accept', async (req, res) => {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
 });
-
 app.post('/adminpost/deny', async (req, res) => {
   const { postId, userId } = req.body;
   try {
