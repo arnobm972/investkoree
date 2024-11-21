@@ -72,7 +72,7 @@ const Notifications = ({ API_URL, userId }) => {
         <div className="p-4">
           {notifications.length > 0 ? (
             <div>
-              <ul className="max-h-48 w-full">
+              <ul className="max-h-48 w-56">
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
