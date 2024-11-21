@@ -63,7 +63,6 @@ const Notifications = ({ API_URL, userId }) => {
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 bg-white shadow-lg rounded w-64">
           <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Notifications</h3>
             {notifications.length > 0 ? (
               <div>
                 <ul className="max-h-48 overflow-y-auto">
