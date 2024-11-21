@@ -18,8 +18,8 @@ import FounderPost from "../Pages/Founder/FounderPost";
 // import PrivateAdminRoute from "./PrivateAdminRoute";
 import ProjectDetail from "../Pages/ProjectDetail";
 import Payment from "../Pages/Payment";
-import AdminPostDetail from "../Pages/AdminPostDetail";
-import AdminPending from "../Pages/AdminPending";
+import AdminPostDetail from "../Pages/AdminPanel/AdminPostDetail";
+import AdminPending from "../Pages/AdminPanel/AdminPending";
 
 export const router = createBrowserRouter([
   {
