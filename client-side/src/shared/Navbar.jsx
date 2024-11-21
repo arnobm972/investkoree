@@ -224,7 +224,7 @@ const Navbar = () => {
                   </span>
                 )}
                 {showNotifications && (
-                  <div className="absolute  bg-white shadow-lg rounded mt-2 p-2 mr-2">
+                  <div className="absolute left-0 bg-white shadow-lg rounded mt-2 p-2 mr-2">
                     {notifications.length > 0 ? (
                       notifications.map((notification) => (
                         <div key={notification._id} className="p-2 border-b">
