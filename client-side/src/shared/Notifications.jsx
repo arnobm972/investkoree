@@ -72,11 +72,11 @@ const Notifications = ({ API_URL, userId }) => {
         <div className="p-4">
           {notifications.length > 0 ? (
             <div>
-              <ul className="max-h-48 w-80">
+              <ul className="max-h-48 w-80 overflow-y-auto">
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
-                    className={`p-2 rounded text-center text-xs text-gray-500 ${
+                    className={`p-2 rounded flex items-center justify-center text-xs text-gray-500 ${
                       notification.read
                         ? "bg-gray-100"
                         : "bg-yellow-100 font-semibold"
