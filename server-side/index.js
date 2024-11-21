@@ -168,6 +168,20 @@ app.get('/adminpost/notifications/:userId', async (req, res) => {
     res.status(500).json({ message: 'Error fetching notifications: ' + error.message });
   }
 });
+app.put('/adminpost/notifications/read/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    // Update all notifications for the user as read
+    await Notification.updateMany({ userId }, { $set: { read: true } });
+
+    // Emit a real-time event to notify the client
+    io.to(userId).emit('notifications-read', { userId });
+
+    res.status(200).json({ message: 'All notifications marked as read.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error marking notifications as read: ' + error.message });
+  }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

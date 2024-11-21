@@ -2,56 +2,15 @@ import { useState, useEffect } from "react"; // Import useState
 import logo from "../assets/ll.png";
 import { useNavigate, NavLink, Link } from "react-router-dom"; // Import Link
 import { toast } from "react-toastify";
-import { AiOutlineMenu, AiOutlineClose, AiOutlineBell } from "react-icons/ai"; // Import notification icon
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import notification icon
 import { useAuth } from "../providers/AuthProvider";
-import axios from "axios";
-import { io } from "socket.io-client";
+import Notifications from "./Notifications";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
   const { userdata, logOut } = useAuth();
-  const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0); // Track unread notifications
-
-  useEffect(() => {
-    const socket = io(`${API_URL}`);
-
-    // Ensure userId is available from userdata
-    const userId = userdata ? userdata._id : null; // Assuming userdata has _id property
-
-    if (userId) {
-      socket.emit("join", userId);
-
-      socket.on("notification", (notification) => {
-        setNotifications((prevNotifications) => [
-          ...prevNotifications,
-          notification,
-        ]);
-        setUnreadCount((prevCount) => prevCount + 1); // Increment unread count
-        toast(notification.message); // Show toast notification
-      });
-
-      const fetchNotifications = async () => {
-        try {
-          const response = await axios.get(
-            `${API_URL}/adminpost/notifications/${userId}`
-          );
-          setNotifications(response.data);
-          setUnreadCount(response.data.filter((n) => !n.read).length); // Count unread notifications
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
-      };
-
-      fetchNotifications();
-    }
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [userdata, API_URL]); // Added userdata to dependencies
 
   const handleSignOut = () => {
     logOut();
@@ -201,34 +160,9 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <details>
-                <summary className="relative hover:bg-salmon rounded p-2">
-                  <AiOutlineBell className="text-2xl transition mt-2 cursor-pointer" />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
-                      {unreadCount}
-                    </span>
-                  )}
-                </summary>
-                <ul className=" lg:mr-4 lg:w-20 lg:h-10 bg-base-100 rounded-t-none p-2">
-                  <li>
-                    {notifications.length > 0 ? (
-                      notifications.map((notification) => (
-                        <li
-                          className="hover:bg-salmon transition hover:text-white p-2 rounded"
-                          key={notification._id}
-                        >
-                          {notification.message}
-                        </li>
-                      ))
-                    ) : (
-                      <li className="hover:bg-salmon transition hover:text-white p-2 rounded">
-                        No notifications
-                      </li>
-                    )}
-                  </li>
-                </ul>
-              </details>
+              {userdata && (
+                <Notifications API_URL={API_URL} userId={userdata._id} />
+              )}
             </li>
           </ul>
         </div>
