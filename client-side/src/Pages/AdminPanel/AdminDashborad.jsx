@@ -1,162 +1,210 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { FcLowBattery } from "react-icons/fc";
+import { FcIdea } from "react-icons/fc";
+import { FcDonate } from "react-icons/fc";
 import { useAuth } from "../../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { AiFillDollarCircle } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-const AdminPending = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const AdminDashboard = () => {
   const { userdata } = useAuth();
-
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   useEffect(() => {
-    const fetchPendingPosts = async () => {
+    const fetchAllPosts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/adminpost/pending`);
-        setPosts(response.data);
+        const response = await fetch(`${API_URL}/api/allposts`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+        const data = await response.json();
+        setPosts(data);
       } catch (error) {
-        toast.error("Error fetching pending posts: " + error.message);
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchPendingPosts();
+    fetchAllPosts();
   }, [API_URL]);
 
-  const handleAccept = async (post) => {
-    setLoading(true);
-    try {
-      const response = await axios.post(`${API_URL}/adminpost/accept`, {
-        postId: post._id,
-        userId: post.userId,
-      });
-      if (response.status === 200) {
-        toast.success("Post accepted successfully!");
-        setPosts(posts.filter((p) => p._id !== post._id));
-      }
-    } catch (error) {
-      toast.error("Error accepting post: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeny = async (post) => {
-    setLoading(true);
-    try {
-      const response = await axios.post(`${API_URL}/adminpost/deny`, {
-        postId: post._id,
-        userId: post.userId,
-      });
-      if (response.status === 200) {
-        toast.success("Post denied successfully!");
-        setPosts(posts.filter((p) => p._id !== post._id));
-      }
-    } catch (error) {
-      toast.error("Error denying post: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  if (loading) {
+    return <span className="loading-spinner loading-lg"></span>;
+  }
+  if (!userdata) {
+    return <span className=" loading-spinner loading-lg"></span>;
+  }
   return (
-    <div className="drawer lg:drawer-open">
-      <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col p-10">
-        <div className="fixed top-[100px] left-[5px]">
+    <div>
+      <div className="drawer lg:drawer-open">
+        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content flex flex-col p-10">
+          <div className="fixed top-[100px] left-[5px] ">
+            <label
+              htmlFor="my-drawer-2"
+              className="btn bg-salmon text-white sticky lg:hidden drawer-button transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
+            >
+              <i className="fas fa-bars text-lg"></i>
+            </label>
+          </div>
+          <p className=" font-bold  lg:text-3xl mb-4">Projects</p>
+          <p className="text-slate-400 xs:text-sm xxs:text-sm sm:text-sm mb-6">
+            Detailed Project Information
+          </p>
+          <div className="shadow-md rounded-xl flex lg:flex-row xs:flex-col xxs:flex-col sm:flex-col mb-28 gap-16 min-h-32 p-8">
+            <div>
+              <AiFillDollarCircle className="h-10 w-10"></AiFillDollarCircle>
+              <p className="lg:text-3xl font-bold">335$</p>
+              <p className="text-slate-400 xs:text-sm xxs:text-sm sm:text-sm">
+                Total Esitmated Invesment
+              </p>
+            </div>
+            <div>
+              <FcDonate className="h-10 w-10"></FcDonate>
+              <p className="lg:text-3xl font-bold">335$</p>
+              <p className="text-slate-400 xs:text-sm xxs:text-sm sm:text-sm">
+                Total Invested Amount
+              </p>
+            </div>
+            <div>
+              <FcLowBattery className="h-10 w-10"></FcLowBattery>
+              <p className="lg:text-3xl font-bold">335$</p>
+              <p className="text-slate-400 xs:text-sm xxs:text-sm sm:text-sm">
+                Total Left for Invesment
+              </p>
+            </div>
+            <div>
+              <FcIdea className="h-10 w-10"></FcIdea>
+              <p className="lg:text-3xl font-bold">33</p>
+              <p className="text-slate-400 xs:text-sm xxs:text-sm sm:text-sm">
+                Total Projects
+              </p>
+            </div>
+          </div>
+          <p className=" font-bold lg:text-3xl mb-12">Project List</p>
+          <div className="overflow-x-auto ">
+            <table className="min-w-full divide-y  divide-gray-200">
+              <thead>
+                <tr className="bg-salmon rounded-xl">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Serial
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Project Title
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Organization
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Number of Investors
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Total Amount
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Remaining Amount
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Start Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Return Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {posts.map((row, index) => {
+                  const investedAmount = 70000;
+                  const fundingAmount = parseFloat(row.fundingAmount) || 0;
+                  const leftForInvestment = fundingAmount - investedAmount;
+
+                  return (
+                    <tr
+                      key={row._id}
+                      className="cursor-pointer hover:bg-gray-100"
+                      onClick={() => navigate(`/posts/${row._id}`)}
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {row.businessName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        HP
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        15
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        {fundingAmount}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {leftForInvestment}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(row.startDate).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {row.returndate}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-500">
+                        Ongoing
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="drawer-side z-40">
           <label
             htmlFor="my-drawer-2"
-            className="btn bg-salmon text-white sticky lg:hidden drawer-button transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
-          >
-            <i className="fas fa-bars text-lg"></i>
-          </label>
-        </div>
-        <h2 className="font-bold lg:text-3xl mb-12">Pending Posts</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr className="bg-salmon rounded-xl">
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Serial
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Business Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {posts.map((post, index) => (
-                <tr key={post._id} className="hover:bg-gray-100">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {index + 1}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {post.businessName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {post.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button
-                      onClick={() => handleAccept(post)}
-                      disabled={loading}
-                      className={`btn btn-success mr-2 ${
-                        loading ? "btn-disabled" : ""
-                      }`}
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleDeny(post)}
-                      disabled={loading}
-                      className={`btn btn-error ${
-                        loading ? "btn-disabled" : ""
-                      }`}
-                    >
-                      Deny
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="drawer-side z-40">
-        <label
-          htmlFor="my-drawer-2"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
-          <li className="font-extrabold text-salmon ml-4 text-lg mb-4 rounded-lg">
-            Admin
-          </li>
-          {userdata && (
-            <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
-              {userdata.name || "Admin"}!
+            aria-label="close sidebar"
+            className="drawer-overlay"
+          ></label>
+          <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
+            {/* Sidebar content here */}
+            <li className="font-extrabold text-salmon ml-4   xs:mt-6 xxs:mt-6 sm:mt-6   text-lg mb-4 rounded-lg ">
+              Admin
             </li>
-          )}
-          <Link to="/admindashboard">
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
-              <a>Dashboard</a>
-            </li>
-          </Link>
-          <Link to="/adminpending">
+            {userdata && (
+              <li className="font-extrabold text-salmon ml-4 text-lg mb-2 rounded-lg">
+                {userdata.name || "Admin"}!
+              </li>
+            )}
+            <Link to="#">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+                <a>Dashboard</a>
+              </li>
+            </Link>
+            <Link to="/adminpending">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+                <a>Pending Posts</a>
+              </li>
+            </Link>
+            {/*
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a>Pending Posts</a>
+              <a></a>
             </li>
-          </Link>
-        </ul>
+            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+              <a></a>
+            </li>
+            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
+              <a></a>
+            </li> */}
+          </ul>
+        </div>
       </div>
     </div>
   );
 };
 
-export default AdminPending;
+export default AdminDashboard;
