@@ -5,13 +5,14 @@ import { useAuth } from "../../providers/AuthProvider";
 
 const AdminPending = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false); // Added loading state
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const { userdata } = useAuth();
 
   useEffect(() => {
     const fetchPendingPosts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/adminpost/pending`); // Ensure this matches your route
+        const response = await axios.get(`${API_URL}/adminpost/pending`);
         setPosts(response.data);
       } catch (error) {
         toast.error("Error fetching pending posts: " + error.message);
@@ -22,34 +23,38 @@ const AdminPending = () => {
   }, [API_URL]);
 
   const handleAccept = async (post) => {
+    setLoading(true); // Set loading state
     try {
       const response = await axios.post(`${API_URL}/adminpost/accept`, {
-        postId: post._id, // Send the post._id as postId
-        userId: post.userId, // Assuming you have userId in the post object
+        postId: post._id,
+        userId: post.userId,
       });
       if (response.status === 200) {
         toast.success("Post accepted successfully!");
-        // Optionally, you can remove the accepted post from the state
         setPosts(posts.filter((p) => p._id !== post._id));
       }
     } catch (error) {
       toast.error("Error accepting post: " + error.message);
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
   const handleDeny = async (post) => {
+    setLoading(true); // Set loading state
     try {
       const response = await axios.post(`${API_URL}/adminpost/deny`, {
-        postId: post._id, // Send the post._id as postId
-        userId: post.userId, // Assuming you have userId in the post object
+        postId: post._id,
+        userId: post.userId,
       });
       if (response.status === 200) {
         toast.success("Post denied successfully!");
-        // Optionally, you can remove the denied post from the state
         setPosts(posts.filter((p) => p._id !== post._id));
       }
     } catch (error) {
       toast.error("Error denying post: " + error.message);
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -58,7 +63,7 @@ const AdminPending = () => {
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col p-10">
-          <div className="fixed top-[100px] left-[5px] ">
+          <div className="fixed top-[100px] left-[5px]">
             <label
               htmlFor="my-drawer-2"
               className="btn bg-salmon text-white sticky lg:hidden drawer-button transform transition-transform duration-300 ease-in-out delay-150 hover:scale-105"
@@ -67,39 +72,49 @@ const AdminPending = () => {
             </label>
           </div>
           <h2 className="text-2xl font-bold">Pending Posts</h2>
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr>
-                <th>Business Name</th>
-                <th>Description</th>
-                <th>Email</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map((post) => (
-                <tr key={post._id}>
-                  <td>{post.businessName}</td>
-                  <td>{post.description}</td>
-                  <td>{post.email}</td>
-                  <td>
-                    <button
-                      onClick={() => handleAccept(post)} // Pass the entire post object
-                      className="btn btn-success mr-2"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleDeny(post)} // Pass the entire post object
-                      className="btn btn-danger"
-                    >
-                      Deny
-                    </button>
-                  </td>
+          {posts.length === 0 ? (
+            <p className="text-center mt-4">No pending posts found.</p>
+          ) : (
+            <table className="min-w-full divide-y divide-gray-200 mt-4">
+              <thead>
+                <tr>
+                  <th>Business Name</th>
+                  <th>Description</th>
+                  <th>Email</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {posts.map((post) => (
+                  <tr key={post._id}>
+                    <td>{post.businessName}</td>
+                    <td>{post.description}</td>
+                    <td>{post.email}</td>
+                    <td>
+                      <button
+                        onClick={() => handleAccept(post)}
+                        disabled={loading}
+                        className={`btn btn-success mr-2 ${
+                          loading ? "btn-disabled" : ""
+                        }`}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleDeny(post)}
+                        disabled={loading}
+                        className={`btn btn-error ${
+                          loading ? "btn-disabled" : ""
+                        }`}
+                      >
+                        Deny
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           <div className="drawer-side z-40">
             <label
               htmlFor="my-drawer-2"
@@ -107,8 +122,7 @@ const AdminPending = () => {
               className="drawer-overlay"
             ></label>
             <ul className="menu bg-base-200 text-base-content min-h-full lg:w-80 p-4">
-              {/* Sidebar content here */}
-              <li className="font-extrabold text-salmon ml-4   xs:mt-6 xxs:mt-6 sm:mt-6   text-lg mb-4 rounded-lg ">
+              <li className="font-extrabold text-salmon ml-4 text-lg mb-4 rounded-lg">
                 Admin
               </li>
               {userdata && (
@@ -126,16 +140,6 @@ const AdminPending = () => {
                   <a>Pending Posts</a>
                 </li>
               </Link>
-              {/*
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li>
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a></a>
-            </li> */}
             </ul>
           </div>
         </div>
