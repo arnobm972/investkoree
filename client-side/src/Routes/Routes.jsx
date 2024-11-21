@@ -6,7 +6,6 @@ import FounderLogin from "../Pages/Founder/FounderLogin";
 import InvestorLogin from "../Pages/Investor/InvestorLogin";
 import AdminDashborad from "../Pages/AdminPanel/AdminDashborad";
 import ErrorPage from "../Pages/ErrorPage";
-import PendingProjects from "../Pages/AdminPanel/PendingProjects";
 import InvestorDashboard from "../Pages/Investor/InvestorDashboard";
 import Shariah from "../Pages/Shariah";
 import FixedReturn from "../Pages/FixedReturn";
@@ -66,15 +65,7 @@ export const router = createBrowserRouter([
         path: "/posts/:id",
         element: <AdminPostDetail></AdminPostDetail>,
       },
-      {
-        path: "/pendingprojects",
-        element: (
-          // <PrivateAdminRoute>
-          //   <PendingProjects></PendingProjects>
-          // </PrivateAdminRoute>
-          <PendingProjects></PendingProjects>
-        ),
-      },
+
       {
         path: "/investordashboard",
         element: (
