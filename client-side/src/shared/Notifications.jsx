@@ -68,11 +68,11 @@ const Notifications = ({ API_URL, userId }) => {
           </span>
         )}
       </summary>
-      <div className="absolute right-0 top-16 bg-white shadow-lg rounded w-72 z-10">
+      <div className="absolute right-0 top-16 bg-white shadow-lg rounded w-80 z-10">
         <div className="p-4">
           {notifications.length > 0 ? (
             <div>
-              <ul className="max-h-48 w-72">
+              <ul className="max-h-48 w-80">
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
