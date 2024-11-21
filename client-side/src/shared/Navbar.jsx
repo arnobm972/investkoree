@@ -202,13 +202,13 @@ const Navbar = () => {
             </li>
             <li>
               <details>
-                <summary className="hover:bg-salmon rounded p-2">
+                <summary className="relative hover:bg-salmon rounded p-2">
                   <AiOutlineBell className="text-2xl transition mt-2 cursor-pointer" />
-                  {/* {unreadCount > 0 && (
+                  {unreadCount > 0 && (
                     <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
                       {unreadCount}
                     </span>
-                  )} */}
+                  )}
                 </summary>
                 <ul className=" lg:mr-4 bg-base-100 rounded-t-none p-2">
                   <li>

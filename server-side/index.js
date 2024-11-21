@@ -103,7 +103,6 @@ app.get('/adminpost/pending', async (req, res) => {
     res.status(500).json({ message: 'Error fetching posts: ' + error.message });
   }
 });
-
 app.post('/adminpost/accept', async (req, res) => {
   const { postId, userId } = req.body; // Ensure userId is coming from the request body
   try {
@@ -120,9 +119,12 @@ app.post('/adminpost/accept', async (req, res) => {
     await newFounderPost.save();
     await PendingPost.findByIdAndDelete(postId);
 
+    // Get the business name from the pending post
+    const businessName = pendingPost.businessName;
+
     const notification = new Notification({
       userId: userId,
-      message: "Your post has been accepted.",
+      message: `Your post for "${businessName}" has been accepted.`,
     });
     await notification.save();
 
@@ -141,9 +143,12 @@ app.post('/adminpost/deny', async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
+    // Get the business name from the pending post
+    const businessName = pendingPost.businessName;
+
     const notification = new Notification({
       userId: userId,
-      message: "Your post has been denied.",
+      message: `Your post for "${businessName}" has been denied.`,
     });
     await notification.save();
 
@@ -155,7 +160,6 @@ app.post('/adminpost/deny', async (req, res) => {
     res.status(500).json({ message: 'Error denying post: ' + error.message });
   }
 });
-
 app.get('/adminpost/notifications/:userId', async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.params.userId }).sort({ createdAt: -1 });
