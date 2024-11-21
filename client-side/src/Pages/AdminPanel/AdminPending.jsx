@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const AdminPending = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const { userdata } = useAuth();
 
@@ -24,7 +24,7 @@ const AdminPending = () => {
   }, [API_URL]);
 
   const handleAccept = async (post) => {
-    setLoading(true); // Set loading state
+    setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/adminpost/accept`, {
         postId: post._id,
@@ -37,12 +37,12 @@ const AdminPending = () => {
     } catch (error) {
       toast.error("Error accepting post: " + error.message);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
   const handleDeny = async (post) => {
-    setLoading(true); // Set loading state
+    setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/adminpost/deny`, {
         postId: post._id,
@@ -55,7 +55,7 @@ const AdminPending = () => {
     } catch (error) {
       toast.error("Error denying post: " + error.message);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -71,26 +71,44 @@ const AdminPending = () => {
             <i className="fas fa-bars text-lg"></i>
           </label>
         </div>
-        <h2 className="text-2xl text-center font-bold">Pending Posts</h2>
-        {posts.length === 0 ? (
-          <p className="text-center mt-4">No pending posts found.</p>
-        ) : (
-          <table className="min-w-full divide-y divide-gray-200 mt-4">
+        <h2 className="font-bold lg:text-3xl mb-12">Pending Posts</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
             <thead>
-              <tr>
-                <th>Business Name</th>
-                <th>Description</th>
-                <th>Email</th>
-                <th>Actions</th>
+              <tr className="bg-salmon rounded-xl">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Serial
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Business Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody>
-              {posts.map((post) => (
-                <tr key={post._id}>
-                  <td>{post.businessName}</td>
-                  <td>{post.description}</td>
-                  <td>{post.email}</td>
-                  <td>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {posts.map((post, index) => (
+                <tr key={post._id} className="hover:bg-gray-100">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {post.businessName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {post.description}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {post.email}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
                       onClick={() => handleAccept(post)}
                       disabled={loading}
@@ -114,7 +132,7 @@ const AdminPending = () => {
               ))}
             </tbody>
           </table>
-        )}
+        </div>
       </div>
       <div className="drawer-side z-40">
         <label
