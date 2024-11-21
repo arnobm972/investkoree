@@ -76,7 +76,7 @@ const Notifications = ({ API_URL, userId }) => {
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
-                    className={`p-2 rounded text-sm text-gray-500 ${
+                    className={`p-2 rounded text-xs text-gray-500 ${
                       notification.read
                         ? "bg-gray-100"
                         : "bg-yellow-100 font-semibold"
@@ -88,7 +88,7 @@ const Notifications = ({ API_URL, userId }) => {
               </ul>
               <button
                 onClick={markAllAsRead}
-                className="mt-2 text-blue-500 hover:underline"
+                className="mt-2 text-xs text-blue-500 hover:underline"
               >
                 Mark all as read
               </button>
