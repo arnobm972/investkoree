@@ -1,3 +1,6 @@
+// models/PendingPost.js
+import mongoose from 'mongoose';
+
 const pendingPostSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User ', index: true }, // Ensure this is correct
   businessName: { type: String, required: true },
@@ -31,3 +34,5 @@ const pendingPostSchema = new mongoose.Schema({
   returndate: { type: String, required: true },
   startDate: { type: Date, default: Date.now },
 }, { timestamps: true });
+const PendingPost = mongoose.model('PendingPost', pendingPostSchema);
+export default PendingPost;
