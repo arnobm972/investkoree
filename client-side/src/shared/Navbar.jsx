@@ -210,7 +210,7 @@ const Navbar = () => {
                     </span>
                   )}
                 </summary>
-                <div className="absolute  bg-white shadow-lg rounded mt-2 p-2 ">
+                <div className="  bg-white shadow-lg rounded-t-none  p-2 ">
                   {notifications.length > 0 ? (
                     notifications.map((notification) => (
                       <div key={notification._id} className="p-2 border-b">
