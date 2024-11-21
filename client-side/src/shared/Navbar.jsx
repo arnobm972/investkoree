@@ -201,7 +201,7 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <details className="relative lg:flex lg:items-center">
+              <details className="relative lg:flex lg:items-center lg:mt-2">
                 <summary className="hover:bg-salmon ">
                   <AiOutlineBell className="text-2xl transition mt-2 cursor-pointer" />
                   {unreadCount > 0 && (
