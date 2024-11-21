@@ -133,12 +133,12 @@ const AdminPending = () => {
           )}
           <Link to="/admindashboard">
             <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
-              Dashboard
+              <a>Dashboard</a>
             </li>
           </Link>
           <Link to="/adminpending">
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              Pending Posts
+              <a>Pending Posts</a>
             </li>
           </Link>
         </ul>
