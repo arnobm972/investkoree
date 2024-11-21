@@ -14,7 +14,6 @@ const Navbar = () => {
   const { userdata, logOut } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0); // Track unread notifications
-  const [showNotifications, setShowNotifications] = useState(false); // State to toggle notification display
 
   useEffect(() => {
     const socket = io(`${API_URL}`);
@@ -60,23 +59,13 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const handleNotificationClick = () => {
-    setShowNotifications(!showNotifications);
-    if (showNotifications) {
-      // If notifications are being viewed, mark them as read
-      setUnreadCount(0);
-      // Optionally, you can mark notifications as read in the backend
-      // axios.post(`${API_URL}/api/notifications/read`, { userId: userdata._id });
-    }
-  };
-
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   return (
     <div className="sticky top-0 z-50 bg-white shadow-lg">
-      <div className="navbar  px-6 py-3 flex justify-between items-center">
+      <div className="navbar px-6 py-3 flex justify-between items-center">
         <div className="flex items-center">
           <img className="h-16 w-36" src={logo} alt="logo" />
         </div>
@@ -85,7 +74,7 @@ const Navbar = () => {
         <div className="lg:hidden block">
           <button
             onClick={toggleMenu}
-            className=" sm:text-base xs:text-base xxs:text-base sm:font-medium xs:font-medium xxs:font-medium lg:text-2xl"
+            className="sm:text-base xs:text-base xxs:text-base sm:font-medium xs:font-medium xxs:font-medium lg:text-2xl"
           >
             {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
           </button>
@@ -93,7 +82,7 @@ const Navbar = () => {
 
         {/* Full Navbar for Larger Screens */}
         <div className={`hidden lg:flex flex-1 justify-center items-center`}>
-          <ul className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex">
+          <ul className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs :font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex">
             <li>
               <NavLink
                 to="/"
@@ -151,7 +140,6 @@ const Navbar = () => {
             <li>
               {userdata ? (
                 <div className="flex items-center logout-container">
-                  {/* Conditional rendering for Dashboard link based on role */}
                   {userdata.role === "investor" && (
                     <Link
                       to="/investordashboard"
@@ -213,30 +201,27 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <div className="relative hover:bg-salmon ">
-                <AiOutlineBell
-                  className="text-2xl  transition mt-2 cursor-pointer"
-                  onClick={handleNotificationClick}
-                />
-                {unreadCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
-                    {unreadCount}
-                  </span>
-                )}
-                {showNotifications && (
-                  <div className="absolute lg:left-0 bg-white shadow-lg rounded mt-2 p-2 mr-2">
-                    {notifications.length > 0 ? (
-                      notifications.map((notification) => (
-                        <div key={notification._id} className="p-2 border-b">
-                          {notification.message}
-                        </div>
-                      ))
-                    ) : (
-                      <div>No notifications</div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <details className="relative">
+                <summary className="hover:bg-salmon">
+                  <AiOutlineBell className="text-2xl transition mt-2 cursor-pointer" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
+                      {unreadCount}
+                    </span>
+                  )}
+                </summary>
+                <div className="absolute lg:left-0 bg-white shadow-lg rounded mt-2 p-2 mr-2">
+                  {notifications.length > 0 ? (
+                    notifications.map((notification) => (
+                      <div key={notification._id} className="p-2 border-b">
+                        {notification.message}
+                      </div>
+                    ))
+                  ) : (
+                    <div>No notifications</div>
+                  )}
+                </div>
+              </details>
             </li>
           </ul>
         </div>
@@ -302,7 +287,6 @@ const Navbar = () => {
               <li>
                 {userdata ? (
                   <div className="flex items-center sm:flex-col xs:flex-col xxs:flex-col">
-                    {/* Conditional rendering for Dashboard link based on role */}
                     {userdata.role === "investor" && (
                       <NavLink
                         to="/investordashboard"
@@ -332,14 +316,14 @@ const Navbar = () => {
                     )}
                     <div
                       onClick={handleSignOut}
-                      className="hover:bg-salmon transition  p-2 rounded cursor-pointer"
+                      className="hover:bg-salmon transition p-2 rounded cursor-pointer"
                     >
                       Log Out
                     </div>
                   </div>
                 ) : (
                   <details>
-                    <summary className="hover:bg-salmon  hover:text-white transition p-2 rounded">
+                    <summary className="hover:bg-salmon hover:text-white transition p-2 rounded">
                       Login
                     </summary>
                     <ul className="bg-base-100 p-2">
