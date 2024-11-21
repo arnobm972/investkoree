@@ -201,7 +201,7 @@ const Navbar = () => {
               )}
             </li>
             <li>
-              <details className="relative flex items-center">
+              <details className="relative lg:flex lg:items-center lg:mr-2">
                 <summary className="hover:bg-salmon ">
                   <AiOutlineBell className="text-2xl transition mt-2 cursor-pointer" />
                   {unreadCount > 0 && (
@@ -210,7 +210,7 @@ const Navbar = () => {
                     </span>
                   )}
                 </summary>
-                <div className="absolute lg:left-0 bg-white shadow-lg rounded mt-2 p-2 ">
+                <div className="absolute  bg-white shadow-lg rounded mt-2 p-2 ">
                   {notifications.length > 0 ? (
                     notifications.map((notification) => (
                       <div key={notification._id} className="p-2 border-b">
