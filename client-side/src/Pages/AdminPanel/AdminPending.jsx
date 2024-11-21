@@ -71,7 +71,7 @@ const AdminPending = () => {
             <i className="fas fa-bars text-lg"></i>
           </label>
         </div>
-        <h2 className="text-2xl font-bold">Pending Posts</h2>
+        <h2 className="text-2xl text-center font-bold">Pending Posts</h2>
         {posts.length === 0 ? (
           <p className="text-center mt-4">No pending posts found.</p>
         ) : (
