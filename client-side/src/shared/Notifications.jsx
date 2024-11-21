@@ -42,7 +42,7 @@ const Notifications = ({ API_URL, userId }) => {
   };
 
   return (
-    <details className="relative">
+    <details className="relative lg:mt-2">
       <summary className="cursor-pointer flex items-center gap-1 p-2 rounded hover:bg-salmon hover:text-white transition">
         <AiOutlineBell className="text-2xl" />
         {unreadCount > 0 && (
@@ -55,7 +55,7 @@ const Notifications = ({ API_URL, userId }) => {
         <div className="p-4">
           {notifications.length > 0 ? (
             <div>
-              <ul className="max-h-48 overflow-y-auto">
+              <ul className="max-h-48   overflow-y-auto">
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
