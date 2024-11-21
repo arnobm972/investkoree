@@ -13,17 +13,34 @@ const Notifications = ({ API_URL, userId }) => {
     if (userId) {
       socket.emit("join", userId);
 
-      socket.on("notifications-read", ({ userId: notifiedUserId }) => {
+      // Listen for notifications being marked as read
+      const handleNotificationsRead = ({ userId: notifiedUserId }) => {
         if (notifiedUserId === userId) {
           setUnreadCount(0); // Reset unread count
           setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
         }
-      });
-    }
+      };
+      socket.on("notifications-read", handleNotificationsRead);
 
-    return () => {
-      socket.disconnect();
-    };
+      const fetchNotifications = async () => {
+        try {
+          const response = await axios.get(
+            `${API_URL}/adminpost/notifications/${userId}`
+          );
+          setNotifications(response.data);
+          setUnreadCount(response.data.filter((n) => !n.read).length); // Count unread notifications
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+        }
+      };
+
+      fetchNotifications();
+
+      return () => {
+        socket.off("notifications-read", handleNotificationsRead); // Clean up event listener
+        socket.disconnect();
+      };
+    }
   }, [userId, API_URL]);
 
   const markAllAsRead = async () => {
@@ -51,11 +68,11 @@ const Notifications = ({ API_URL, userId }) => {
           </span>
         )}
       </summary>
-      <div className="absolute right-0 top-16 bg-white shadow-lg rounded w-64">
+      <div className="absolute right-0 top-16 bg-white shadow-lg rounded w-64 z-10">
         <div className="p-4">
           {notifications.length > 0 ? (
             <div>
-              <ul className="max-h-48  overflow-y-auto">
+              <ul className="max-h-48 overflow-y-auto">
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
