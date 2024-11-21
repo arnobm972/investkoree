@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useAuth } from "../../providers/AuthProvider";
 
 const AdminPending = () => {
   const [posts, setPosts] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const { userdata } = useAuth();
 
   useEffect(() => {
     const fetchPendingPosts = async () => {
