@@ -210,13 +210,11 @@ const Navbar = () => {
                     </span>
                   )}
                 </summary>
-                <ul>
-                  <li className="  bg-white shadow-lg rounded-t-none  p-2 ">
+                <ul className="bg-base-100 rounded-t-none p-2">
+                  <li>
                     {notifications.length > 0 ? (
                       notifications.map((notification) => (
-                        <li key={notification._id} className="p-2 border-b">
-                          {notification.message}
-                        </li>
+                        <li key={notification._id}>{notification.message}</li>
                       ))
                     ) : (
                       <li>No notifications</li>
