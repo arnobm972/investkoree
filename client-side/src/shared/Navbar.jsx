@@ -13,7 +13,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { userdata, logOut } = useAuth();
   const [notifications, setNotifications] = useState([]);
-  // const [unreadCount, setUnreadCount] = useState(0); // Track unread notifications
+  const [unreadCount, setUnreadCount] = useState(0); // Track unread notifications
 
   useEffect(() => {
     const socket = io(`${API_URL}`);
@@ -29,7 +29,7 @@ const Navbar = () => {
           ...prevNotifications,
           notification,
         ]);
-        // setUnreadCount((prevCount) => prevCount + 1); // Increment unread count
+        setUnreadCount((prevCount) => prevCount + 1); // Increment unread count
         toast(notification.message); // Show toast notification
       });
 
@@ -39,7 +39,7 @@ const Navbar = () => {
             `${API_URL}/adminpost/notifications/${userId}`
           );
           setNotifications(response.data);
-          // setUnreadCount(response.data.filter((n) => !n.read).length); // Count unread notifications
+          setUnreadCount(response.data.filter((n) => !n.read).length); // Count unread notifications
         } catch (error) {
           console.error("Error fetching notifications:", error);
         }
