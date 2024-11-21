@@ -94,7 +94,7 @@ const AdminPending = () => {
                     <button
                       onClick={() => handleAccept(post)}
                       disabled={loading}
-                      className={`btn btn-success mr-2 ${
+                      className={`btn text-white btn-success mr-2 ${
                         loading ? "btn-disabled" : ""
                       }`}
                     >
@@ -103,7 +103,7 @@ const AdminPending = () => {
                     <button
                       onClick={() => handleDeny(post)}
                       disabled={loading}
-                      className={`btn btn-error ${
+                      className={`btn text-white btn-error ${
                         loading ? "btn-disabled" : ""
                       }`}
                     >
