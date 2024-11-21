@@ -6,10 +6,10 @@ import FormData from 'form-data';
 export const createFounderPost = async (req, res) => {
   console.log("Request Body:", req.body);
   console.log("Request Files:", req.files);
-  console.log("User  ID:", req.user?._id);
+  console.log("User  ID:", req.user?.id);
   
   try {
-    const userId = req.user?._id; // Assuming req.user is populated by your authentication middleware
+    const userId = req.user?.id; // Assuming req.user is populated by your authentication middleware
     if (!userId) {
       return res.status(400).json({ error: "User  ID is required." });
     }
