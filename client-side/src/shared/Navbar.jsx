@@ -8,9 +8,11 @@ import Notifications from "./Notifications";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const navigate = useNavigate();
   const { userdata, logOut } = useAuth();
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const dropdownRef = useRef(null);
 
   const handleSignOut = () => {
     logOut();
@@ -21,7 +23,20 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const toggleDropdown = (dropdownName) => {
+    setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
+  };
 
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveDropdown(null); // Close dropdowns when clicking outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
   return (
     <div className="sticky top-0 z-50 bg-white shadow-lg">
       <div className="navbar px-6 py-3 flex justify-between items-center">
@@ -41,7 +56,10 @@ const Navbar = () => {
 
         {/* Full Navbar for Larger Screens */}
         <div className={`hidden lg:flex flex-1 justify-center items-center`}>
-          <ul className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs :font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex">
+          <ul
+            ref={dropdownRef}
+            className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs :font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex"
+          >
             <li>
               <NavLink
                 to="/"
@@ -61,39 +79,44 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-              <details>
-                <summary className="hover:bg-salmon mt-2 hover:text-white transition p-2 rounded">
+              <details open={activeDropdown === "category"}>
+                <summary
+                  onClick={() => toggleDropdown("category")}
+                  className="hover:bg-salmon mt-2 p-2 rounded"
+                >
                   Category
                 </summary>
-                <ul className="bg-base-100 rounded-t-none p-2">
-                  <li>
-                    <NavLink
-                      to="/shariah"
-                      className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
-                      activeclassname="active"
-                    >
-                      Shariah
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/stocks"
-                      className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
-                      activeclassname="active"
-                    >
-                      Stocks
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/fixedreturn"
-                      className="hover:bg-salmon transition hover:text-white p-2 rounded"
-                      activeclassname="active"
-                    >
-                      Fixed Return
-                    </NavLink>
-                  </li>
-                </ul>
+                {activeDropdown === "category" && (
+                  <ul className="bg-base-100 rounded-t-none p-2">
+                    <li>
+                      <NavLink
+                        to="/shariah"
+                        className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
+                        activeclassname="active"
+                      >
+                        Shariah
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/stocks"
+                        className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
+                        activeclassname="active"
+                      >
+                        Stocks
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/fixedreturn"
+                        className="hover:bg-salmon transition hover:text-white p-2 rounded"
+                        activeclassname="active"
+                      >
+                        Fixed Return
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </details>
             </li>
             <li>
@@ -132,30 +155,35 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : (
-                <details>
-                  <summary className="hover:bg-salmon mt-2 hover:text-white p-2 transition rounded">
+                <details open={activeDropdown === "login"}>
+                  <summary
+                    onClick={() => toggleDropdown("login")}
+                    className="hover:bg-salmon mt-2 p-2 rounded"
+                  >
                     Login
                   </summary>
-                  <ul className="bg-base-100 rounded-t-none p-2">
-                    <li>
-                      <NavLink
-                        to="/investorlogin"
-                        className="hover:bg-salmon transition hover:text-white p-2 lg:mb-2 sm:mb-2 xs:mb-2 xxs:mb-2 rounded"
-                        activeclassname="active"
-                      >
-                        Investor
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/founderlogin"
-                        className="hover:bg-salmon transition hover:text-white p-2 rounded"
-                        activeclassname="active"
-                      >
-                        Founder
-                      </NavLink>
-                    </li>
-                  </ul>
+                  {activeDropdown === "login" && (
+                    <ul className="bg-base-100 rounded-t-none p-2">
+                      <li>
+                        <NavLink
+                          to="/investorlogin"
+                          className="hover:bg-salmon transition hover:text-white p-2 lg:mb-2 sm:mb-2 xs:mb-2 xxs:mb-2 rounded"
+                          activeclassname="active"
+                        >
+                          Investor
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/founderlogin"
+                          className="hover:bg-salmon transition hover:text-white p-2 rounded"
+                          activeclassname="active"
+                        >
+                          Founder
+                        </NavLink>
+                      </li>
+                    </ul>
+                  )}
                 </details>
               )}
             </li>
@@ -180,7 +208,7 @@ const Navbar = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="xxs:mt-2 xs:mt-2 sm-mt-2 ">
+              <li>
                 <NavLink
                   to="/founderlogin"
                   onClick={toggleMenu}
@@ -190,44 +218,49 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li>
-                <details>
-                  <summary className="hover:bg-salmon hover:text-white transition p-2 rounded">
+                <details open={activeDropdown === "category"}>
+                  <summary
+                    onClick={() => toggleDropdown("category")}
+                    className="hover:bg-salmon hover:text-white transition p-2 rounded cursor-pointer"
+                  >
                     Category
                   </summary>
-                  <ul className="bg-base-100 p-2">
-                    <li>
-                      <NavLink
-                        to="/shariah"
-                        onClick={toggleMenu}
-                        className="hover:bg-salmon transition p-2 rounded"
-                      >
-                        Shariah
-                      </NavLink>
-                    </li>
-                    <li className="xxs:mt-2 xs:mt-2 sm:mt-2">
-                      <NavLink
-                        to="/stocks"
-                        onClick={toggleMenu}
-                        className="hover:bg-salmon transition p-2 rounded"
-                      >
-                        Stocks
-                      </NavLink>
-                    </li>
-                    <li className="xxs:mt-2 xs:mt-2 sm:mt-2">
-                      <NavLink
-                        to="/fixedreturn"
-                        onClick={toggleMenu}
-                        className="hover:bg-salmon transition p-2 rounded"
-                      >
-                        Fixed Return
-                      </NavLink>
-                    </li>
-                  </ul>
+                  {activeDropdown === "category" && (
+                    <ul className="bg-base-100 p-2">
+                      <li>
+                        <NavLink
+                          to="/shariah"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition p-2 rounded"
+                        >
+                          Shariah
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/stocks"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition p-2 rounded"
+                        >
+                          Stocks
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/fixedreturn"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition p-2 rounded"
+                        >
+                          Fixed Return
+                        </NavLink>
+                      </li>
+                    </ul>
+                  )}
                 </details>
               </li>
               <li>
                 {userdata ? (
-                  <div className="flex items-center sm:flex-col xs:flex-col xxs:flex-col">
+                  <div className="flex flex-col">
                     {userdata.role === "investor" && (
                       <NavLink
                         to="/investordashboard"
@@ -259,34 +292,39 @@ const Navbar = () => {
                       onClick={handleSignOut}
                       className="hover:bg-salmon transition p-2 rounded cursor-pointer"
                     >
-                      Log Out
+                      Logout
                     </div>
                   </div>
                 ) : (
-                  <details>
-                    <summary className="hover:bg-salmon hover:text-white transition p-2 rounded">
+                  <details open={activeDropdown === "login"}>
+                    <summary
+                      onClick={() => toggleDropdown("login")}
+                      className="hover:bg-salmon hover:text-white transition p-2 rounded cursor-pointer"
+                    >
                       Login
                     </summary>
-                    <ul className="bg-base-100 p-2">
-                      <li>
-                        <NavLink
-                          to="/investorlogin"
-                          onClick={toggleMenu}
-                          className="hover:bg-salmon transition p-2 rounded"
-                        >
-                          Investor
-                        </NavLink>
-                      </li>
-                      <li className="xxs:mt-2 xs:mt-2 sm:mt-2">
-                        <NavLink
-                          to="/founderlogin"
-                          onClick={toggleMenu}
-                          className="hover:bg-salmon transition p-2 rounded"
-                        >
-                          Founder
-                        </NavLink>
-                      </li>
-                    </ul>
+                    {activeDropdown === "login" && (
+                      <ul className="bg-base-100 p-2">
+                        <li>
+                          <NavLink
+                            to="/investorlogin"
+                            onClick={toggleMenu}
+                            className="hover:bg-salmon transition p-2 rounded"
+                          >
+                            Investor
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to="/founderlogin"
+                            onClick={toggleMenu}
+                            className="hover:bg-salmon transition p-2 rounded"
+                          >
+                            Founder
+                          </NavLink>
+                        </li>
+                      </ul>
+                    )}
                   </details>
                 )}
               </li>

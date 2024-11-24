@@ -17,7 +17,7 @@ const ProjectDetail = () => {
     const fetchProjectDetails = async () => {
       try {
         const response = await fetch(
-          `https://investkoree-backend.vercel.app/founderpost/projectdetail/${id}`
+          `http://localhost:10000/founderpost/projectdetail/${id}`
         ); // Replace with your API URL
         const data = await response.json();
         setProject(data); // Set the project data in state
@@ -46,16 +46,13 @@ const ProjectDetail = () => {
     // Check the selected post object
 
     try {
-      const response = await fetch(
-        "https://investkoree-backend.vercel.app/investments/post",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(post),
-        }
-      );
+      const response = await fetch("http://localhost:10000/investments/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(post),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to send investment data");

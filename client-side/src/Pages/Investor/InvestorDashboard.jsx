@@ -55,9 +55,7 @@ const InvestorDashboard = () => {
   useEffect(() => {
     const fetchInvestments = async () => {
       try {
-        const response = await fetch(
-          "https://investkoree-backend.vercel.app/investments/get"
-        ); // Adjust the endpoint as needed
+        const response = await fetch("http://localhost:10000/investments/get"); // Adjust the endpoint as needed
         const data = await response.json();
         setInvestments(data);
         console.log(data);

@@ -11,7 +11,7 @@ const Shariah = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          "https://investkoree-backend.vercel.app/founderpost/latestposts"
+          "http://localhost:10000/founderpost/latestposts"
         );
         const data = await response.json();
 

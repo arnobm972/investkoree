@@ -25,7 +25,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'https://investkoree.onrender.com','https://investkoree.vercel.app'],
+    origin: ['http://localhost:3000', 'https://investkoree.onrender.com','https://investkoree.vercel.app','http://localhost:5173'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -41,14 +41,20 @@ app.use(cors());
 
 // Multer setup for file uploads
 const storage = multer.memoryStorage();
-const configureUpload = (fields) => multer({
+
+const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png|gif|pdf|doc|txt|ppt/;
-    cb(null, filetypes.test(file.mimetype) ? true : new Error('Invalid file type'));
+    if (filetypes.test(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'));
+    }
   },
-}).fields(fields);
+});
+
 
 // Route definitions
 app.use("/users", signupRoute);
@@ -75,7 +81,7 @@ io.on('connection', (socket) => {
 });
 
 // Define the route for creating a founder post
-app.post("/adminpost/pendingpost", authToken, configureUpload.fields([
+app.post("/adminpost/pendingpost", authToken, upload.fields([
   { name: "businessPicture", maxCount: 10 },
   { name: " nidCopy", maxCount: 1 },
   { name: "tinCopy", maxCount: 1 },
@@ -141,7 +147,7 @@ app.post('/adminpost/accept', async (req, res) => {
     req.user = { _id: userId }; // Simulate authenticated user for the createFounderPost function
 
     // Call the /founderpost/postdata handler directly
-    configureUpload.fields([
+    upload.fields([
       { name: "businessPicture", maxCount: 10 },
       { name: "nidCopy", maxCount: 1 },
       { name: "tinCopy", maxCount: 1 },

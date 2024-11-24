@@ -7,7 +7,7 @@ import axios from "axios";
 import FormData from "form-data";
 
 const FounderPost = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     businessName: "",
     description: "",
     email: "",
@@ -29,10 +29,12 @@ const FounderPost = () => {
     additionalComments: "",
     projectedROI: "",
     returndate: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
   const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const navigate = useNavigate();
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
@@ -142,8 +144,8 @@ const FounderPost = () => {
       });
 
       if (response.ok) {
-        navigate("/");
         toast.success("Your post has been submitted for review!");
+        resetForm(); // Reset the form after successful submission
       } else {
         const errorData = await response.json();
         toast.error(
@@ -154,6 +156,22 @@ const FounderPost = () => {
       toast.error(`Error submitting form: ${error.message}`);
     }
   };
+
+  // Function to reset the form
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setNidFile(null);
+    setBusinessPictures([]);
+    setTinFile(null);
+    setTaxFile(null);
+    setTradeLicenseFile(null);
+    setBankStatementFile(null);
+    setSecurityFile(null);
+    setFinancialFile(null);
+    setOtherOption(false);
+    setOtherDocumentation(false);
+  };
+
   return (
     <div>
       <form

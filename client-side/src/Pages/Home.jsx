@@ -6,13 +6,12 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          "https://investkoree-backend.vercel.app/founderpost/latestposts"
-        );
+        const response = await fetch(`${API_URL}/founderpost/latestposts`);
         const data = await response.json();
         setLatestPosts(data);
       } catch (error) {

@@ -6,7 +6,7 @@ const FounderDashboard = () => {
   const { userdata } = useAuth();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null); // State to hold any error messages
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
 
   useEffect(() => {
     const fetchUserPosts = async () => {
