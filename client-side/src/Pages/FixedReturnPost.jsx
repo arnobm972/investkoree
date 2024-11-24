@@ -11,7 +11,7 @@ const FixedReturnPost = ({ item }) => {
     // raised,
     businessSector,
     fundingAmount,
-    additionalComments,
+    businessName,
   } = item;
 
   // Calculate funding percentage for progress bar
@@ -39,7 +39,7 @@ const FixedReturnPost = ({ item }) => {
                 <i className="fas fa-map-marker-alt mr-1"></i> {address}
               </span>
             </div>
-            <h3 className="text-lg font-semibold mb-2">{additionalComments}</h3>
+            <h3 className="text-lg font-semibold mb-2">{businessName}</h3>
             <div className="flex flex-row my-4 justify-between">
               <p className="">Funded: 50000</p>
               <p className="">Left for fund: {leftForFund}</p>
@@ -80,7 +80,7 @@ FixedReturnPost.propTypes = {
     businessSector: PropTypes.string.isRequired,
 
     fundingAmount: PropTypes.number.isRequired,
-    additionalComments: PropTypes.string.isRequired,
+    businessName: PropTypes.string.isRequired,
   }).isRequired,
 };
 
