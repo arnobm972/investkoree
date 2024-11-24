@@ -29,7 +29,6 @@ const ProjectDetail = () => {
     fetchProjectDetails();
   }, [id]);
 
-  // If project data is not yet loaded, show a loading message
   if (!project) {
     return <div>Loading...</div>;
   }
