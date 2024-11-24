@@ -125,7 +125,7 @@ const ProjectDetail = () => {
 
           <div className="lg:ml-12 lg:mt-0 mt-8 text-center lg:text-left">
             <h1 className="lg:text-4xl xs:text-lg xxs:text-lg sm:text-lg font-bold">
-              {project.businessName} {/* Assuming project has a title field */}
+              {project.businessName}
             </h1>
             <div className="my-6">
               <div className="flex lg:gap-8 xs:gap-4 xxs:gap-4 sm:gap-4">
