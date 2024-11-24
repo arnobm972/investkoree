@@ -17,7 +17,7 @@ const ProjectDetail = () => {
     const fetchProjectDetails = async () => {
       try {
         const response = await fetch(
-          `https://investkoree-backend.onrender.com/founderpost/projectdetail/${id}`
+          `https://investkoree-backend.vercel.app/founderpost/projectdetail/${id}`
         ); // Replace with your API URL
         const data = await response.json();
         setProject(data); // Set the project data in state
@@ -47,7 +47,7 @@ const ProjectDetail = () => {
 
     try {
       const response = await fetch(
-        "https://investkoree-backend.onrender.com/investments/post",
+        "https://investkoree-backend.vercel.app/investments/post",
         {
           method: "POST",
           headers: {

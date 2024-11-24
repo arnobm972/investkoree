@@ -56,7 +56,7 @@ const InvestorDashboard = () => {
     const fetchInvestments = async () => {
       try {
         const response = await fetch(
-          "https://investkoree-backend.onrender.com/investments/get"
+          "https://investkoree-backend.vercel.app/investments/get"
         ); // Adjust the endpoint as needed
         const data = await response.json();
         setInvestments(data);
