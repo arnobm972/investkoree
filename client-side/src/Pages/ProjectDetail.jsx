@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 // import { useAuth } from "../providers/AuthProvider";
-import useFormatDate from "../hooks/useFormatDate";
+// import useFormatDate from "../hooks/useFormatDate";
 const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
@@ -86,7 +86,7 @@ const ProjectDetail = () => {
   const handleDotClick = (index) => {
     setCurrentSlide(index);
   };
-  const formattedStartDate = useFormatDate(project.startDate);
+  const formattedStartDate = new Date(project.startDate).toLocaleDateString();
 
   return (
     <div className="min-h-screen">
