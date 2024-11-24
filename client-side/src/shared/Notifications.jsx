@@ -8,6 +8,7 @@ const Notifications = ({ API_URL, userId }) => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const socket = useRef(null);
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -29,10 +30,11 @@ const Notifications = ({ API_URL, userId }) => {
   }, []);
 
   useEffect(() => {
-    const socket = io(API_URL);
+    // Initialize socket connection
+    socket.current = io(API_URL);
 
     if (userId) {
-      socket.emit("join", userId);
+      socket.current.emit("join", userId);
 
       const fetchNotifications = async () => {
         try {
@@ -44,42 +46,55 @@ const Notifications = ({ API_URL, userId }) => {
           setUnreadCount(fetchedNotifications.filter((n) => !n.read).length);
         } catch (error) {
           console.error("Error fetching notifications:", error);
+          alert("Unable to fetch notifications. Please try again later.");
         }
       };
 
       fetchNotifications();
 
-      const handleNotificationsRead = ({ userId: notifiedUserId }) => {
+      // Listen for notifications-read event
+      const handleNotificationsRead = ({
+        userId: notifiedUserId,
+        notifications: updatedNotifications,
+      }) => {
         if (notifiedUserId === userId) {
-          setNotifications([]);
-          setUnreadCount(0);
+          // Update notifications after being marked as read
+          setNotifications(updatedNotifications);
+          setUnreadCount(updatedNotifications.filter((n) => !n.read).length);
         }
       };
 
-      socket.on("notifications-read", handleNotificationsRead);
+      socket.current.on("notifications-read", handleNotificationsRead);
 
       return () => {
-        socket.off("notifications-read", handleNotificationsRead);
-        socket.disconnect();
+        socket.current.off("notifications-read", handleNotificationsRead);
+        socket.current.disconnect();
       };
     }
   }, [userId, API_URL]);
 
   const markAllAsRead = async () => {
     try {
-      await axios.put(`${API_URL}/adminpost/notifications/read/${userId}`);
-      setNotifications([]);
-      setUnreadCount(0);
+      const response = await axios.put(
+        `${API_URL}/adminpost/notifications/read/${userId}`
+      );
+
+      // Update notifications state with the response data
+      setNotifications(response.data.notifications); // Update with the latest notifications
+      setUnreadCount(0); // Reset unread count
     } catch (error) {
       console.error("Error marking notifications as read:", error);
     }
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div
+      className="relative hover:bg-salmon hover:text-white right-6"
+      ref={dropdownRef}
+    >
       <button
         onClick={toggleDropdown}
-        className="cursor-pointer flex items-center gap-1 p-2 rounded hover:bg-salmon hover:text-white transition"
+        className="cursor-pointer flex items-center gap-1 p-2 rounded  transition"
       >
         <AiOutlineBell className="text-2xl" />
         {unreadCount > 0 && (
@@ -93,7 +108,7 @@ const Notifications = ({ API_URL, userId }) => {
           <div className="p-4">
             {notifications.length > 0 ? (
               <div>
-                <ul className="max-h-48 w-80 overflow-y-auto">
+                <ul className="max-h-48 w-80 right-6 overflow-y-auto">
                   {notifications.map((notification) => (
                     <li
                       key={notification._id}
@@ -121,5 +136,4 @@ const Notifications = ({ API_URL, userId }) => {
     </div>
   );
 };
-
 export default Notifications;

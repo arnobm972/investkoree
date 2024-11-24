@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; // Import useState
+import { useState, useEffect, useRef } from "react"; // Import useState
 import logo from "../assets/ll.png";
 import { useNavigate, NavLink, Link } from "react-router-dom"; // Import Link
 import { toast } from "react-toastify";
@@ -81,8 +81,11 @@ const Navbar = () => {
             <li>
               <details open={activeDropdown === "category"}>
                 <summary
-                  onClick={() => toggleDropdown("category")}
-                  className="hover:bg-salmon mt-2 p-2 rounded"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent native toggle behavior
+                    toggleDropdown("category");
+                  }}
+                  className="hover:bg-salmon mt-2 p-2 rounded hover:text-white"
                 >
                   Category
                 </summary>
@@ -157,8 +160,11 @@ const Navbar = () => {
               ) : (
                 <details open={activeDropdown === "login"}>
                   <summary
-                    onClick={() => toggleDropdown("login")}
-                    className="hover:bg-salmon mt-2 p-2 rounded"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent native toggle behavior
+                      toggleDropdown("login");
+                    }}
+                    className="hover:bg-salmon mt-2 p-2 rounded hover:text-white"
                   >
                     Login
                   </summary>

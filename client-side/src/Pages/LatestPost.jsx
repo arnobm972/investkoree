@@ -11,12 +11,13 @@ const LatestPost = ({ item }) => {
     // left_for_fund,
     // raised,
     businessSector,
-    fundingAmount,
+    fundingAmount: fundingAmountString,
     // additionalComments,
     businessName,
   } = item;
 
   // Calculate funding percentage for progress bar
+  const fundingAmount = parseFloat(fundingAmountString);
   const fundingPercentage = (50000 / fundingAmount) * 100;
   const leftForFund = fundingAmount - 50000;
 
@@ -81,7 +82,8 @@ LatestPost.propTypes = {
     // raised: PropTypes.number.isRequired,
     businessSector: PropTypes.string.isRequired,
 
-    fundingAmount: PropTypes.number.isRequired,
+    fundingAmount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
     businessName: PropTypes.string.isRequired,
   }).isRequired,
 };

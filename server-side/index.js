@@ -106,47 +106,32 @@ app.get('/adminpost/pending', async (req, res) => {
   }
 });
 app.post('/adminpost/accept', async (req, res) => {
-  const { postId, userId } = req.body; // Ensure userId is coming from the request body
+  const { postId, userId } = req.body;
   try {
-    // Find the pending post by ID
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Prepare the data for the founder post
     const newFounderPost = new FounderPost({
       ...pendingPost.toObject(),
-      userId: pendingPost.userId || userId, // Use pendingPost.userId or fallback to userId from request
+      userId: pendingPost.userId || userId,
     });
 
-    // Save the new founder post
     await newFounderPost.save();
-
-    // Remove the pending post after saving it to the founder posts
     await PendingPost.findByIdAndDelete(postId);
 
-    // Create a notification for the user
     const notification = new Notification({
       userId,
       message: `Your post for "${pendingPost.businessName}" has been accepted.`,
     });
     await notification.save();
 
-    // Emit a notification to the user
     io.to(userId).emit('notification', notification);
 
-    // Send the accepted post data to the /founderpost/postdata route
-    const postData = {
-      ...newFounderPost.toObject(),
-      businessPictures: newFounderPost.businessPictures, // Ensure all fields are passed correctly
-    };
+    req.body = { ...newFounderPost.toObject(), businessPictures: newFounderPost.businessPictures };
+    req.user = { _id: userId };
 
-    // Use the existing route to handle the data
-    req.body = postData;
-    req.user = { _id: userId }; // Simulate authenticated user for the createFounderPost function
-
-    // Call the /founderpost/postdata handler directly
     upload.fields([
       { name: "businessPicture", maxCount: 10 },
       { name: "nidCopy", maxCount: 1 },
@@ -176,46 +161,64 @@ app.post('/adminpost/deny', async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Get the business name from the pending post
     const businessName = pendingPost.businessName;
-
     const notification = new Notification({
-      userId: userId,
+      userId,
       message: `Your post for "${businessName}" has been denied.`,
     });
     await notification.save();
 
     await PendingPost.findByIdAndDelete(postId);
+    await Notification.deleteMany({ userId, message: new RegExp(businessName, 'i') });
+
     io.to(userId).emit('notification', notification);
 
-    res.status(200).json({ message: 'Post denied and removed from pending posts' });
+    res.status(200).json({ message: 'Post denied and notifications updated.' });
   } catch (error) {
     res.status(500).json({ message: 'Error denying post: ' + error.message });
   }
 });
+
+
 app.get('/adminpost/notifications/:userId', async (req, res) => {
   try {
-    const notifications = await Notification.find({ userId: req.params.userId }).sort({ createdAt: -1 });
-    res.status(200).json(notifications);
+    const { userId } = req.params;
+    const updatedNotifications = await Notification.find({ userId }).sort({ createdAt: -1 });
+
+    io.to(userId).emit('notifications-read', { userId, notifications: updatedNotifications });
+
+    res.status(200).json(updatedNotifications);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching notifications: ' + error.message });
   }
 });
+
+// Mark notifications as read
 app.put('/adminpost/notifications/read/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
-    // Update all notifications for the user as read
-    await Notification.updateMany({ userId }, { $set: { read: true } });
+    // Update the `read` field to true for all notifications belonging to the user
+    const result = await Notification.updateMany(
+      { userId },
+      { $set: { read: true } }
+    );
 
-    // Emit a real-time event to notify the client
-    io.to(userId).emit('notifications-read', { userId });
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: 'No notifications found to mark as read.' });
+    }
 
-    res.status(200).json({ message: 'All notifications marked as read.' });
+    // Fetch updated notifications to send to the frontend
+    const updatedNotifications = await Notification.find({ userId }).sort({ createdAt: -1 });
+
+    // Emit the updated notifications to the client via WebSocket
+    io.to(userId).emit('notifications-read', { userId, notifications: updatedNotifications });
+
+    // Send a response indicating that the notifications were successfully marked as read
+    res.status(200).json({ message: 'All notifications marked as read.', notifications: updatedNotifications });
   } catch (error) {
     res.status(500).json({ message: 'Error marking notifications as read: ' + error.message });
   }
 });
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
