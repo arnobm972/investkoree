@@ -76,11 +76,7 @@ const Notifications = ({ API_URL, userId }) => {
                 {notifications.map((notification) => (
                   <li
                     key={notification._id}
-                    className={`p-2 rounded mr-10 text-xs text-gray-500 ${
-                      notification.read
-                        ? "bg-gray-100"
-                        : "bg-yellow-100 font-semibold"
-                    }`}
+                    className={`p-2 rounded mr-10 text-xs text-gray-500 ${notification.read}`}
                   >
                     {notification.message}
                   </li>
