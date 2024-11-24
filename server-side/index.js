@@ -41,19 +41,14 @@ app.use(cors());
 
 // Multer setup for file uploads
 const storage = multer.memoryStorage();
-const upload = multer({
+const configureUpload = (fields) => multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif|pdf|doc|txt|ppt/; // Allowed file types
-    const mimetype = filetypes.test(file.mimetype);
-    if (mimetype) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Error: File type not allowed!'));
-    }
-  }
-});
+    const filetypes = /jpeg|jpg|png|gif|pdf|doc|txt|ppt/;
+    cb(null, filetypes.test(file.mimetype) ? true : new Error('Invalid file type'));
+  },
+}).fields(fields);
 
 // Route definitions
 app.use("/users", signupRoute);
@@ -80,7 +75,7 @@ io.on('connection', (socket) => {
 });
 
 // Define the route for creating a founder post
-app.post("/adminpost/pendingpost", authToken, upload.fields([
+app.post("/adminpost/pendingpost", authToken, configureUpload.fields([
   { name: "businessPicture", maxCount: 10 },
   { name: " nidCopy", maxCount: 1 },
   { name: "tinCopy", maxCount: 1 },
@@ -94,6 +89,7 @@ app.post("/adminpost/pendingpost", authToken, upload.fields([
   next();
 }, createFounderPost);
 
+
 // Additional routes for pending posts
 app.get('/adminpost/pending', async (req, res) => {
   try {
@@ -106,35 +102,66 @@ app.get('/adminpost/pending', async (req, res) => {
 app.post('/adminpost/accept', async (req, res) => {
   const { postId, userId } = req.body; // Ensure userId is coming from the request body
   try {
+    // Find the pending post by ID
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
+    // Prepare the data for the founder post
     const newFounderPost = new FounderPost({
       ...pendingPost.toObject(),
       userId: pendingPost.userId || userId, // Use pendingPost.userId or fallback to userId from request
     });
 
+    // Save the new founder post
     await newFounderPost.save();
+
+    // Remove the pending post after saving it to the founder posts
     await PendingPost.findByIdAndDelete(postId);
 
-    // Get the business name from the pending post
-    const businessName = pendingPost.businessName;
-
+    // Create a notification for the user
     const notification = new Notification({
-      userId: userId,
-      message: `Your post for "${businessName}" has been accepted.`,
+      userId,
+      message: `Your post for "${pendingPost.businessName}" has been accepted.`,
     });
     await notification.save();
 
+    // Emit a notification to the user
     io.to(userId).emit('notification', notification);
 
-    res.status(200).json({ message: 'Post accepted and moved to founder posts' });
+    // Send the accepted post data to the /founderpost/postdata route
+    const postData = {
+      ...newFounderPost.toObject(),
+      businessPictures: newFounderPost.businessPictures, // Ensure all fields are passed correctly
+    };
+
+    // Use the existing route to handle the data
+    req.body = postData;
+    req.user = { _id: userId }; // Simulate authenticated user for the createFounderPost function
+
+    // Call the /founderpost/postdata handler directly
+    configureUpload.fields([
+      { name: "businessPicture", maxCount: 10 },
+      { name: "nidCopy", maxCount: 1 },
+      { name: "tinCopy", maxCount: 1 },
+      { name: "taxCopy", maxCount: 1 },
+      { name: "tradeLicense", maxCount: 1 },
+      { name: "bankStatement", maxCount: 1 },
+      { name: "securityFile", maxCount: 1 },
+      { name: "financialFile", maxCount: 1 },
+    ])(req, res, async (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error processing files: ' + err.message });
+      }
+      await createFounderPost(req, res); // Call the existing function to process the post
+    });
+
   } catch (error) {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
 });
+
 app.post('/adminpost/deny', async (req, res) => {
   const { postId, userId } = req.body;
   try {
