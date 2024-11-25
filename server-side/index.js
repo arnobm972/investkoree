@@ -74,19 +74,28 @@ io.on('connection', (socket) => {
 });
 
 // Create Founder Post with Pending Approval
-app.post("/adminpost/pendingpost", authToken, upload.fields([
-  { name: "businessPicture", maxCount: 10 },
-  { name: " nidCopy", maxCount: 1 },
-  { name: "tinCopy", maxCount: 1 },
-  { name: "taxCopy", maxCount: 1 },
-  { name: "tradeLicense", maxCount: 1 },
-  { name: "bankStatement", maxCount: 1 },
-  { name: "securityFile", maxCount: 1 },
-  { name: "financialFile", maxCount: 1 },
-]), (req, res, next) => {
-  console.log("Files in req.files:", req.files);
-  next();
-}, createFounderPost);
+app.post(
+  '/adminpost/pendingpost',
+  authToken,
+  upload.fields([
+    { name: 'businessPicture', maxCount: 10 },
+    { name: 'nidCopy', maxCount: 1 },
+    { name: 'tinCopy', maxCount: 1 },
+    { name: 'taxCopy', maxCount: 1 },
+    { name: 'tradeLicense', maxCount: 1 },
+    { name: 'bankStatement', maxCount: 1 },
+    { name: 'securityFile', maxCount: 1 },
+    { name: 'financialFile', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      console.log('Files received:', req.files);
+      await createFounderPost(req, res);
+    } catch (error) {
+      res.status(500).json({ message: 'Error creating post: ' + error.message });
+    }
+  }
+);
 
 // Pending Posts Routes
 app.get('/adminpost/pending', async (req, res) => {
