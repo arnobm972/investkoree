@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const AdminPending = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:1000";
   const { userdata } = useAuth();
   const [denyReason, setDenyReason] = useState("");
   const [currentPostId, setCurrentPostId] = useState(null);
@@ -43,7 +43,7 @@ const AdminPending = () => {
     }
   };
 
-  const handleDeny = async () => {
+  const handleDeny = async (post) => {
     setLoading(true);
     try {
       console.log("Submitting Denial:", {
@@ -56,6 +56,7 @@ const AdminPending = () => {
         postId: currentPostId,
         reason: denyReason,
         status: "denied",
+        userId: post.userId,
       });
 
       if (response.status === 200) {
