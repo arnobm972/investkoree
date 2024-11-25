@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -259,6 +259,9 @@ const FounderLogin = () => {
           <img src="img/register.svg" className="image" alt="" />
         </div>
       </div>
+      <Link to="/adminlogin">
+        <button>asdasd</button>
+      </Link>
     </div>
   );
 };
