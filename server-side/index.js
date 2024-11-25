@@ -168,7 +168,7 @@ app.put('/adminpost/notifications/read/:userId', async (req, res) => {
   }
 });
 
-// Global Error Handling
+// Global Error H
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Internal Server Error' });
