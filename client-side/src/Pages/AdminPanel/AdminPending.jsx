@@ -45,7 +45,7 @@ const AdminPending = () => {
 
   const handleDeny = async (post) => {
     setLoading(true);
-    const token = localStorage.getItem("token");
+
     try {
       console.log("Submitting Denial:", {
         postId: currentPostId,
@@ -53,20 +53,12 @@ const AdminPending = () => {
         status: "denied",
       });
 
-      const response = await axios.post(
-        `${API_URL}/adminpost/deny`,
-        {
-          postId: currentPostId,
-          reason: denyReason,
-          status: "denied",
-          userId: post.userId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/adminpost/deny`, {
+        postId: currentPostId,
+        reason: denyReason,
+        status: "denied",
+        userId: post.userId,
+      });
 
       if (response.status === 200) {
         toast.success("Post denied successfully!");

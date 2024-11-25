@@ -137,7 +137,7 @@ app.post('/adminpost/deny', async (req, res) => {
     if (!pendingPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
-    pendingPost.status = status || 'denied';  // Set the status to 'denied' or use provided status
+    pendingPost.status = 'denied';  // Set the status to 'denied' or use provided status
     pendingPost.reason = reason || 'No reason provided'; // Add the reason for denial
     await pendingPost.save();
     // Get the business name from the pending post
