@@ -45,7 +45,7 @@ const AdminPending = () => {
 
   const handleDeny = async (post) => {
     setLoading(true);
-    const token = userdata.token;
+    const token = localStorage.getItem("token");
     try {
       console.log("Submitting Denial:", {
         postId: currentPostId,
