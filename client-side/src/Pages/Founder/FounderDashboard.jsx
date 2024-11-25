@@ -178,9 +178,16 @@ const FounderDashboard = () => {
                 {userdata.name || "Founder"}!
               </li>
             )}
-            <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
-              <a>Dashboard</a>
-            </li>
+            <Link to="#">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+                <a>Dashboard</a>
+              </li>
+            </Link>
+            <Link to="/founderpending">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+                <a>Pending Post</a>
+              </li>
+            </Link>
           </ul>
         </div>
       </div>

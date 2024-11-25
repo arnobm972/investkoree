@@ -20,6 +20,7 @@ import ProjectDetail from "../Pages/ProjectDetail";
 import Payment from "../Pages/Payment";
 import AdminPostDetail from "../Pages/AdminPanel/AdminPostDetail";
 import AdminPending from "../Pages/AdminPanel/AdminPending";
+import FounderPending from "../Pages/Founder/FounderPending";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "/founderlogin",
         element: <FounderLogin></FounderLogin>,
+      },
+      {
+        path: "/founderpending",
+        element: <FounderPending></FounderPending>,
       },
       {
         path: "/investorlogin",
