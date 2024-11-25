@@ -113,8 +113,7 @@ app.post('/adminpost/accept', async (req, res) => {
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) return res.status(404).json({ message: 'Post not found' });
 
-    const newFounderPost = new FounderPost({ ...pendingPost.toObject(), userId });
-    await newFounderPost.save();
+   
     await PendingPost.findByIdAndDelete(postId);
 
     const notification = new Notification({
