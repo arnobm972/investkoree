@@ -5,14 +5,13 @@ const Stocks = () => {
   const [Stockspost, setStocksPost] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [selectedSector, setSelectedSector] = useState(""); // State for selected sector
-  const [selectedDuration, setSelectedDuration] = useState(""); // State for selected duration
+  const [selectedDuration, setSelectedDuration] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000"; // State for selected duration
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:10000/founderpost/latestposts"
-        );
+        const response = await fetch(`${API_URL}/founderpost/latestposts`);
         const data = await response.json();
 
         // Filter posts for Stocks category

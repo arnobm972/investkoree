@@ -6,6 +6,7 @@ const ProjectDetail = () => {
   const { id } = useParams(); // Get the project ID from the URL
   const [project, setProject] = useState(null); // State to hold project data
   const [currentSlide, setCurrentSlide] = useState(0);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   // const { userdata } = useAuth();
 
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const ProjectDetail = () => {
     const fetchProjectDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:10000/founderpost/projectdetail/${id}`
+          `${API_URL}/founderpost/projectdetail/${id}`
         ); // Replace with your API URL
         const data = await response.json();
         setProject(data); // Set the project data in state

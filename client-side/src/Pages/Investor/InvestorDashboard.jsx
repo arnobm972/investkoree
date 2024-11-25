@@ -51,11 +51,12 @@ const InvestorDashboard = () => {
   const [data2] = useState(chartData2);
   const { userdata } = useAuth();
   const [investments, setInvestments] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
 
   useEffect(() => {
     const fetchInvestments = async () => {
       try {
-        const response = await fetch("http://localhost:10000/investments/get"); // Adjust the endpoint as needed
+        const response = await fetch(`${API_URL}/investments/get`); // Adjust the endpoint as needed
         const data = await response.json();
         setInvestments(data);
         console.log(data);

@@ -11,7 +11,7 @@ const FixedReturn = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:10000/founderpost/latestposts"
+          "https://investkoree-backend-660j.onrender.com/founderpost/latestposts"
         );
         const data = await response.json();
 
