@@ -108,32 +108,31 @@ app.get('/adminpost/pending', async (req, res) => {
 });
 
 app.post('/adminpost/accept', authToken, async (req, res) => {
-  const { postId } = req.body; // Only get postId from the request body
-  const userId = req.user?.id; // Get userId from the authenticated user
+  const { postId,userId} = req.body; // Only get postId from the request body
+   // Get userId from the authenticated user
 
   try {
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) return res.status(404).json({ message: 'Post not found' });
 
-    const newFounderPost = new FounderPost({ ...pendingPost.toObject(), userId });
-    await newFounderPost.save();
-    await PendingPost.findByIdAndDelete(postId);
-
     const notification = new Notification({
       userId, // Use the userId from req.user
       message: `Your post for "${pendingPost.businessName}" has been accepted.`,
     });
+    await PendingPost.findByIdAndDelete(postId);
+
+   
     await notification.save();
 
     io.to(userId).emit('notification', notification);
-    res.status(200).json(newFounderPost);
+    res.status(200).json({message:'Post denied'});
   } catch (error) {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
 });
 app.post('/adminpost/deny', authToken, async (req, res) => {
-  const { postId, reason, status } = req.body; // Capture the reason and status for denial
-  const userId = req.user?.id; // Get userId from the authenticated user
+  const { postId, reason, status,userId } = req.body; // Capture the reason and status for denial
+   // Get userId from the authenticated user
 
   try {
     const pendingPost = await PendingPost.findById(postId);
