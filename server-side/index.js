@@ -74,34 +74,19 @@ io.on('connection', (socket) => {
 });
 
 // Create Founder Post with Pending Approval
-app.post(
-  '/adminpost/pendingpost',
-  authToken,
-  upload.fields([
-    { name: 'businessPicture', maxCount: 10 },
-    { name: 'nidCopy', maxCount: 1 },
-    { name: 'tinCopy', maxCount: 1 },
-    { name: 'taxCopy', maxCount: 1 },
-    { name: 'tradeLicense', maxCount: 1 },
-    { name: 'bankStatement', maxCount: 1 },
-    { name: 'securityFile', maxCount: 1 },
-    { name: 'financialFile', maxCount: 1 },
-  ]),
-  async (req, res) => {
-    try {
-      const { reason,status } = req.body; // Capture the reason for denial
-
-      console.log('Files received:', req.files);
-      console.log('Denial Reason:', reason);
-      console.log('Denial Reason:', status);
-      // Process files and save post with reason
-      await createFounderPost(req, res);
-    } catch (error) {
-      res.status(500).json({ message: 'Error creating post: ' + error.message });
-    }
-  }
-);
-
+app.post("/adminpost/pendingpost", authToken, upload.fields([
+  { name: "businessPicture", maxCount: 10 },
+  { name: " nidCopy", maxCount: 1 },
+  { name: "tinCopy", maxCount: 1 },
+  { name: "taxCopy", maxCount: 1 },
+  { name: "tradeLicense", maxCount: 1 },
+  { name: "bankStatement", maxCount: 1 },
+  { name: "securityFile", maxCount: 1 },
+  { name: "financialFile", maxCount: 1 },
+]), (req, res, next) => {
+  console.log("Files in req.files:", req.files);
+  next();
+}, createFounderPost);
 
 // Pending Posts Routes
 app.get('/adminpost/pending', async (req, res) => {
@@ -137,22 +122,40 @@ app.post('/adminpost/accept', async (req, res) => {
 });
 
 app.post('/adminpost/deny', async (req, res) => {
-  const { postId, userId } = req.body;
+  const { postId, userId, reason, status } = req.body; // Capture the reason and status for denial
+
   try {
+    // Fetch the pending post
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) return res.status(404).json({ message: 'Post not found' });
 
-    await Notification.create({
+    // Update the post with reason and status
+    pendingPost.status = status || 'denied';  // Set the status to 'denied' or use provided status
+    pendingPost.reason = reason || 'No reason provided'; // Add the reason for denial
+    await pendingPost.save(); // Save the updated post
+
+    // Create the denial notification
+    const notification = new Notification({
       userId,
       message: `Your post for "${pendingPost.businessName}" has been denied.`,
     });
+    await notification.save();
+
+    // Delete the post after updating
     await PendingPost.findByIdAndDelete(postId);
+
+    // Emit the notification to the user
     io.to(userId).emit('notification', { message: 'Post denied' });
-    res.status(200).json({ message: 'Post denied' });
+
+    // Return a success response
+    res.status(200).json({ message: 'Post denied successfully' });
+
   } catch (error) {
+    console.error('Error denying post:', error);
     res.status(500).json({ message: 'Error denying post: ' + error.message });
   }
 });
+
 
 // Notifications Routes
 app.get('/adminpost/notifications/:userId', async (req, res) => {

@@ -46,11 +46,18 @@ const AdminPending = () => {
   const handleDeny = async () => {
     setLoading(true);
     try {
+      console.log("Submitting Denial:", {
+        postId: currentPostId,
+        reason: denyReason,
+        status: "denied",
+      });
+
       const response = await axios.post(`${API_URL}/adminpost/deny`, {
         postId: currentPostId,
         reason: denyReason,
         status: "denied",
       });
+
       if (response.status === 200) {
         toast.success("Post denied successfully!");
         setPosts(posts.filter((p) => p._id !== currentPostId));
