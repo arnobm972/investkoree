@@ -8,6 +8,8 @@ const pendingPostSchema = new mongoose.Schema({
   address: { type: String, required: true },
   phone: { type: String, required: true },
   description: { type: String, required: true },
+ comment: { type: String},
+ status :{type:String},
   businessCategory: { type: String, required: true },
   businessSector: { type: String, required: true },
   investmentDuration: { type: String, required: true },

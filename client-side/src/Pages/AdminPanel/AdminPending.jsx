@@ -9,6 +9,8 @@ const AdminPending = () => {
   const [loading, setLoading] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const { userdata } = useAuth();
+  const [denyReason, setDenyReason] = useState("");
+  const [currentPostId, setCurrentPostId] = useState(null);
 
   useEffect(() => {
     const fetchPendingPosts = async () => {
@@ -41,16 +43,19 @@ const AdminPending = () => {
     }
   };
 
-  const handleDeny = async (post) => {
+  const handleDeny = async () => {
     setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/adminpost/deny`, {
-        postId: post._id,
-        userId: post.userId,
+        postId: currentPostId,
+        reason: denyReason,
+        status: "denied",
       });
       if (response.status === 200) {
         toast.success("Post denied successfully!");
-        setPosts(posts.filter((p) => p._id !== post._id));
+        setPosts(posts.filter((p) => p._id !== currentPostId));
+        setDenyReason("");
+        setCurrentPostId(null);
       }
     } catch (error) {
       toast.error("Error denying post: " + error.message);
@@ -118,15 +123,32 @@ const AdminPending = () => {
                     >
                       Accept
                     </button>
-                    <button
-                      onClick={() => handleDeny(post)}
-                      disabled={loading}
-                      className={`btn text-white btn-error ${
-                        loading ? "btn-disabled" : ""
-                      }`}
-                    >
-                      Deny
-                    </button>
+                    {currentPostId === post._id ? (
+                      <div>
+                        <textarea
+                          value={denyReason}
+                          onChange={(e) => setDenyReason(e.target.value)}
+                          placeholder="Enter reason for denial"
+                          className="textarea textarea-bordered mb-2"
+                        ></textarea>
+                        <button
+                          onClick={handleDeny}
+                          disabled={loading || !denyReason}
+                          className={`btn text-white btn-error ${
+                            loading ? "btn-disabled" : ""
+                          }`}
+                        >
+                          Submit Denial
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setCurrentPostId(post._id)}
+                        className="btn text-white btn-error"
+                      >
+                        Deny
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

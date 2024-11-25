@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 const FounderPending = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [denialReason, setDenialReason] = useState("");
+  const [showReason, setShowReason] = useState(null); // Track which post's reason is shown
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const { userdata } = useAuth();
 
@@ -23,37 +25,14 @@ const FounderPending = () => {
     fetchPendingPosts();
   }, [API_URL]);
 
-  const handleAccept = async (post) => {
+  const handleShowReason = async (postId) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${API_URL}/Founderpost/accept`, {
-        postId: post._id,
-        userId: post.userId,
-      });
-      if (response.status === 200) {
-        toast.success("Post accepted successfully!");
-        setPosts(posts.filter((p) => p._id !== post._id));
-      }
+      const response = await axios.get(`${API_URL}/adminpost/reason/${postId}`);
+      setDenialReason(response.data.reason || "No reason provided.");
+      setShowReason(postId);
     } catch (error) {
-      toast.error("Error accepting post: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeny = async (post) => {
-    setLoading(true);
-    try {
-      const response = await axios.post(`${API_URL}/Founderpost/deny`, {
-        postId: post._id,
-        userId: post.userId,
-      });
-      if (response.status === 200) {
-        toast.success("Post denied successfully!");
-        setPosts(posts.filter((p) => p._id !== post._id));
-      }
-    } catch (error) {
-      toast.error("Error denying post: " + error.message);
+      toast.error("Error fetching denial reason: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -83,13 +62,10 @@ const FounderPending = () => {
                   Business Name
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Description
+                  Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Actions
+                  Reason
                 </th>
               </tr>
             </thead>
@@ -102,31 +78,27 @@ const FounderPending = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {post.businessName}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {post.description}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {post.email}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    {post.status === "denied" ? (
+                      <span className="text-red-500 font-bold">Denied</span>
+                    ) : (
+                      <span className="text-yellow-500 font-bold">Pending</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button
-                      onClick={() => handleAccept(post)}
-                      disabled={loading}
-                      className={`btn text-white btn-success mr-2 ${
-                        loading ? "btn-disabled" : ""
-                      }`}
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleDeny(post)}
-                      disabled={loading}
-                      className={`btn text-white btn-error ${
-                        loading ? "btn-disabled" : ""
-                      }`}
-                    >
-                      Deny
-                    </button>
+                    {post.status === "denied" && (
+                      <button
+                        onClick={() => handleShowReason(post._id)}
+                        className="bg-salmon text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
+                      >
+                        Comment
+                      </button>
+                    )}
+                    {showReason === post._id && (
+                      <div className="mt-2 bg-gray-100 p-4 rounded-lg shadow-md">
+                        <p className="text-sm text-gray-700">{denialReason}</p>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

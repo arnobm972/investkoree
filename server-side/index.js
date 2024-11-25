@@ -89,13 +89,19 @@ app.post(
   ]),
   async (req, res) => {
     try {
+      const { reason,status } = req.body; // Capture the reason for denial
+
       console.log('Files received:', req.files);
+      console.log('Denial Reason:', reason);
+      console.log('Denial Reason:', status);
+      // Process files and save post with reason
       await createFounderPost(req, res);
     } catch (error) {
       res.status(500).json({ message: 'Error creating post: ' + error.message });
     }
   }
 );
+
 
 // Pending Posts Routes
 app.get('/adminpost/pending', async (req, res) => {
