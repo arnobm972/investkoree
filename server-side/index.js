@@ -107,57 +107,56 @@ app.get('/adminpost/pending', async (req, res) => {
   }
 });
 
-app.post('/adminpost/accept', authToken, async (req, res) => {
-  const { postId,userId} = req.body; // Only get postId from the request body
-   // Get userId from the authenticated user
-
+app.post('/adminpost/accept', async (req, res) => {
+  const { postId, userId } = req.body;
   try {
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) return res.status(404).json({ message: 'Post not found' });
 
-    const notification = new Notification({
-      userId, // Use the userId from req.user
-      message: `Your post for "${pendingPost.businessName}" has been accepted.`,
-    });
+    const newFounderPost = new FounderPost({ ...pendingPost.toObject(), userId });
+    await newFounderPost.save();
     await PendingPost.findByIdAndDelete(postId);
 
-   
+    const notification = new Notification({
+      userId,
+      message: `Your post for "${pendingPost.businessName}" has been accepted.`,
+    });
     await notification.save();
 
     io.to(userId).emit('notification', notification);
-    res.status(200).json({message:'Post denied'});
+    res.status(200).json(newFounderPost);
   } catch (error) {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
 });
-app.post('/adminpost/deny', authToken, async (req, res) => {
-  const { postId, reason, status,userId } = req.body; // Capture the reason and status for denial
-   // Get userId from the authenticated user
 
+app.post('/adminpost/deny', async (req, res) => {
+  const { postId, userId } = req.body;
   try {
     const pendingPost = await PendingPost.findById(postId);
-    if (!pendingPost) return res.status(404).json({ message: 'Post not found' });
-
+    if (!pendingPost) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
     pendingPost.status = status || 'denied';  // Set the status to 'denied' or use provided status
     pendingPost.reason = reason || 'No reason provided'; // Add the reason for denial
-    await pendingPost.save(); // Save the updated post
+    await pendingPost.save();
+    // Get the business name from the pending post
+    const businessName = pendingPost.businessName;
 
     const notification = new Notification({
-      userId, // Use the userId from req.user
-      message: `Your post for "${pendingPost.businessName}" has been denied.`,
+      userId: userId,
+      message: `Your post for "${businessName}" has been denied.`,
     });
     await notification.save();
 
     await PendingPost.findByIdAndDelete(postId);
-    io.to(userId).emit('notification', { message: 'Post denied' });
+    io.to(userId).emit('notification', notification);
 
-    res.status(200).json({ message: 'Post denied successfully' });
+    res.status(200).json({ message: 'Post denied and removed from pending posts' });
   } catch (error) {
-    console.error('Error denying post:', error);
     res.status(500).json({ message: 'Error denying post: ' + error.message });
   }
-});
-// Notifications Routes
+}); Routes
 app.get('/adminpost/notifications/:userId', async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.params.userId }).sort({ createdAt: -1 });
