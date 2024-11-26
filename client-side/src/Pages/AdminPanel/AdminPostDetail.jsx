@@ -10,7 +10,9 @@ const AdminPostDetail = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/founderpost/${id}`);
+        const response = await fetch(
+          `${API_URL}/founderpost/projectdetail/${id}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch post details");
         }
@@ -117,6 +119,16 @@ const AdminPostDetail = () => {
           <strong>NID File:</strong>{" "}
           {post.nidFile ? (
             <a href={post.nidFile} target="_blank" rel="noopener noreferrer">
+              View
+            </a>
+          ) : (
+            "N/A"
+          )}
+        </p>
+        <p>
+          <strong>Video File:</strong>{" "}
+          {post.videoFile ? (
+            <a href={post.videoFile} target="_blank" rel="noopener noreferrer">
               View
             </a>
           ) : (

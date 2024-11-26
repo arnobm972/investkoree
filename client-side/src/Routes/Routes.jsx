@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/posts/:id",
+        path: "/projectdetail/:id",
         element: <AdminPostDetail></AdminPostDetail>,
       },
 
