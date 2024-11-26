@@ -129,33 +129,34 @@ app.post('/adminpost/accept', async (req, res) => {
   }
 });
 
-app.post('/adminpost/deny', async (req, res) => {
-  const { postId, userId } = req.body;
-  try {
-    const pendingPost = await PendingPost.findById(postId);
-    if (!pendingPost) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
-    pendingPost.status = 'denied';  // Set the status to 'denied' or use provided status
-    pendingPost.reason = reason || 'No reason provided'; // Add the reason for denial
-    await pendingPost.save();
-    // Get the business name from the pending post
-    const businessName = pendingPost.businessName;
+// app.post('/adminpost/deny', async (req, res) => {
+//   const { postId, userId } = req.body;
+//   try {
+//     const pendingPost = await PendingPost.findById(postId);
+//     if (!pendingPost) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
+//     pendingPost.status = 'denied';  // Set the status to 'denied' or use provided status
+//     pendingPost.reason = reason || 'No reason provided'; // Add the reason for denial
+//     await pendingPost.save();
+//     await PendingPost.findByIdAndDelete(postId);
+//     // Get the business name from the pending post
+//     const businessName = pendingPost.businessName;
 
-    const notification = new Notification({
-      userId: userId,
-      message: `Your post for "${businessName}" has been denied.`,
-    });
-    await notification.save();
+//     const notification = new Notification({
+//       userId: userId,
+//       message: `Your post for "${businessName}" has been denied.`,
+//     });
+//     await notification.save();
 
-    await PendingPost.findByIdAndDelete(postId);
-    io.to(userId).emit('notification', notification);
+    
+//     io.to(userId).emit('notification', notification);
 
-    res.status(200).json({ message: 'Post denied and removed from pending posts' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error denying post: ' + error.message });
-  }
-}); Routes
+//     res.status(200).json({ message: 'Post denied and removed from pending posts' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error denying post: ' + error.message });
+//   }
+// }); 
 app.get('/adminpost/notifications/:userId', async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.params.userId }).sort({ createdAt: -1 });
