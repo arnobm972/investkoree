@@ -147,7 +147,7 @@ const AdminPending = () => {
                           value={denyReason}
                           onChange={(e) => setDenyReason(e.target.value)}
                           placeholder="Enter reason for denial"
-                          className="textarea textarea-bordered mb-2"
+                          className="textarea mt-2 textarea-bordered mb-2"
                         ></textarea>
                         <button
                           onClick={() =>

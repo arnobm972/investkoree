@@ -118,26 +118,74 @@ app.get('/adminpost/founderpending', async (req, res) => {
 
 app.post('/adminpost/accept', async (req, res) => {
   const { postId, userId } = req.body;
+
   try {
+    // Fetch the pending post by ID
     const pendingPost = await PendingPost.findById(postId);
-    if (!pendingPost) return res.status(404).json({ message: 'Post not found' });
+    if (!pendingPost) {
+      return res.status(404).json({ message: 'Pending post not found' });
+    }
 
-   
-    await PendingPost.findByIdAndDelete(postId);
+    // Check if the post exists in FounderPending as well
     const founderpending = await FounderPending.findById(postId);
-    if (!founderpending) return res.status(404).json({ message: 'Post not found' });
+    if (!founderpending) {
+      return res.status(404).json({ message: 'FounderPending post not found' });
+    }
 
-   
+    // Map all fields to create a new FounderPost document
+    const acceptedPost = new FounderPost({
+      userId: pendingPost.userId,
+      businessName: pendingPost.businessName,
+      email: pendingPost.email,
+      address: pendingPost.address,
+      phone: pendingPost.phone,
+      description: pendingPost.description,
+      businessCategory: pendingPost.businessCategory,
+      businessSector: pendingPost.businessSector,
+      investmentDuration: pendingPost.investmentDuration,
+      securityOption: pendingPost.securityOption,
+      otherSecurityOption: pendingPost.otherSecurityOption,
+      documentationOption: pendingPost.documentationOption,
+      otherDocumentationOption: pendingPost.otherDocumentationOption,
+      assets: pendingPost.assets,
+      revenue: pendingPost.revenue,
+      fundingAmount: pendingPost.fundingAmount,
+      fundingHelp: pendingPost.fundingHelp,
+      returnPlan: pendingPost.returnPlan,
+      businessSafety: pendingPost.businessSafety,
+      additionalComments: pendingPost.additionalComments,
+      businessPictures: pendingPost.businessPictures,
+      nidFile: pendingPost.nidFile,
+      tinFile: pendingPost.tinFile,
+      taxFile: pendingPost.taxFile,
+      tradeLicenseFile: pendingPost.tradeLicenseFile,
+      bankStatementFile: pendingPost.bankStatementFile,
+      securityFile: pendingPost.securityFile,
+      financialFile: pendingPost.financialFile,
+      projectedROI: pendingPost.projectedROI,
+      returndate: pendingPost.returndate,
+      startDate: pendingPost.startDate,
+    });
+
+    // Save the accepted post to the FounderPost collection
+    await acceptedPost.save();
+
+    // Delete the post from PendingPost and FounderPending
+    await PendingPost.findByIdAndDelete(postId);
     await FounderPending.findByIdAndDelete(postId);
 
+    // Create and save a notification for the user
     const notification = new Notification({
       userId,
       message: `Your post for "${pendingPost.businessName}" has been accepted.`,
     });
     await notification.save();
 
+    // Emit notification to the user
     io.to(userId).emit('notification', notification);
-    res.status(200).json(FounderPost);
+
+    // Respond with the newly created FounderPost
+    res.status(200).json(acceptedPost);
   } catch (error) {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
