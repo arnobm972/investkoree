@@ -60,7 +60,7 @@ const AdminPending = () => {
   //     setLoading(false);
   //   }
   // };
-  const handleDeny = async (post) => {
+  const handleDeny = async (post, denyReason, currentPostId) => {
     setLoading(true);
 
     try {
