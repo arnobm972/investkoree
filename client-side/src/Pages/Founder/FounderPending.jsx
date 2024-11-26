@@ -6,16 +6,13 @@ import { Link } from "react-router-dom";
 
 const FounderPending = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [denialReason, setDenialReason] = useState("");
-  const [showReason, setShowReason] = useState(null); // Track which post's reason is shown
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const { userdata } = useAuth();
 
   useEffect(() => {
     const fetchPendingPosts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/adminpost/pending`);
+        const response = await axios.get(`${API_URL}/adminpost/founderpending`);
         setPosts(response.data);
       } catch (error) {
         toast.error("Error fetching pending posts: " + error.message);
@@ -24,19 +21,6 @@ const FounderPending = () => {
 
     fetchPendingPosts();
   }, [API_URL]);
-
-  const handleShowReason = async (postId) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${API_URL}/adminpost/reason/${postId}`);
-      setDenialReason(response.data.reason || "No reason provided.");
-      setShowReason(postId);
-    } catch (error) {
-      toast.error("Error fetching denial reason: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="drawer lg:drawer-open">
@@ -86,18 +70,12 @@ const FounderPending = () => {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {post.status === "denied" && (
-                      <button
-                        onClick={() => handleShowReason(post._id)}
-                        className="bg-salmon text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
-                      >
-                        Comment
-                      </button>
-                    )}
-                    {showReason === post._id && (
+                    {post.status === "denied" && post.reason ? (
                       <div className="mt-2 bg-gray-100 p-4 rounded-lg shadow-md">
-                        <p className="text-sm text-gray-700">{denialReason}</p>
+                        <p className="text-sm text-gray-700">{post.reason}</p>
                       </div>
+                    ) : (
+                      <span className="text-gray-500">No reason provided</span>
                     )}
                   </td>
                 </tr>

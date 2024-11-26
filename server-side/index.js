@@ -17,6 +17,7 @@ import { authToken } from './utils/authMiddleware.js';
 import PendingPost from './models/pendingPost.js';
 import FounderPost from './models/founderFormPostModels.js';
 import Notification from './models/notification.js';
+import FounderPending from './models/founderpending.js';
 
 dotenv.config();
 
@@ -106,6 +107,14 @@ app.get('/adminpost/pending', async (req, res) => {
     res.status(500).json({ message: 'Error fetching posts: ' + error.message });
   }
 });
+app.get('/adminpost/founderpending', async (req, res) => {
+  try {
+    const posts = await FounderPending.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching posts: ' + error.message });
+  }
+});
 
 app.post('/adminpost/accept', async (req, res) => {
   const { postId, userId } = req.body;
@@ -115,6 +124,11 @@ app.post('/adminpost/accept', async (req, res) => {
 
    
     await PendingPost.findByIdAndDelete(postId);
+    const founderpending = await FounderPending.findById(postId);
+    if (!founderpending) return res.status(404).json({ message: 'Post not found' });
+
+   
+    await FounderPending.findByIdAndDelete(postId);
 
     const notification = new Notification({
       userId,
@@ -140,13 +154,17 @@ app.post('/adminpost/deny', async (req, res) => {
     if (!pendingPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
-    pendingPost.status = 'denied';  // Set the status to 'denied' or use provided status
-    pendingPost.reason = reason || 'No reason provided'; // Add the reason for denial
-    await pendingPost.save();
+ 
     await PendingPost.findByIdAndDelete(postId);
     // Get the business name from the pending post
     const businessName = pendingPost.businessName;
-
+    const founderpending = await FounderPending.findById(postId);
+    if (!founderpending) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    founderpending.status = 'denied';  // Set the status to 'denied' or use provided status
+    founderpending.reason = reason || 'No reason provided'; // Add the reason for denial
+    await founderpending.save();
     const notification = new Notification({
       userId: userId,
       message: `Your post for "${businessName}" has been denied.`,
