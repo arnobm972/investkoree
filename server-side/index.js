@@ -123,7 +123,7 @@ app.post('/adminpost/accept', async (req, res) => {
     await notification.save();
 
     io.to(userId).emit('notification', notification);
-    res.status(200).json(newFounderPost);
+    res.status(200).json(FounderPost);
   } catch (error) {
     res.status(500).json({ message: 'Error accepting post: ' + error.message });
   }
