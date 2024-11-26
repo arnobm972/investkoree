@@ -62,7 +62,6 @@ const AdminPending = () => {
   // };
   const handleDeny = async (post, denyReason, currentPostId) => {
     setLoading(true);
-
     try {
       const response = await axios.post(`${API_URL}/adminpost/deny`, {
         postId: currentPostId,
@@ -151,7 +150,9 @@ const AdminPending = () => {
                           className="textarea textarea-bordered mb-2"
                         ></textarea>
                         <button
-                          onClick={handleDeny(denyReason, currentPostId)}
+                          onClick={() =>
+                            handleDeny(post, denyReason, currentPostId)
+                          }
                           disabled={loading || !denyReason}
                           className={`btn text-white btn-error ${
                             loading ? "btn-disabled" : ""

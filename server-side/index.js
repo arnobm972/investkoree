@@ -131,6 +131,10 @@ app.post('/adminpost/accept', async (req, res) => {
 
 app.post('/adminpost/deny', async (req, res) => {
   const { postId, userId,reason} = req.body;
+  if (!reason) {
+    return res.status(400).json({ message: 'Reason for denial is required' });
+  }
+
   try {
     const pendingPost = await PendingPost.findById(postId);
     if (!pendingPost) {
