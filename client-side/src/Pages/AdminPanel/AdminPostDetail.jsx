@@ -10,9 +10,7 @@ const AdminPostDetail = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/founderpost/projectdetail/${id}`
-        );
+        const response = await fetch(`${API_URL}/founderpost/post/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch post details");
         }
@@ -32,7 +30,7 @@ const AdminPostDetail = () => {
   if (!post) return <p>No post found</p>;
 
   return (
-    <div className="p-6">
+    <div className="p-6 lg:ml-80">
       <h1 className="text-2xl font-bold mb-4">{post.businessName}</h1>
       <div className="grid grid-cols-2 gap-4">
         <p>

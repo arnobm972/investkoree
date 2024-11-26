@@ -25,6 +25,20 @@ router.get('/projectdetail/:id', async (req, res) => {
     res.status(500).json({ message: "Error fetching project details", error });
   }
 });
+router.get('/post/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await founderPost.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "post not found" });
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching post details", error });
+  }
+});
 
 
 export default router;

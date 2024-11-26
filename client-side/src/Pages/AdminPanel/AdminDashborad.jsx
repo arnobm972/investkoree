@@ -128,7 +128,7 @@ const AdminDashboard = () => {
                     <tr
                       key={row._id}
                       className="cursor-pointer hover:bg-gray-100"
-                      onClick={() => navigate(`/projectdetail/${row._id}`)}
+                      onClick={() => navigate(`/post/${row._id}`)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {index + 1}
