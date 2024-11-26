@@ -151,7 +151,7 @@ const AdminPending = () => {
                           className="textarea textarea-bordered mb-2"
                         ></textarea>
                         <button
-                          onClick={handleDeny}
+                          onClick={handleDeny(denyReason, currentPostId)}
                           disabled={loading || !denyReason}
                           className={`btn text-white btn-error ${
                             loading ? "btn-disabled" : ""
