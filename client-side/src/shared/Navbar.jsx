@@ -337,7 +337,7 @@ const Navbar = () => {
               <li>
                 {userdata && (
                   <Notifications
-                    className="h-10 w-10"
+                    className="h-5 w-5"
                     API_URL={API_URL}
                     userId={userdata._id}
                   />

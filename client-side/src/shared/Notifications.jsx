@@ -77,14 +77,14 @@ const Notifications = ({ API_URL, userId }) => {
 
   return (
     <div
-      className="relative hover:bg-salmon right-6 hover:text-white transition"
+      className="relative hover:bg-salmon right-6 hover:text-white transition  sm:ml-6 xs:ml-6 xxs:ml-6 "
       ref={dropdownRef}
     >
       <button
         onClick={toggleDropdown}
         className="cursor-pointer flex items-center gap-1 p-2 rounded "
       >
-        <AiOutlineBell className="text-2xl" />
+        <AiOutlineBell className="lg:text-2xl " />
         {unreadCount > 0 && (
           <span className="bg-red-500 text-white rounded-full text-xs px-1">
             {unreadCount}
@@ -96,7 +96,7 @@ const Notifications = ({ API_URL, userId }) => {
           <div className="p-4">
             {notifications.length > 0 ? (
               <div>
-                <ul className="max-h-48 w-80 right-6 overflow-y-auto">
+                <ul className="max-h-48 lg:w-80 lg:right-6  sm:rigth-0  xs:rigth-0  xxs:rigth-0 overflow-y-auto">
                   {notifications.map((notification) => (
                     <li
                       key={notification._id}
