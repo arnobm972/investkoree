@@ -142,7 +142,7 @@ const AdminPending = () => {
                       Accept
                     </button>
                     {currentPostId === post._id ? (
-                      <div>
+                      <div className="flex flex-row gap-2">
                         <textarea
                           value={denyReason}
                           onChange={(e) => setDenyReason(e.target.value)}
