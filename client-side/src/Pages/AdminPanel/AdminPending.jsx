@@ -9,8 +9,8 @@ const AdminPending = () => {
   const [loading, setLoading] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:1000";
   const { userdata } = useAuth();
-  // const [denyReason, setDenyReason] = useState("");
-  // const [currentPostId, setCurrentPostId] = useState(null);
+  const [denyReason, setDenyReason] = useState("");
+  const [currentPostId, setCurrentPostId] = useState(null);
 
   useEffect(() => {
     const fetchPendingPosts = async () => {
@@ -60,35 +60,28 @@ const AdminPending = () => {
   //     setLoading(false);
   //   }
   // };
-  // const handleDeny = async (post) => {
-  //   setLoading(true);
+  const handleDeny = async (post) => {
+    setLoading(true);
 
-  //   try {
-  //     console.log("Submitting Denial:", {
-  //       postId: currentPostId,
-  //       reason: denyReason,
-  //       status: "denied",
-  //     });
+    try {
+      const response = await axios.post(`${API_URL}/adminpost/deny`, {
+        postId: currentPostId,
+        reason: denyReason,
+        userId: post.userId,
+      });
 
-  //     const response = await axios.post(`${API_URL}/adminpost/deny`, {
-  //       postId: currentPostId,
-  //       reason: denyReason,
-  //       status: "denied",
-  //       userId: post.userId,
-  //     });
-
-  //     if (response.status === 200) {
-  //       toast.success("Post denied successfully!");
-  //       setPosts(posts.filter((p) => p._id !== currentPostId));
-  //       setDenyReason("");
-  //       setCurrentPostId(null);
-  //     }
-  //   } catch (error) {
-  //     toast.error("Error denying post: " + error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      if (response.status === 200) {
+        toast.success("Post denied successfully!");
+        setPosts(posts.filter((p) => p._id !== currentPostId));
+        setDenyReason("");
+        setCurrentPostId(null);
+      }
+    } catch (error) {
+      toast.error("Error denying post: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="drawer lg:drawer-open">
@@ -149,7 +142,7 @@ const AdminPending = () => {
                     >
                       Accept
                     </button>
-                    {/* {currentPostId === post._id ? (
+                    {currentPostId === post._id ? (
                       <div>
                         <textarea
                           value={denyReason}
@@ -174,7 +167,7 @@ const AdminPending = () => {
                       >
                         Deny
                       </button>
-                    )} */}
+                    )}
                   </td>
                 </tr>
               ))}
