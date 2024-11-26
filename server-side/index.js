@@ -44,9 +44,9 @@ app.use(cors());
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 50 * 1024 * 1024 }, // Increase size limit for videos if necessary
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif|pdf|doc|txt|ppt/;
+    const filetypes = /jpeg|jpg|png|gif|pdf|doc|txt|ppt|mp4|mov|avi|wmv/; // Add video formats
     cb(null, filetypes.test(file.mimetype));
   },
 });

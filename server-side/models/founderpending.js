@@ -35,6 +35,7 @@ const FounderPenndingSchema = new mongoose.Schema({
   projectedROI: { type: String, required: true },
   returndate: { type: String, required: true },
   startDate: { type: Date, default: Date.now },
+  videoFile: { type: String } 
 }, { timestamps: true });
 const FounderPending = mongoose.model('FounderPending', FounderPenndingSchema);
 export default FounderPending;

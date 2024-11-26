@@ -46,6 +46,14 @@ const FounderPost = () => {
   const [bankStatementFile, setBankStatementFile] = useState(null);
   const [securityFile, setSecurityFile] = useState(null);
   const [financialFile, setFinancialFile] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const sanitizeFilename = (filename) => {
+    // Remove any unsafe characters
+    return filename
+      .replace(/[^a-zA-Z0-9-_\.]/g, "_") // Replace unsafe characters with underscores
+      .replace(/_{2,}/g, "_") // Replace multiple underscores with a single underscore
+      .substring(0, 255); // Limit filename length to 255 characters
+  };
 
   // Handle image file changes
   const handleFileChange = (e, setFile) => setFile(e.target.files[0]);
@@ -83,6 +91,7 @@ const FounderPost = () => {
 
   // Function to upload an image to ImgBB
   // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -95,9 +104,9 @@ const FounderPost = () => {
       });
 
       // Function to upload an image to ImgBB
-      const uploadImageToImgBB = async (image) => {
+      const uploadImageToImgBB = async (image, sanitizedName) => {
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append("image", image, sanitizedName); // Use the sanitized filename
 
         const response = await axios.post(image_hosting_api, formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -105,33 +114,89 @@ const FounderPost = () => {
         return response.data.data.url; // Return the image URL
       };
 
-      // Upload each file to ImgBB and append URLs to postData
+      // Upload each file to ImgBB and append URLs and sanitized names to postData
       const businessPicUrls = await Promise.all(
-        businessPictures.map((file) => uploadImageToImgBB(file))
+        businessPictures.map(async (file) => {
+          const sanitizedFilename = sanitizeFilename(file.name); // Sanitize the filename
+          const url = await uploadImageToImgBB(file, sanitizedFilename); // Upload the image
+          return { url, sanitizedName: sanitizedFilename }; // Return both URL and sanitized name
+        })
       );
-      postData.append("businessPicture", JSON.stringify(businessPicUrls)); // Ensure this matches your backend expectations
 
-      // Upload other files and get their URLs
-      const nidUrl = nidFile && (await uploadImageToImgBB(nidFile));
-      const tinUrl = tinFile && (await uploadImageToImgBB(tinFile));
-      const taxUrl = taxFile && (await uploadImageToImgBB(taxFile));
-      const tradeLicenseUrl =
-        tradeLicenseFile && (await uploadImageToImgBB(tradeLicenseFile));
-      const bankStatementUrl =
-        bankStatementFile && (await uploadImageToImgBB(bankStatementFile));
-      const securityFileUrl =
-        securityFile && (await uploadImageToImgBB(securityFile));
-      const financialFileUrl =
-        financialFile && (await uploadImageToImgBB(financialFile));
+      // Append the URLs and sanitized names for business pictures
+      postData.append("businessPictures", JSON.stringify(businessPicUrls));
 
-      // Append image URLs to postData
-      if (nidUrl) postData.append("nidCopy", nidUrl);
-      if (tinUrl) postData.append("tinCopy", tinUrl);
-      if (taxUrl) postData.append("taxCopy", taxUrl);
-      if (tradeLicenseUrl) postData.append("tradeLicense", tradeLicenseUrl);
-      if (bankStatementUrl) postData.append("bankStatement", bankStatementUrl);
-      if (securityFileUrl) postData.append("securityFile", securityFileUrl);
-      if (financialFileUrl) postData.append("financialFile", financialFileUrl);
+      // Function to upload a single file and return its URL and sanitized name
+      const uploadSingleFile = async (file) => {
+        if (file) {
+          const sanitizedFilename = sanitizeFilename(file.name);
+          const url = await uploadImageToImgBB(file, sanitizedFilename);
+          return { url, sanitizedName: sanitizedFilename };
+        }
+        return { url: "", sanitizedName: "" };
+      };
+
+      // Upload other files and get their URLs and sanitized names
+      const nidFileData = await uploadSingleFile(nidFile);
+      const tinFileData = await uploadSingleFile(tinFile);
+      const taxFileData = await uploadSingleFile(taxFile);
+      const tradeLicenseFileData = await uploadSingleFile(tradeLicenseFile);
+      const bankStatementFileData = await uploadSingleFile(bankStatementFile);
+      const securityFileData = await uploadSingleFile(securityFile);
+      const financialFileData = await uploadSingleFile(financialFile);
+
+      // Append image URLs and sanitized names to postData
+      if (nidFileData.url) {
+        postData.append("nidCopy", nidFileData.url);
+        postData.append("sanitizedNidName", nidFileData.sanitizedName);
+      }
+      if (tinFileData.url) {
+        postData.append("tinCopy", tinFileData.url);
+        postData.append("sanitizedTinName", tinFileData.sanitizedName);
+      }
+      if (taxFileData.url) {
+        postData.append("taxCopy", taxFileData.url);
+        postData.append("sanitizedTaxName", taxFileData.sanitizedName);
+      }
+      if (tradeLicenseFileData.url) {
+        postData.append("tradeLicense", tradeLicenseFileData.url);
+        postData.append(
+          "sanitizedTradeLicenseName",
+          tradeLicenseFileData.sanitizedName
+        );
+      }
+      if (bankStatementFileData.url) {
+        postData.append("bankStatement", bankStatementFileData.url);
+        postData.append(
+          "sanitizedBankStatementName",
+          bankStatementFileData.sanitizedName
+        );
+      }
+      if (securityFileData.url) {
+        postData.append("securityFile", securityFileData.url);
+        postData.append(
+          "sanitizedSecurityName",
+          securityFileData.sanitizedName
+        );
+      }
+      if (financialFileData.url) {
+        postData.append("financialFile", financialFileData.url);
+        postData.append(
+          "sanitizedFinancialName",
+          financialFileData.sanitizedName
+        );
+      }
+
+      // Upload the video file
+      if (videoFile) {
+        const sanitizedVideoName = sanitizeFilename(videoFile.name); // Sanitize the video filename
+        const videoUrl = await uploadImageToImgBB(
+          videoFile,
+          sanitizedVideoName
+        ); // Upload video
+        postData.append("video", videoUrl);
+        postData.append("sanitizedVideoName", sanitizedVideoName); // Append sanitized video name
+      }
 
       const token = localStorage.getItem("token");
 
@@ -171,6 +236,7 @@ const FounderPost = () => {
     setFinancialFile(null);
     setOtherOption(false);
     setOtherDocumentation(false);
+    setVideoFile(null);
   };
 
   return (
@@ -257,6 +323,20 @@ const FounderPost = () => {
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
             onChange={handleMultipleFileChange}
             multiple
+          />
+        </label>
+        <label className="form-control my-3 w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">
+              Upload Your Business's Video Here(Max 50mb)
+            </span>
+          </div>
+          <input
+            type="file"
+            accept="video/*"
+            name="video"
+            className="file-input file-input-bordered file-input-warning w-full max-w-xs"
+            onChange={(e) => handleFileChange(e, setVideoFile)}
           />
         </label>
         {/* Phone Number */}

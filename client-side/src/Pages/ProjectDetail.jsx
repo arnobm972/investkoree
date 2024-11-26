@@ -8,6 +8,7 @@ const ProjectDetail = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   // const { userdata } = useAuth();
+  const [viewMode, setViewMode] = useState("images");
 
   const navigate = useNavigate();
 
@@ -80,97 +81,128 @@ const ProjectDetail = () => {
     "https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.webp",
   ];
 
+  const videoSrc = "https://samplelib.com/lib/preview/mp4/sample-5s.mp4";
+
   const handleDotClick = (index) => {
     setCurrentSlide(index);
+  };
+
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
   };
   const formattedStartDate = new Date(project.startDate).toLocaleDateString();
 
   return (
     <div className="min-h-screen">
-      {/* Image Slider */}
+      {/* Image and Video Section */}
       <div className="hero">
         <div className="hero-content flex-col lg:flex-row items-center">
           <div className="relative w-[50%] max-w-md mx-auto">
-            <div className="carousel carousel-vertical rounded-box transform transition-transform duration-300 ease-in-out delay-150 hover:scale-125 h-96">
-              {images.map((src, index) => (
-                <div
-                  key={index}
-                  className={`carousel-item h-full ${
-                    currentSlide === index ? "block" : "hidden"
-                  }`}
-                >
-                  <img
-                    src={src}
-                    alt={`Slide ${index + 1}`}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center mt-4">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  className={`dot ${
-                    currentSlide === index ? "bg-blue-500" : "bg-gray-300"
-                  } w-3 h-3 mx-1 rounded-full`}
-                  onClick={() => handleDotClick(index)}
+            {viewMode === "images" ? (
+              <div className="carousel carousel-vertical rounded-box h-96">
+                {images.map((src, index) => (
+                  <div
+                    key={index}
+                    className={`carousel-item h-full ${
+                      currentSlide === index ? "block" : "hidden"
+                    }`}
+                  >
+                    <img
+                      src={src}
+                      alt={`Slide ${index + 1}`}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="video-container h-96">
+                <video
+                  src={videoSrc}
+                  controls
+                  className="object-cover w-full h-full rounded-md"
                 />
-              ))}
-            </div>
+              </div>
+            )}
+            {/* Dot Navigation for Images */}
+            {viewMode === "images" && (
+              <div className="flex justify-center mt-4">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`dot ${
+                      currentSlide === index ? "bg-blue-500" : "bg-gray-300"
+                    } w-3 h-3 mx-1 rounded-full`}
+                    onClick={() => handleDotClick(index)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-
-          <div className="lg:ml-12 lg:mt-0 mt-8 text-center lg:text-left">
-            <h1 className="lg:text-4xl xs:text-lg xxs:text-lg sm:text-lg font-bold">
-              {project.businessName}
-            </h1>
-            <div className="my-6">
-              <div className="flex lg:gap-8 xs:gap-4 xxs:gap-4 sm:gap-4">
-                <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">70000 Taka</span>
-                  <div className="xs:text-sm xxs:text-sm sm:text-sm">
-                    Raised
-                  </div>
-                </div>
-                <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">
-                    {project.fundingAmount} Taka
-                  </span>
-                  <div className="xs:text-sm xxs:text-sm sm:text-sm">Goal</div>
-                </div>
-                <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
-                  <span className="text-salmon lg:text-2xl">
-                    {project.investmentDuration}
-                  </span>
-                  <div className="xs:text-sm xxs:text-sm sm:text-sm">
-                    Duration
-                  </div>
-                </div>
-              </div>
-              <div className="lg:w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%] bg-gray-200 rounded-full h-2.5 mt-8 mb-2 xs:mx-auto xxs:mx-auto sm:mx-auto">
-                <div
-                  className="bg-salmon h-2.5 rounded-full"
-                  style={{
-                    width: `${(70000 / project.fundingAmount) * 100}%`,
-                  }} // Calculate percentage
-                ></div>
-              </div>
-              <div className="flex xs:ml-2 xxs:ml-2 sm:ml-2 lg:justify-between xs:justify-between xxs:justify-between sm:justify-between text-sm">
-                <div>Raised :</div>
-                <div className="xs:mr-2 xxs:mr-2 sm:mr-2">
-                  {((70000 / project.fundingAmount) * 100).toFixed(0)}%
-                </div>
-              </div>
-            </div>
-
+          {/* Button Section for Switching View Mode */}
+          <div className="flex justify-center gap-4 mt-4">
             <button
-              onClick={handleInvestClick}
-              className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn"
+              onClick={() => handleViewModeChange("images")}
+              className={`btn ${
+                viewMode === "images" ? "btn-primary" : "btn-outline"
+              }`}
             >
-              Invest
+              Images
+            </button>
+            <button
+              onClick={() => handleViewModeChange("video")}
+              className={`btn ${
+                viewMode === "video" ? "btn-primary" : "btn-outline"
+              }`}
+            >
+              Video
             </button>
           </div>
+        </div>
+        <div className="lg:ml-12 lg:mt-0 mt-8 text-center lg:text-left">
+          <h1 className="lg:text-4xl xs:text-lg xxs:text-lg sm:text-lg font-bold">
+            {project.businessName}
+          </h1>
+          <div className="my-6">
+            <div className="flex lg:gap-8 xs:gap-4 xxs:gap-4 sm:gap-4">
+              <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
+                <span className="text-salmon lg:text-2xl">70000 Taka</span>
+                <div className="xs:text-sm xxs:text-sm sm:text-sm">Raised</div>
+              </div>
+              <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
+                <span className="text-salmon lg:text-2xl">
+                  {project.fundingAmount} Taka
+                </span>
+                <div className="xs:text-sm xxs:text-sm sm:text-sm">Goal</div>
+              </div>
+              <div className="bg-base-200 lg:p-4 xs:p-2 xxs:p-2 sm:p-2 xs:w-[25%] xxs:w-[25%] sm:w-[25%] flex flex-col lg:w-44 lg:h-20 rounded-lg xs:mx-auto xxs:mx-auto sm:mx-auto">
+                <span className="text-salmon lg:text-2xl">
+                  {project.investmentDuration}
+                </span>
+                <div className="xs:text-sm xxs:text-sm sm:text-sm">
+                  Duration
+                </div>
+              </div>
+            </div>
+            <div className="lg:w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%] bg-gray-200 rounded-full h-2.5 mt-8 mb-2 xs:mx-auto xxs:mx-auto sm:mx-auto">
+              <div
+                className="bg-salmon h-2.5 rounded-full"
+                style={{ width: `${(70000 / project.fundingAmount) * 100}%` }}
+              ></div>
+            </div>
+            <div className="flex xs:ml-2 xxs:ml-2 sm:ml-2 lg:justify-between xs:justify-between xxs:justify-between sm:justify-between text-sm">
+              <div>Raised :</div>
+              <div className="xs:mr-2 xxs:mr-2 sm:mr-2">
+                {((70000 / project.fundingAmount) * 100).toFixed(0)}%
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={handleInvestClick}
+            className="btn xs:w-[60%] xxs:w-[60%] sm:w-[60%] login-btn"
+          >
+            Invest
+          </button>
         </div>
       </div>
       <div className="flex lg:flex-row xs:flex-col xxs:flex-col sm:flex-col lg:w-[50%] lg:mx-auto lg:gap-20 xs:ml-4 xxs:ml-4 sm:ml-4 xs:gap-4 xxs:gap-4 sm:gap-4">
@@ -218,7 +250,6 @@ const ProjectDetail = () => {
             <p>{project.fundingHelp}</p>
           </div>
         </div>
-
         <div className="collapse collapse-plus border border-base-300 rounded-box mt-4">
           <input type="checkbox" className="peer" />
           <div className="collapse-title text-xl font-medium">
@@ -226,10 +257,8 @@ const ProjectDetail = () => {
           </div>
           <div className="collapse-content peer-checked:block">
             <p>{project.returnPlan}</p>
-            {/* Assuming project has a returnPlan field */}
           </div>
         </div>
-
         <div className="collapse collapse-plus border border-base-300 rounded-box mt-4">
           <input type="checkbox" className="peer" />
           <div className="collapse-title text-xl font-medium">
@@ -237,7 +266,6 @@ const ProjectDetail = () => {
           </div>
           <div className="collapse-content peer-checked:block">
             <p>{project.businessSafety}</p>
-            {/* Assuming project has a safetyAssessment field */}
           </div>
         </div>
       </div>

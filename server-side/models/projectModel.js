@@ -43,7 +43,9 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User ", // Assuming you have a User model
-  },
+  }, 
+   businessPictures: [{ type: String }], 
+  videoFile: { type: String } 
 }, { timestamps: true }); // This will add createdAt and updatedAt fields
 
 // Create the Project model
