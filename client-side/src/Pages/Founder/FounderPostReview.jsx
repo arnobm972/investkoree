@@ -16,7 +16,23 @@ const FounderPostReview = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const handleSecurityOptionChange = (e) => {
+    const selectedOption = e.target.value;
+    setFormData({
+      ...formData,
+      securityOption: selectedOption,
+    });
+    setOtherOption(selectedOption === "Other");
+  };
 
+  const handleDocumentationOptionChange = (e) => {
+    const selectedOption = e.target.value;
+    setFormData({
+      ...formData,
+      documentationOption: selectedOption,
+    });
+    setOtherDocumentation(selectedOption === "Other");
+  };
   // Handle file change (for images/videos)
   const handleFileChange = (e, field) => {
     setFormData({ ...formData, [field]: e.target.files[0] });

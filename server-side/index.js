@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
 import multer from 'multer';
+import helmet from 'helmet'; // Import helmet
+import { body, validationResult } from 'express-validator';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
 import loginRoute from '../server-side/routes/login.js';
@@ -36,9 +38,23 @@ const io = new Server(server, {
 connectDB();
 
 // Middleware
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
+const cspOptions = {
+  directives: {
+    defaultSrc: ["'self'"], // Only allow resources from your origin
+    scriptSrc: ["'self'"], // Block inline scripts and external scripts by default
+    styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles if necessary
+    imgSrc: ["'self'", "data:"], // Allow images from self or base64-encoded images
+    connectSrc: ["'self'", "https://your-api-domain.com"], // Allow API requests only to trusted domains
+    objectSrc: ["'none'"], // Block <object>, <embed>, and <applet>
+    upgradeInsecureRequests: [], // Force all requests to HTTPS
+  },
+};
+
+app.use(helmet.contentSecurityPolicy(cspOptions));
 
 // Multer Setup
 const storage = multer.memoryStorage();
