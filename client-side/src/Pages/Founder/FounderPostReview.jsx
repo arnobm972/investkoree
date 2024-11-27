@@ -18,6 +18,7 @@ const FounderPostReview = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleSecurityOptionChange = (e) => {
     const selectedOption = e.target.value;
     setFormData({
@@ -35,21 +36,15 @@ const FounderPostReview = () => {
     });
     setOtherDocumentation(selectedOption === "Other");
   };
+
   // Handle file change (for images/videos)
   const handleFileChange = (e, field) => {
     setFormData({ ...formData, [field]: e.target.files[0] });
   };
+
   const handleMultipleFileChange = (e) => {
     const files = Array.from(e.target.files); // Convert FileList to an array
     setFormData({ ...formData, businessPictures: files }); // Update state with the array of files
-  };
-
-  // Sanitize filename function
-  const sanitizeFilename = (filename) => {
-    return filename
-      .replace(/[^a-zA-Z0-9-_\.]/g, "_")
-      .replace(/_{2,}/g, "_")
-      .substring(0, 255);
   };
 
   // Submit updated data
@@ -66,15 +61,10 @@ const FounderPostReview = () => {
       }
 
       // Handle file uploads
-      const fileUploadPromises = [];
-
       // Handle businessPictures
       if (formData.businessPictures) {
         for (const file of formData.businessPictures) {
-          const sanitizedName = sanitizeFilename(file.name);
-          const fileUrlPromise = uploadImageToImgBB(file, sanitizedName);
-          fileUploadPromises.push(fileUrlPromise);
-          postData.append(`sanitizedBusinessPictureName`, sanitizedName);
+          postData.append("businessPictures", file); // Append the file directly
         }
       }
 
@@ -92,34 +82,7 @@ const FounderPostReview = () => {
 
       for (const field of fileFields) {
         if (formData[field]) {
-          const sanitizedName = sanitizeFilename(formData[field].name);
-          const fileUrlPromise = uploadImageToImgBB(
-            formData[field],
-            sanitizedName
-          );
-          fileUploadPromises.push(fileUrlPromise);
-          postData.append(
-            `sanitized${field.charAt(0).toUpperCase() + field.slice(1)}Name`,
-            sanitizedName
-          );
-        }
-      }
-
-      // Wait for all file uploads to complete
-      const fileUrls = await Promise.all(fileUploadPromises);
-
-      // Append the uploaded file URLs to postData
-      let urlIndex = 0;
-      if (formData.businessPictures) {
-        for (const file of formData.businessPictures) {
-          postData.append("businessPictures", fileUrls[urlIndex++]);
-        }
-      }
-
-      // Append other file URLs to postData
-      for (const field of fileFields) {
-        if (formData[field]) {
-          postData.append(field, fileUrls[urlIndex++]);
+          postData.append(field, formData[field]); // Append the file directly
         }
       }
 
@@ -129,19 +92,14 @@ const FounderPostReview = () => {
       toast.success("Post has been Successfully Updated "); // Redirect after successful update
     } catch (error) {
       console.error("Error updating post:", error);
+      if (error.response) {
+        toast.error(
+          `Error: ${error.response.data.message || "Failed to update post."}`
+        );
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
-  };
-  // Function to upload an image to ImgBB
-  const uploadImageToImgBB = async (image, sanitizedName) => {
-    const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-    const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-    const formData = new FormData();
-    formData.append("image", image, sanitizedName);
-
-    const response = await axios.post(image_hosting_api, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response.data.data.url; // Return the image URL
   };
 
   useEffect(() => {
