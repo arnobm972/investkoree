@@ -87,7 +87,9 @@ const FounderPostReview = () => {
       }
 
       // Make PUT request
-      await axios.put(`${API_URL}/adminpost/update/${formData._id}`, postData);
+      await axios.put(`${API_URL}/adminpost/update/${formData._id}`, postData, {
+        timeout: 30000,
+      });
       navigate("/founderpending");
       toast.success("Post has been Successfully Updated "); // Redirect after successful update
     } catch (error) {
