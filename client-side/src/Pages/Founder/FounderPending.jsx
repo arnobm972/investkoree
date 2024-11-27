@@ -26,6 +26,15 @@ const FounderPending = () => {
     // setSelectedPost(post); // Set the selected post (if needed)
     navigate(`/founderpostreview/${post._id}`, { state: { post } }); // Navigate with ID and post data
   };
+  const handleRemovePost = async (postId) => {
+    try {
+      await axios.delete(`${API_URL}/adminpost/pending/${postId}`);
+      setPosts(posts.filter((post) => post._id !== postId)); // Remove the deleted post from the state
+      toast.success("Post removed successfully");
+    } catch (error) {
+      toast.error("Error removing post: " + error.message);
+    }
+  };
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -92,7 +101,12 @@ const FounderPending = () => {
                     >
                       View Post
                     </button>
-                    <button className="btn btn-error text-white">Remove</button>
+                    <button
+                      onClick={() => handleRemovePost(post._id)}
+                      className="btn btn-error text-white"
+                    >
+                      Remove
+                    </button>
                   </td>
                 </tr>
               ))}

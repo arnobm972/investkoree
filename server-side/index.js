@@ -179,6 +179,25 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
     res.status(500).json({ message: 'Error updating post: ' + error.message });
   }
 });
+// Delete a pending post
+app.delete('/adminpost/pending/:id', authToken, async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    // Find and delete the pending post
+    const pendingPost = await FounderPending.findByIdAndDelete(postId);
+    if (!pendingPost) {
+      return res.status(404).json({ message: 'Pending post not found' });
+    }
+
+    // Also, delete the corresponding entry in the FounderPending collection
+    await FounderPending.findByIdAndDelete(postId);
+
+    res.status(200).json({ message: 'Pending post deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting post: ' + error.message });
+  }
+});
 // Pending Posts Routes
 app.get('/adminpost/pending', async (req, res) => {
   try {

@@ -10,6 +10,8 @@ const FounderPostReview = () => {
   const [formData, setFormData] = useState(post || null); // Initialize form data with post data
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const navigate = useNavigate();
+  const [otherOption, setOtherOption] = useState(false);
+  const [otherDocumentation, setOtherDocumentation] = useState(false);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -150,7 +152,7 @@ const FounderPostReview = () => {
   }, [post]);
   return (
     <div>
-      <h2 className="text-2xl font-bold my-5">Edit Post</h2>
+      <h2 className="text-2xl font-bold my-5 text-center">Edit Post</h2>
       <form onSubmit={handleSubmit} className="mb-10">
         {/* Business Name */}
         <label className="form-control my-3 w-full max-w-xs">
