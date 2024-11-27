@@ -44,7 +44,14 @@ app.use(express.json());
 app.use(cors());
 const cspOptions = {
   directives: {
-    defaultSrc: ["'self'"], // Only allow resources from your origin
+    defaultSrc: ["'self'"],
+    connectSrc: [
+      "'self'",
+      "http://localhost:3000",
+      "https://investkoree.onrender.com",
+      "http://localhost:5173",
+      "https://investkoree-c8l8.onrender.com"
+    ], // Only allow resources from your origin
     scriptSrc: ["'self'"], // Block inline scripts and external scripts by default
     styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles if necessary
     imgSrc: ["'self'", "data:"], // Allow images from self or base64-encoded images
