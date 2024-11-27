@@ -21,6 +21,7 @@ import Payment from "../Pages/Payment";
 import AdminPostDetail from "../Pages/AdminPanel/AdminPostDetail";
 import AdminPending from "../Pages/AdminPanel/AdminPending";
 import FounderPending from "../Pages/Founder/FounderPending";
+import FounderPostReview from "../Pages/Founder/FounderPostReview";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: "/founderpending",
         element: <FounderPending></FounderPending>,
+      },
+      {
+        path: "/founderpostreview/:id", // Include :id to capture the post ID
+        element: <FounderPostReview />,
       },
       {
         path: "/investorlogin",

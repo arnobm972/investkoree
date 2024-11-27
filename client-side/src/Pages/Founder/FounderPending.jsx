@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FounderPending = () => {
   const [posts, setPosts] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const { userdata } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPendingPosts = async () => {
@@ -21,7 +22,10 @@ const FounderPending = () => {
 
     fetchPendingPosts();
   }, [API_URL]);
-
+  const handleViewPost = (post) => {
+    // setSelectedPost(post); // Set the selected post (if needed)
+    navigate(`/founderpostreview/${post._id}`, { state: { post } }); // Navigate with ID and post data
+  };
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -51,6 +55,9 @@ const FounderPending = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                   Reason
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Review
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -71,12 +78,21 @@ const FounderPending = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {post.status === "denied" && post.reason ? (
-                      <div className="mt-2 bg-gray-100 p-4 rounded-lg shadow-md">
+                      <div className="mt-2 bg-gray-100 p-4  rounded-lg shadow-md">
                         <p className="text-sm text-gray-700">{post.reason}</p>
                       </div>
                     ) : (
                       <span className="text-gray-500">No reason provided</span>
                     )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm flex gap-2 mt-2 ">
+                    <button
+                      onClick={() => handleViewPost(post)}
+                      className="btn btn-success text-white"
+                    >
+                      View Post
+                    </button>
+                    <button className="btn btn-error text-white">Remove</button>
                   </td>
                 </tr>
               ))}

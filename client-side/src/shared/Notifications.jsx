@@ -49,42 +49,41 @@ const Notifications = ({ API_URL, userId }) => {
 
       fetchNotifications();
 
-      const handleNotificationsRead = ({ userId: notifiedUserId }) => {
-        if (notifiedUserId === userId) {
-          setNotifications([]);
-          setUnreadCount(0);
-        }
-      };
-
-      socket.on("notifications-read", handleNotificationsRead);
+      socket.on("notifications-deleted", () => {
+        setNotifications([]); // Clear notifications when marked as read
+        setUnreadCount(0); // Reset unread count
+      });
 
       return () => {
-        socket.off("notifications-read", handleNotificationsRead);
         socket.disconnect();
       };
     }
   }, [userId, API_URL]);
 
-  const markAllAsRead = async () => {
+  const deleteNotifications = async () => {
     try {
-      await axios.put(`${API_URL}/adminpost/notifications/read/${userId}`);
-      setNotifications([]);
-      setUnreadCount(0);
+      const response = await axios.delete(
+        `${API_URL}/adminpost/notifications/read/${userId}`
+      );
+      if (response.status === 200) {
+        setNotifications([]); // Clear notifications from state
+        setUnreadCount(0); // Reset unread count
+      }
     } catch (error) {
-      console.error("Error marking notifications as read:", error);
+      console.error("Error deleting notifications:", error);
     }
   };
 
   return (
     <div
-      className="relative hover:bg-salmon right-6 hover:text-white transition  sm:ml-6 xs:ml-6 xxs:ml-6 "
+      className="relative hover:bg-salmon lg:right-6 hover:text-white transition sm:ml-6 xs:ml-6 xxs:ml-6"
       ref={dropdownRef}
     >
       <button
         onClick={toggleDropdown}
-        className="cursor-pointer flex items-center gap-1 p-2 rounded "
+        className="cursor-pointer  flex items-center gap-1 p-2 rounded"
       >
-        <AiOutlineBell className="lg:text-2xl " />
+        <AiOutlineBell className="lg:text-2xl" />
         {unreadCount > 0 && (
           <span className="bg-red-500 text-white rounded-full text-xs px-1">
             {unreadCount}
@@ -96,7 +95,7 @@ const Notifications = ({ API_URL, userId }) => {
           <div className="p-4">
             {notifications.length > 0 ? (
               <div>
-                <ul className="max-h-48 lg:w-80 lg:right-6  sm:rigth-0  xs:rigth-0  xxs:rigth-0 overflow-y-auto">
+                <ul className="max-h-48 lg:w-80 lg:right-12 overflow-y-auto">
                   {notifications.map((notification) => (
                     <li
                       key={notification._id}
@@ -109,7 +108,7 @@ const Notifications = ({ API_URL, userId }) => {
                   ))}
                 </ul>
                 <button
-                  onClick={markAllAsRead}
+                  onClick={deleteNotifications}
                   className="mt-2 text-xs text-blue-500 hover:underline"
                 >
                   Mark all as read

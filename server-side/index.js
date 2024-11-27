@@ -27,7 +27,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: ['http://localhost:3000', 'https://investkoree.onrender.com','http://localhost:5173','https://investkoree-c8l8.onrender.com'],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST','PUT','DELETE'],
     credentials: true,
   },
 });
@@ -97,7 +97,65 @@ app.post(
     }
   }
 );
+app.put('/adminpost/update/:id', authToken, upload.fields([
+  { name: 'businessPicture', maxCount: 10 },
+  { name: 'nidCopy', maxCount: 1 },
+  { name: 'tinCopy', maxCount: 1 },
+  { name: 'taxCopy', maxCount: 1 },
+  { name: 'tradeLicense', maxCount: 1 },
+  { name: 'bankStatement', maxCount: 1 },
+  { name: 'securityFile', maxCount: 1 },
+  { name: 'financialFile', maxCount: 1 },
+]), async (req, res) => {
+  try {
+    const postId = req.params.id;
 
+    // Prepare the updated post data
+    const updatedPost = { ...req.body };
+
+    // Handle the uploaded files
+    if (req.files) {
+      if (req.files.businessPicture) {
+        updatedPost.businessPictures = req.files.businessPicture.map(file => ({
+          data: file.buffer,
+          contentType: file.mimetype,
+        }));
+      }
+      if (req.files.nidCopy) {
+        updatedPost.nidFile = req.files.nidCopy[0].buffer; // Assuming only one file
+      }
+      if (req.files.tinCopy) {
+        updatedPost.tinFile = req.files.tinCopy[0].buffer; // Assuming only one file
+      }
+      if (req.files.taxCopy) {
+        updatedPost.taxFile = req.files.taxCopy[0].buffer; // Assuming only one file
+      }
+      if (req.files.tradeLicense) {
+        updatedPost.tradeLicenseFile = req.files.tradeLicense[0].buffer; // Assuming only one file
+      }
+      if (req.files.bankStatement) {
+        updatedPost.bankStatementFile = req.files.bankStatement[0].buffer; // Assuming only one file
+      }
+      if (req.files.securityFile) {
+        updatedPost.securityFile = req.files.securityFile[0].buffer; // Assuming only one file
+      }
+      if (req.files.financialFile) {
+        updatedPost.financialFile = req.files.financialFile[0].buffer; // Assuming only one file
+      }
+    }
+
+    // Update the post in the database
+    const foundPost = await FounderPost.findByIdAndUpdate(postId, updatedPost, { new: true });
+
+    if (!foundPost) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    res.status(200).json(foundPost);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating post: ' + error.message });
+  }
+});
 // Pending Posts Routes
 app.get('/adminpost/pending', async (req, res) => {
   try {
@@ -236,15 +294,21 @@ app.get('/adminpost/notifications/:userId', async (req, res) => {
   }
 });
 
-app.put('/adminpost/notifications/read/:userId', async (req, res) => {
+app.delete('/adminpost/notifications/read/:userId', async (req, res) => {
   try {
-    await Notification.updateMany({ userId: req.params.userId }, { $set: { read: true } });
-    io.to(req.params.userId).emit('notifications-read');
-    res.status(200).json({ message: 'All notifications marked as read.' });
+    // Delete all notifications for the user
+    await Notification.deleteMany({ userId: req.params.userId });
+
+    // Emit a real-time event to notify the user's client
+    io.to(req.params.userId).emit('notifications-deleted');
+
+    // Respond to the client
+    res.status(200).json({ message: 'All notifications deleted.' });
   } catch (error) {
-    res.status(500).json({ message: 'Error marking notifications as read: ' + error.message });
+    res.status(500).json({ message: 'Error deleting notifications: ' + error.message });
   }
 });
+
 
 // Global Error H
 app.use((err, req, res, next) => {
