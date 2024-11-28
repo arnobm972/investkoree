@@ -1,3 +1,7 @@
+import PendingPost from '../models/pendingPost.js';
+import FounderPending from '../models/founderpending.js';
+
+
 export const createFounderPost = async (req, res) => {
   console.log("Request Body:", req.body);
   console.log("Request Files:", req.files);
