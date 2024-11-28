@@ -77,21 +77,16 @@ export const createFounderPost = async (req, res) => {
     // Save the new post to the PendingPost collection
     const savedPost = await newPost.save();
 
-    // Create a reference in FounderPending collection
+    // Create a new document in FounderPending collection
     const founderPendingPost = new FounderPending({
-      pendingPostId: savedPost._id, // Reference the original post
-      userId,
-
+      ...savedPost._doc, // Use the saved data from PendingPost
     });
 
     await founderPendingPost.save();
 
-    res.status(201).json({
-      message: "Founder post created successfully and saved for pending approval!",
-      postId: savedPost._id,
-    });
+    res.status(201).json({ message: "Founder post created successfully and saved to pending approval!" });
   } catch (error) {
     console.error("Error creating founder post:", error);
-    res.status(500).json({ error: "An error occurred while creating the founder post." });
+    res.status(500).json({ error: "Server error" });
   }
 };
