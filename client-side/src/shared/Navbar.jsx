@@ -26,6 +26,9 @@ const Navbar = () => {
   const toggleMobileDropdown = (dropdownName) => {
     setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
   };
+  const toggleDropdown = (dropdownName) => {
+    setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
+  };
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -78,10 +81,12 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-              <details open={activeDropdown === "category"}>
+              <details
+                open={activeDropdown === "category"}
+                onClick={(e) => e.preventDefault()}
+              >
                 <summary
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent native toggle behavior
                     toggleDropdown("category");
                   }}
                   className="hover:bg-salmon mt-2 p-2 rounded hover:text-white"
