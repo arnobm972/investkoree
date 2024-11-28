@@ -139,7 +139,12 @@ const FounderPostReview = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold my-5 text-center">Edit Post</h2>
-      <form onSubmit={handleSubmit} className="mb-10">
+      <form
+        onSubmit={handleSubmit}
+        method="POST"
+        encType="multipart/form-data"
+        className="mb-10"
+      >
         {/* Business Name */}
         <label className="form-control my-3 w-full max-w-xs">
           <div className="label">
