@@ -1,8 +1,3 @@
-import PendingPost from '../models/pendingPost.js';
-import FounderPending from '../models/founderpending.js';
-import {sanitizeFilename} from '../utils/sanitize.js' // Import the sanitize function
-
-// Handle founder post creation
 export const createFounderPost = async (req, res) => {
   console.log("Request Body:", req.body);
   console.log("Request Files:", req.files);
@@ -46,67 +41,31 @@ export const createFounderPost = async (req, res) => {
       projectedROI,
       description,
       businessPictures: req.files?.businessPicture
-        ? req.files.businessPicture.map(file => ({
-            data: file.buffer,
-            contentType: file.mimetype,
-            filename: sanitizeFilename(file.originalname), // Sanitize the filename
-          }))
+        ? req.files.businessPicture.map(file => sanitizeFilename(file.originalname))
         : [],
       nidFile: req.files?.nidCopy?.[0]
-        ? {
-            data: req.files.nidCopy[0].buffer,
-            contentType: req.files.nidCopy[0].mimetype,
-            filename: sanitizeFilename(req.files.nidCopy[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.nidCopy[0].originalname)
         : null,
       tinFile: req.files?.tinCopy?.[0]
-        ? {
-            data: req.files.tinCopy[0].buffer,
-            contentType: req.files.tinCopy[0].mimetype,
-            filename: sanitizeFilename(req.files.tinCopy[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.tinCopy[0].originalname)
         : null,
       taxFile: req.files?.taxCopy?.[0]
-        ? {
-            data: req.files.taxCopy[0].buffer,
-            contentType: req.files.taxCopy[0].mimetype,
-            filename: sanitizeFilename(req.files.taxCopy[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.taxCopy[0].originalname)
         : null,
       tradeLicenseFile: req.files?.tradeLicense?.[0]
-        ? {
-            data: req.files.tradeLicense[0].buffer,
-            contentType: req.files.tradeLicense[0].mimetype,
-            filename: sanitizeFilename(req.files.tradeLicense[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.tradeLicense[0].originalname)
         : null,
       bankStatementFile: req.files?.bankStatement?.[0]
-        ? {
-            data: req.files.bankStatement[0].buffer,
-            contentType: req.files.bankStatement[0].mimetype,
-            filename: sanitizeFilename(req.files.bankStatement[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.bankStatement[0].originalname)
         : null,
       securityFile: req.files?.securityFile?.[0]
-        ? {
-            data: req.files.securityFile[0].buffer,
-            contentType: req.files.securityFile[0].mimetype,
-            filename: sanitizeFilename(req.files.securityFile[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.securityFile[0].originalname)
         : null,
       financialFile: req.files?.financialFile?.[0]
-        ? {
-            data: req.files.financialFile[0].buffer,
-            contentType: req.files.financialFile[0].mimetype,
-            filename: sanitizeFilename(req.files.financialFile[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.financialFile[0].originalname)
         : null,
       videoFile: req.files?.video?.[0]
-        ? {
-            data: req.files.video[0].buffer,
-            contentType: req.files.video[0].mimetype,
-            filename: sanitizeFilename(req.files.video[0].originalname), // Sanitize the filename
-          }
+        ? sanitizeFilename(req.files.video[0].originalname)
         : null,
     });
 
@@ -117,7 +76,7 @@ export const createFounderPost = async (req, res) => {
     const founderPendingPost = new FounderPending({
       pendingPostId: savedPost._id, // Reference the original post
       userId,
-      status: "Pending Approval",
+
     });
 
     await founderPendingPost.save();
