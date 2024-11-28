@@ -271,7 +271,7 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.videoFile && (
             <div>
-              <h3 className="font-bold">Previously Uploaded Video:</h3>
+              <h3 className="font-bold lg:mr-24">Previously Uploaded Video:</h3>
               <p className="text-gray-700">
                 {post.videoFile.split("/").pop()}
               </p>{" "}
@@ -358,7 +358,9 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.nidFile && (
             <div>
-              <h3 className="font-bold">Previously Uploaded NID Copy:</h3>
+              <h3 className="font-bold lg:mr-16">
+                Previously Uploaded NID Copy:
+              </h3>
               <p className="text-gray-700">{post.nidFile.split("/").pop()}</p>
             </div>
           )}
@@ -379,7 +381,7 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.tinFile && (
             <div>
-              <h3 className="font-bold">Previously Uploaded TIN:</h3>
+              <h3 className="font-bold lg:mr-28">Previously Uploaded TIN:</h3>
               <p className="text-gray-700">{post.tinFile.split("/").pop()}</p>
             </div>
           )}
@@ -399,7 +401,7 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.taxFile && (
             <div>
-              <h3 className="font-bold">
+              <h3 className="font-bold lg:mr-6">
                 Previously Uploaded Tax Information:
               </h3>
               <p className="text-gray-700">{post.taxFile.split("/").pop()}</p>
@@ -422,7 +424,9 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.tradeLicenseFile && (
             <div>
-              <h3 className="font-bold">Previously Uploaded Trade License:</h3>
+              <h3 className="font-bold lg:mr-10">
+                Previously Uploaded Trade License:
+              </h3>
               <p className="text-gray-700">
                 {post.tradeLicenseFile.split("/").pop()}
               </p>
@@ -447,7 +451,9 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.bankStatementFile && (
             <div>
-              <h3 className="font-bold">Previously Uploaded Bank Statement:</h3>
+              <h3 className="font-bold lg:mr-6">
+                Previously Uploaded Bank Statement:
+              </h3>
               <p className="text-gray-700">
                 {post.bankStatementFile.split("/").pop()}
               </p>
@@ -510,7 +516,9 @@ const FounderPostReview = () => {
         <div className="my-3">
           {post.securityFile && (
             <div>
-              <h3 className="font-bold">Previously Uploaded Security File:</h3>
+              <h3 className="font-bold lg:mr-12">
+                Previously Uploaded Security File:
+              </h3>
               <p className="text-gray-700">
                 {post.securityFile.split("/").pop()}
               </p>
