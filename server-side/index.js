@@ -110,7 +110,7 @@ app.post(
     { name: 'bankStatement', maxCount: 1 },
     { name: 'securityFile', maxCount: 1 },
     { name: 'financialFile', maxCount: 1 },
-    { name: 'videoFile', maxCount: 1 },
+    { name: 'video', maxCount: 1 },
   ]),
   async (req, res) => {
     try {
@@ -130,7 +130,7 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
   { name: 'bankStatement', maxCount: 1 },
   { name: 'securityFile', maxCount: 1 },
   { name: 'financialFile', maxCount: 1 },
-  { name: 'videoFile', maxCount: 1 },
+  { name: 'video', maxCount: 1 },
 ]), async (req, res) => {
   try {
     const postId = req.params.id;
