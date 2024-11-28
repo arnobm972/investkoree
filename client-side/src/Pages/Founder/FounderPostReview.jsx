@@ -85,13 +85,14 @@ const FounderPostReview = () => {
           postData.append(field, formData[field]); // Append the file directly
         }
       }
-
+      const token = localStorage.getItem("token");
       // Make PUT request
       await axios.put(`${API_URL}/adminpost/update/${formData._id}`, postData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
         timeout: 30000,
       });
-      navigate("/founderpending");
-      toast.success("Post has been Successfully Updated "); // Redirect after successful update
     } catch (error) {
       console.error("Error updating post:", error);
       if (error.response) {

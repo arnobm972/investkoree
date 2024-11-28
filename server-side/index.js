@@ -110,6 +110,7 @@ app.post(
     { name: 'bankStatement', maxCount: 1 },
     { name: 'securityFile', maxCount: 1 },
     { name: 'financialFile', maxCount: 1 },
+    { name: 'videoFile', maxCount: 1 },
   ]),
   async (req, res) => {
     try {
@@ -129,6 +130,7 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
   { name: 'bankStatement', maxCount: 1 },
   { name: 'securityFile', maxCount: 1 },
   { name: 'financialFile', maxCount: 1 },
+  { name: 'videoFile', maxCount: 1 },
 ]), async (req, res) => {
   try {
     const postId = req.params.id;
@@ -164,6 +166,9 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
       }
       if (req.files.financialFile) {
         updatedPost.financialFile = req.files.financialFile[0].buffer; // Assuming only one file
+      }
+      if (req.files.videoFile) {
+        updatedPost.videoFile = req.files.videoFile[0].buffer; // Assuming only one file
       }
     }
 
@@ -265,6 +270,7 @@ app.post('/adminpost/accept', async (req, res) => {
       projectedROI: pendingPost.projectedROI,
       returndate: pendingPost.returndate,
       startDate: pendingPost.startDate,
+      videoFile:pendingPost.videoFile,
     });
 
     // Save the accepted post to the FounderPost collection
