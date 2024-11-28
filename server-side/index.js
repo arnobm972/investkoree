@@ -169,7 +169,7 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
         updatedPost.financialFile = req.files.financialFile[0].buffer; // Assuming only one file
       }
       if (req.files.video) {
-        updatedPost.video = req.files.video[0].buffer; // Assuming only one file
+        updatedPost.videofile = req.files.video[0].buffer; // Assuming only one file
       }
     }
 

@@ -1,19 +1,17 @@
 import PendingPost from '../models/pendingPost.js';
 import FounderPending from '../models/founderpending.js';
-import axios from 'axios';
-import FormData from 'form-data';
-import path from 'path';
+import {sanitizeFilename} from '../utils/sanitize.js' // Import the sanitize function
 
 // Handle founder post creation
 export const createFounderPost = async (req, res) => {
   console.log("Request Body:", req.body);
   console.log("Request Files:", req.files);
-  console.log("User   ID:", req.user?.id);
+  console.log("User ID:", req.user?.id);
 
   try {
     const userId = req.user?.id;
     if (!userId) {
-      return res.status(400).json({ error: "User  ID is required." });
+      return res.status(400).json({ error: "User ID is required." });
     }
 
     const {
@@ -21,59 +19,9 @@ export const createFounderPost = async (req, res) => {
       investmentDuration, securityOption, otherSecurityOption, documentationOption,
       otherDocumentationOption, assets, revenue, fundingAmount, fundingHelp, returndate, projectedROI,
       returnPlan, businessSafety, additionalComments, description,
-      sanitizedBusinessPictures, sanitizedNidName, sanitizedTinName,
-      sanitizedTaxName, sanitizedTradeLicenseName, sanitizedBankStatementName,
-      sanitizedSecurityName, sanitizedFinancialName, sanitizedVideoName
     } = req.body;
 
-    const uploadToImgbb = async (fileBuffer, filename) => {
-      const formData = new FormData();
-      formData.append('image', fileBuffer, {
-        filename: filename,
-        contentType: 'image/jpeg' // Assuming all images are JPEG; adjust if necessary
-      });
-
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, formData, {
-        headers: {
-          ...formData.getHeaders(),
-        },
-      });
-
-      return response.data.data.url;
-    };
-
-    // Upload business pictures
-    const businessPictures = req.files.businessPicture 
-      ? await Promise.all(req.files.businessPicture.map((file, index) => 
-          uploadToImgbb(file.buffer, sanitizedBusinessPictures[index])
-        )) 
-      : [];
-
-    const uploadSingleFile = async (file, sanitizedName) => {
-      if (file && file.length > 0 && file[0].buffer) {
-        return await uploadToImgbb(file[0].buffer, sanitizedName);
-      }
-      return "";
-    };
-
-    const nidFile = await uploadSingleFile(req.files.nidCopy, sanitizedNidName);
-    const tinFile = await uploadSingleFile(req.files.tinCopy, sanitizedTinName);
-    const taxFile = await uploadSingleFile(req.files.taxCopy, sanitizedTaxName);
-    const tradeLicenseFile = await uploadSingleFile(req.files.tradeLicense, sanitizedTradeLicenseName);
-    const bankStatementFile = await uploadSingleFile(req.files.bankStatement, sanitizedBankStatementName);
-    const securityFile = await uploadSingleFile(req.files.securityFile, sanitizedSecurityName);
-    const financialFile = await uploadSingleFile(req.files.financialFile, sanitizedFinancialName);
-
-    // Handle video file without uploading to ImgBB
-    let videoFile = "";
-    if (req.files.videoFile && req.files.videoFile.length > 0) {
-      const video = req.files.videoFile[0];
-      videoFile = {
-        originalName: sanitizedVideoName, // Store the sanitized name
-        path: video.path // Store the path or URL where the video is saved
-      };
-    }
-
+    // Prepare the new post
     const newPost = new PendingPost({
       userId,
       businessName,
@@ -94,33 +42,92 @@ export const createFounderPost = async (req, res) => {
       returnPlan,
       businessSafety,
       additionalComments,
-      businessPictures,
-      nidFile,
-      tinFile,
-      description,
-      taxFile,
-      tradeLicenseFile,
-      bankStatementFile,
-      securityFile,
-      financialFile,
       returndate,
       projectedROI,
-      videoFile // Store the video file information directly
+      description,
+      businessPictures: req.files?.businessPicture
+        ? req.files.businessPicture.map(file => ({
+            data: file.buffer,
+            contentType: file.mimetype,
+            filename: sanitizeFilename(file.originalname), // Sanitize the filename
+          }))
+        : [],
+      nidFile: req.files?.nidCopy?.[0]
+        ? {
+            data: req.files.nidCopy[0].buffer,
+            contentType: req.files.nidCopy[0].mimetype,
+            filename: sanitizeFilename(req.files.nidCopy[0].originalname), // Sanitize the filename
+          }
+        : null,
+      tinFile: req.files?.tinCopy?.[0]
+        ? {
+            data: req.files.tinCopy[0].buffer,
+            contentType: req.files.tinCopy[0].mimetype,
+            filename: sanitizeFilename(req.files.tinCopy[0].originalname), // Sanitize the filename
+          }
+        : null,
+      taxFile: req.files?.taxCopy?.[0]
+        ? {
+            data: req.files.taxCopy[0].buffer,
+            contentType: req.files.taxCopy[0].mimetype,
+            filename: sanitizeFilename(req.files.taxCopy[0].originalname), // Sanitize the filename
+          }
+        : null,
+      tradeLicenseFile: req.files?.tradeLicense?.[0]
+        ? {
+            data: req.files.tradeLicense[0].buffer,
+            contentType: req.files.tradeLicense[0].mimetype,
+            filename: sanitizeFilename(req.files.tradeLicense[0].originalname), // Sanitize the filename
+          }
+        : null,
+      bankStatementFile: req.files?.bankStatement?.[0]
+        ? {
+            data: req.files.bankStatement[0].buffer,
+            contentType: req.files.bankStatement[0].mimetype,
+            filename: sanitizeFilename(req.files.bankStatement[0].originalname), // Sanitize the filename
+          }
+        : null,
+      securityFile: req.files?.securityFile?.[0]
+        ? {
+            data: req.files.securityFile[0].buffer,
+            contentType: req.files.securityFile[0].mimetype,
+            filename: sanitizeFilename(req.files.securityFile[0].originalname), // Sanitize the filename
+          }
+        : null,
+      financialFile: req.files?.financialFile?.[0]
+        ? {
+            data: req.files.financialFile[0].buffer,
+            contentType: req.files.financialFile[0].mimetype,
+            filename: sanitizeFilename(req.files.financialFile[0].originalname), // Sanitize the filename
+          }
+        : null,
+      videoFile: req.files?.video?.[0]
+        ? {
+            data: req.files.video[0].buffer,
+            contentType: req.files.video[0].mimetype,
+            filename: sanitizeFilename(req.files.video[0].originalname), // Sanitize the filename
+          }
+        : null,
     });
 
     // Save the new post to the PendingPost collection
     const savedPost = await newPost.save();
 
-    // Create a new document in FounderPending collection
+    // Create a reference in FounderPending collection
     const founderPendingPost = new FounderPending({
-      ...savedPost._doc, // Use the saved data from PendingPost
+      pendingPostId: savedPost._id, // Reference the original post
+      userId,
+      status: "Pending Approval",
     });
 
     await founderPendingPost.save();
 
-    res.status(201).json({ message: "Founder post created successfully and saved to pending approval!" });
+    res.status(201).json({
+      message: "Founder post created successfully and saved for pending approval!",
+      postId: savedPost._id,
+    });
   } catch (error) {
     console.error("Error creating founder post:", error);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "An error occurred while creating the founder post." });
   }
 };
