@@ -135,7 +135,7 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
   try {
     const postId = req.params.id;
 
-    // Prepare the updated post data
+    // Prepare the updated 
     const updatedPost = { ...req.body };
 
     // Handle the uploaded files
