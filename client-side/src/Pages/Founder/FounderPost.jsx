@@ -124,7 +124,10 @@ const FounderPost = () => {
       );
 
       // Append the URLs and sanitized names for business pictures
-      postData.append("businessPictures", JSON.stringify(businessPicUrls));
+      postData.append(
+        "businessPictures",
+        JSON.stringify(businessPicUrls.map((pic) => pic.url))
+      );
 
       // Function to upload a single file and return its URL and sanitized name
       const uploadSingleFile = async (file) => {
