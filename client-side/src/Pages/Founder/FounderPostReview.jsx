@@ -275,7 +275,7 @@ const FounderPostReview = () => {
           <input
             type="file"
             accept="video/*"
-            name="videoFile"
+            name="video"
             onChange={(e) => handleFileChange(e, "videoFile")}
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
           />
