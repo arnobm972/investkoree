@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import { Server } from 'socket.io';
 import multer from 'multer';
 import helmet from 'helmet'; // Import helmet
-import { body, validationResult } from 'express-validator';
 import connectDB from './config/db.js';
 import signupRoute from '../server-side/routes/signup.js';
 import loginRoute from '../server-side/routes/login.js';
