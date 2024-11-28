@@ -23,10 +23,9 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const toggleDropdown = (dropdownName) => {
+  const toggleMobileDropdown = (dropdownName) => {
     setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
   };
-
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -204,7 +203,10 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden flex flex-col items-start p-4 bg-white shadow-lg">
-            <ul className="lg:font-bold sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium lg:text-lg gap-4">
+            <ul
+              ref={dropdownRef}
+              className=" flex sm:flex-col xs:flex-col xxs:flex-col  sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium lg:text-lg sm:gap-2 xs:gap-2 xxs:gap-2 "
+            >
               <li>
                 <NavLink
                   to="/"
@@ -224,20 +226,23 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li>
-                <details open={activeDropdown === "category"}>
+                <details
+                  open={activeDropdown === "category"}
+                  onClick={(e) => e.preventDefault()} // Prevent default behavior
+                >
                   <summary
-                    onClick={() => toggleDropdown("category")}
+                    onClick={() => toggleMobileDropdown("category")}
                     className="hover:bg-salmon hover:text-white transition p-2 rounded cursor-pointer"
                   >
                     Category
                   </summary>
                   {activeDropdown === "category" && (
-                    <ul className="bg-base-100 p-2">
+                    <ul className="bg-base-100 sm:p-2 xs:p-2 xxs:p-2 flex flex-col gap-2 ">
                       <li>
                         <NavLink
                           to="/shariah"
                           onClick={toggleMenu}
-                          className="hover:bg-salmon transition p-2 rounded"
+                          className="hover:bg-salmon transition sm:p-2 xs:p-2 xxs:p-2 rounded"
                         >
                           Shariah
                         </NavLink>
@@ -265,74 +270,39 @@ const Navbar = () => {
                 </details>
               </li>
               <li>
-                {userdata ? (
-                  <div className="flex flex-col">
-                    {userdata.role === "investor" && (
-                      <NavLink
-                        to="/investordashboard"
-                        onClick={toggleMenu}
-                        className="hover:bg-salmon hover:text-white transition p-2 rounded"
-                      >
-                        MyProfile
-                      </NavLink>
-                    )}
-                    {userdata.role === "founder" && (
-                      <NavLink
-                        to="/founderdashboard"
-                        onClick={toggleMenu}
-                        className="hover:bg-salmon hover:text-white transition p-2 rounded"
-                      >
-                        MyProfile
-                      </NavLink>
-                    )}
-                    {userdata.role === "admin" && (
-                      <NavLink
-                        to="/admindashboard"
-                        onClick={toggleMenu}
-                        className="hover:bg-salmon hover:text-white transition p-2 rounded"
-                      >
-                        MyProfile
-                      </NavLink>
-                    )}
-                    <div
-                      onClick={handleSignOut}
-                      className="hover:bg-salmon transition p-2 rounded cursor-pointer"
-                    >
-                      Logout
-                    </div>
-                  </div>
-                ) : (
-                  <details open={activeDropdown === "login"}>
-                    <summary
-                      onClick={() => toggleDropdown("login")}
-                      className="hover:bg-salmon hover:text-white transition p-2 rounded cursor-pointer"
-                    >
-                      Login
-                    </summary>
-                    {activeDropdown === "login" && (
-                      <ul className="bg-base-100 p-2">
-                        <li>
-                          <NavLink
-                            to="/investorlogin"
-                            onClick={toggleMenu}
-                            className="hover:bg-salmon transition p-2 rounded"
-                          >
-                            Investor
-                          </NavLink>
-                        </li>
-                        <li>
-                          <NavLink
-                            to="/founderlogin"
-                            onClick={toggleMenu}
-                            className="hover:bg-salmon transition p-2 rounded"
-                          >
-                            Founder
-                          </NavLink>
-                        </li>
-                      </ul>
-                    )}
-                  </details>
-                )}
+                <details
+                  open={activeDropdown === "login"}
+                  onClick={(e) => e.preventDefault()} // Prevent default behavior
+                >
+                  <summary
+                    onClick={() => toggleMobileDropdown("login")}
+                    className="hover:bg-salmon hover:text-white transition p-2 rounded cursor-pointer"
+                  >
+                    Login
+                  </summary>
+                  {activeDropdown === "login" && (
+                    <ul className="bg-base-100 sm:p-2 xs:p-2 xxs:p-2 flex flex-col gap-2">
+                      <li>
+                        <NavLink
+                          to="/investorlogin"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition sm:mt-2 xs:mt-2 xxs:mt-2 p-2 rounded"
+                        >
+                          Investor
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/founderlogin"
+                          onClick={toggleMenu}
+                          className="hover:bg-salmon transition p-2 rounded"
+                        >
+                          Founder
+                        </NavLink>
+                      </li>
+                    </ul>
+                  )}
+                </details>
               </li>
               <li>
                 {userdata && (
