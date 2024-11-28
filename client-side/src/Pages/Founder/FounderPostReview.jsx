@@ -89,18 +89,28 @@ const FounderPostReview = () => {
       // Make PUT request
       await axios.put(`${API_URL}/adminpost/update/${formData._id}`, postData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          Authorization: `Bearer ${token}`,
         },
         timeout: 30000,
       });
+
+      navigate("/founderpending");
+      toast.success("Post has been Successfully Updated");
     } catch (error) {
       console.error("Error updating post:", error);
       if (error.response) {
+        // Server responded with a status other than 2xx
         toast.error(
           `Error: ${error.response.data.message || "Failed to update post."}`
         );
+      } else if (error.request) {
+        // Request was made but no response was received
+        toast.error(
+          "No response received from the server. Please check your network connection."
+        );
       } else {
-        toast.error("An unexpected error occurred.");
+        // Something happened in setting up the request
+        toast.error(`Error: ${error.message}`);
       }
     }
   };
