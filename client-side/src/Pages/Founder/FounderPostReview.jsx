@@ -106,7 +106,7 @@ const FounderPostReview = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        timeout: 60000,
+        timeout: 600000,
       });
 
       navigate("/founderpending");
