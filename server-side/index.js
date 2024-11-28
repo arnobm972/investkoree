@@ -120,66 +120,66 @@ app.post(
     }
   }
 );
-app.put('/adminpost/update/:id', authToken, upload.fields([
-  { name: 'businessPicture', maxCount: 10 },
-  { name: 'nidCopy', maxCount: 1 },
-  { name: 'tinCopy', maxCount: 1 },
-  { name: 'taxCopy', maxCount: 1 },
-  { name: 'tradeLicense', maxCount: 1 },
-  { name: 'bankStatement', maxCount: 1 },
-  { name: 'securityFile', maxCount: 1 },
-  { name: 'financialFile', maxCount: 1 },
-  { name: 'video', maxCount: 1 },
-]), async (req, res) => {
-  try {
-    const postId = req.params.id;
+// app.put('/adminpost/update/:id', authToken, upload.fields([
+//   { name: 'businessPicture', maxCount: 10 },
+//   { name: 'nidCopy', maxCount: 1 },
+//   { name: 'tinCopy', maxCount: 1 },
+//   { name: 'taxCopy', maxCount: 1 },
+//   { name: 'tradeLicense', maxCount: 1 },
+//   { name: 'bankStatement', maxCount: 1 },
+//   { name: 'securityFile', maxCount: 1 },
+//   { name: 'financialFile', maxCount: 1 },
+//   { name: 'video', maxCount: 1 },
+// ]), async (req, res) => {
+//   try {
+//     const postId = req.params.id;
 
-    // Prepare the updated post
-    const updatedPost = { ...req.body };
+//     // Prepare the updated post
+//     const updatedPost = { ...req.body };
 
-    // Handle the uploaded files
-    if (req.files) {
-      if (req.files.businessPicture) {
-        updatedPost.businessPictures = req.files.businessPicture.map(file => file.originalname); // Store filenames
-      }
-      if (req.files.nidCopy) {
-        updatedPost.nidFile = req.files.nidCopy[0].originalname; // Store filename
-      }
-      if (req.files.tinCopy) {
-        updatedPost.tinFile = req.files.tinCopy[0].originalname; // Store filename
-      }
-      if (req.files.taxCopy) {
-        updatedPost.taxFile = req.files.taxCopy[0].originalname; // Store filename
-      }
-      if (req.files.tradeLicense) {
-        updatedPost.tradeLicenseFile = req.files.tradeLicense[0].originalname; // Store filename
-      }
-      if (req.files.bankStatement) {
-        updatedPost.bankStatementFile = req.files.bankStatement[0].originalname; // Store filename
-      }
-      if (req.files.securityFile) {
-        updatedPost.securityFile = req.files.securityFile[0].originalname; // Store filename
-      }
-      if (req.files.financialFile) {
-        updatedPost.financialFile = req.files.financialFile[0].originalname; // Store filename
-      }
-      if (req.files.video) {
-        updatedPost.videoFile = req.files.video[0].originalname; // Store filename
-      }
-    }
+//     // Handle the uploaded files
+//     if (req.files) {
+//       if (req.files.businessPicture) {
+//         updatedPost.businessPictures = req.files.businessPicture.map(file => file.originalname); // Store filenames
+//       }
+//       if (req.files.nidCopy) {
+//         updatedPost.nidFile = req.files.nidCopy[0].originalname; // Store filename
+//       }
+//       if (req.files.tinCopy) {
+//         updatedPost.tinFile = req.files.tinCopy[0].originalname; // Store filename
+//       }
+//       if (req.files.taxCopy) {
+//         updatedPost.taxFile = req.files.taxCopy[0].originalname; // Store filename
+//       }
+//       if (req.files.tradeLicense) {
+//         updatedPost.tradeLicenseFile = req.files.tradeLicense[0].originalname; // Store filename
+//       }
+//       if (req.files.bankStatement) {
+//         updatedPost.bankStatementFile = req.files.bankStatement[0].originalname; // Store filename
+//       }
+//       if (req.files.securityFile) {
+//         updatedPost.securityFile = req.files.securityFile[0].originalname; // Store filename
+//       }
+//       if (req.files.financialFile) {
+//         updatedPost.financialFile = req.files.financialFile[0].originalname; // Store filename
+//       }
+//       if (req.files.video) {
+//         updatedPost.videoFile = req.files.video[0].originalname; // Store filename
+//       }
+//     }
 
-    // Update the post in the database
-    const foundPost = await FounderPost.findByIdAndUpdate(postId, updatedPost, { new: true });
+//     // Update the post in the database
+//     const foundPost = await FounderPost.findByIdAndUpdate(postId, updatedPost, { new: true });
 
-    if (!foundPost) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+//     if (!foundPost) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
 
-    res.status(200).json(foundPost);
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating post: ' + error.message });
-  }
-});
+//     res.status(200).json(foundPost);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error updating post: ' + error.message });
+//   }
+// });
 // Delete a pending post
 app.delete('/adminpost/pending/:id', authToken, async (req, res) => {
   const postId = req.params.id;

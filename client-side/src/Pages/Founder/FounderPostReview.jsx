@@ -68,18 +68,41 @@ const FounderPostReview = () => {
       // Handle businessPictures
       if (formData.businessPictures && formData.businessPictures.length > 0) {
         for (const file of formData.businessPictures) {
-          postData.append("businessPictures", file.name); // Append the filename directly
+          postData.append("businessPicture", file); // Append the file object directly
         }
       }
 
       // Handle videoFile
       if (formData.videoFile) {
-        postData.append("videoFile", formData.videoFile.name); // Append the filename directly
+        postData.append("video", formData.videoFile); // Append the file object directly
+      }
+
+      // Append other files similarly
+      if (formData.nidFile) {
+        postData.append("nidCopy", formData.nidFile);
+      }
+      if (formData.tinFile) {
+        postData.append("tinCopy", formData.tinFile);
+      }
+      if (formData.taxFile) {
+        postData.append("taxCopy", formData.taxFile);
+      }
+      if (formData.tradeLicenseFile) {
+        postData.append("tradeLicense", formData.tradeLicenseFile);
+      }
+      if (formData.bankStatementFile) {
+        postData.append("bankStatement", formData.bankStatementFile);
+      }
+      if (formData.securityFile) {
+        postData.append("securityFile", formData.securityFile);
+      }
+      if (formData.financialFile) {
+        postData.append("financialFile", formData.financialFile);
       }
 
       const token = localStorage.getItem("token");
-      // Make PUT request
-      await axios.put(`${API_URL}/adminpost/update/${formData._id}`, postData, {
+      // Make POST request to the pending post route
+      await axios.post(`${API_URL}/adminpost/pendingpost`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -707,7 +730,7 @@ const FounderPostReview = () => {
         {/* Submit Button */}
         <div className="form-control my-3">
           <button type="submit" className="btn btn-warning w-full max-w-xs">
-            Update Post
+            Resubmit
           </button>
         </div>
       </form>
