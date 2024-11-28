@@ -47,7 +47,6 @@ const FounderPostReview = () => {
     setFormData({ ...formData, businessPictures: files }); // Update state with the array of files
   };
 
-  // Submit updated data
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -55,36 +54,29 @@ const FounderPostReview = () => {
 
       // Handle non-file fields
       for (const key of Object.keys(formData)) {
-        if (!Array.isArray(formData[key]) && formData[key] !== null) {
+        if (
+          !Array.isArray(formData[key]) &&
+          formData[key] !== null &&
+          key !== "businessPictures" &&
+          key !== "videoFile"
+        ) {
           postData.append(key, formData[key]);
         }
       }
 
       // Handle file uploads
       // Handle businessPictures
-      if (formData.businessPictures) {
+      if (formData.businessPictures && formData.businessPictures.length > 0) {
         for (const file of formData.businessPictures) {
-          postData.append("businessPictures", file); // Append the file directly
+          postData.append("businessPictures", file.name); // Append the filename directly
         }
       }
 
-      // Handle other file fields
-      const fileFields = [
-        "nidFile",
-        "tinFile",
-        "taxFile",
-        "tradeLicenseFile",
-        "bankStatementFile",
-        "securityFile",
-        "financialFile",
-        "videoFile",
-      ];
-
-      for (const field of fileFields) {
-        if (formData[field]) {
-          postData.append(field, formData[field]); // Append the file directly
-        }
+      // Handle videoFile
+      if (formData.videoFile) {
+        postData.append("videoFile", formData.videoFile.name); // Append the filename directly
       }
+
       const token = localStorage.getItem("token");
       // Make PUT request
       await axios.put(`${API_URL}/adminpost/update/${formData._id}`, postData, {

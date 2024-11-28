@@ -135,41 +135,37 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
   try {
     const postId = req.params.id;
 
-    // Prepare the updated 
+    // Prepare the updated post
     const updatedPost = { ...req.body };
 
-    
     // Handle the uploaded files
     if (req.files) {
       if (req.files.businessPicture) {
-        updatedPost.businessPictures = req.files.businessPicture.map(file => ({
-          data: file.buffer,
-          contentType: file.mimetype,
-        }));
+        updatedPost.businessPictures = req.files.businessPicture.map(file => file.originalname); // Store filenames
       }
       if (req.files.nidCopy) {
-        updatedPost.nidFile = req.files.nidCopy[0].buffer; // Assuming only one file
+        updatedPost.nidFile = req.files.nidCopy[0].originalname; // Store filename
       }
       if (req.files.tinCopy) {
-        updatedPost.tinFile = req.files.tinCopy[0].buffer; // Assuming only one file
+        updatedPost.tinFile = req.files.tinCopy[0].originalname; // Store filename
       }
       if (req.files.taxCopy) {
-        updatedPost.taxFile = req.files.taxCopy[0].buffer; // Assuming only one file
+        updatedPost.taxFile = req.files.taxCopy[0].originalname; // Store filename
       }
       if (req.files.tradeLicense) {
-        updatedPost.tradeLicenseFile = req.files.tradeLicense[0].buffer; // Assuming only one file
+        updatedPost.tradeLicenseFile = req.files.tradeLicense[0].originalname; // Store filename
       }
       if (req.files.bankStatement) {
-        updatedPost.bankStatementFile = req.files.bankStatement[0].buffer; // Assuming only one file
+        updatedPost.bankStatementFile = req.files.bankStatement[0].originalname; // Store filename
       }
       if (req.files.securityFile) {
-        updatedPost.securityFile = req.files.securityFile[0].buffer; // Assuming only one file
+        updatedPost.securityFile = req.files.securityFile[0].originalname; // Store filename
       }
       if (req.files.financialFile) {
-        updatedPost.financialFile = req.files.financialFile[0].buffer; // Assuming only one file
+        updatedPost.financialFile = req.files.financialFile[0].originalname; // Store filename
       }
       if (req.files.video) {
-        updatedPost.videofile = req.files.video[0].buffer; // Assuming only one file
+        updatedPost.videoFile = req.files.video[0].originalname; // Store filename
       }
     }
 
