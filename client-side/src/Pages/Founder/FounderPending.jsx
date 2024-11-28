@@ -28,7 +28,12 @@ const FounderPending = () => {
   };
   const handleRemovePost = async (postId) => {
     try {
-      await axios.delete(`${API_URL}/adminpost/pending/${postId}`);
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/adminpost/pending/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setPosts(posts.filter((post) => post._id !== postId)); // Remove the deleted post from the state
       toast.success("Post removed successfully");
     } catch (error) {
