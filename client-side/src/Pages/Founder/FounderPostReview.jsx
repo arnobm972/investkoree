@@ -58,7 +58,14 @@ const FounderPostReview = () => {
           !Array.isArray(formData[key]) &&
           formData[key] !== null &&
           key !== "businessPictures" &&
-          key !== "videoFile"
+          key !== "videoFile" &&
+          key !== "nidFile" &&
+          key !== "tinFile" &&
+          key !== "taxFile" &&
+          key !== "tradeLicenseFile" &&
+          key !== "bankStatementFile" &&
+          key !== "securityFile" &&
+          key !== "financialFile"
         ) {
           postData.append(key, formData[key]);
         }
@@ -234,7 +241,7 @@ const FounderPostReview = () => {
           </div>
           <input
             type="file"
-            name="businessPictures"
+            name="businessPicture"
             accept="image/*"
             onChange={handleMultipleFileChange}
             className="file-input file-input-bordered file-input-warning w-full max-w-xs"
