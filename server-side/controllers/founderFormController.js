@@ -1,5 +1,6 @@
 import PendingPost from '../models/pendingPost.js';
 import FounderPending from '../models/founderpending.js';
+import { sanitizeFilename } from '../utils/sanitize.js';
 
 
 export const createFounderPost = async (req, res) => {
