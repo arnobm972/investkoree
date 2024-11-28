@@ -138,6 +138,7 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
     // Prepare the updated 
     const updatedPost = { ...req.body };
 
+
     // Handle the uploaded files
     if (req.files) {
       if (req.files.businessPicture) {
@@ -147,28 +148,28 @@ app.put('/adminpost/update/:id', authToken, upload.fields([
         }));
       }
       if (req.files.nidCopy) {
-        updatedPost.nidFile = req.files.nidCopy[0].buffer; // Assuming only one file
+        updatedPost.nidFile = req.files.nidCopy[0].buffer; 
       }
       if (req.files.tinCopy) {
-        updatedPost.tinFile = req.files.tinCopy[0].buffer; // Assuming only one file
+        updatedPost.tinFile = req.files.tinCopy[0].buffer; 
       }
       if (req.files.taxCopy) {
-        updatedPost.taxFile = req.files.taxCopy[0].buffer; // Assuming only one file
+        updatedPost.taxFile = req.files.taxCopy[0].buffer; 
       }
       if (req.files.tradeLicense) {
-        updatedPost.tradeLicenseFile = req.files.tradeLicense[0].buffer; // Assuming only one file
+        updatedPost.tradeLicenseFile = req.files.tradeLicense[0].buffer; 
       }
       if (req.files.bankStatement) {
-        updatedPost.bankStatementFile = req.files.bankStatement[0].buffer; // Assuming only one file
+        updatedPost.bankStatementFile = req.files.bankStatement[0].buffer; 
       }
       if (req.files.securityFile) {
-        updatedPost.securityFile = req.files.securityFile[0].buffer; // Assuming only one file
+        updatedPost.securityFile = req.files.securityFile[0].buffer; 
       }
       if (req.files.financialFile) {
-        updatedPost.financialFile = req.files.financialFile[0].buffer; // Assuming only one file
+        updatedPost.financialFile = req.files.financialFile[0].buffer; 
       }
       if (req.files.videoFile) {
-        updatedPost.videoFile = req.files.videoFile[0].buffer; // Assuming only one file
+        updatedPost.videoFile = req.files.videoFile[0].buffer; 
       }
     }
 
