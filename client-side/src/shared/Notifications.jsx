@@ -76,7 +76,7 @@ const Notifications = ({ API_URL, userId }) => {
 
   return (
     <div
-      className="relative hover:bg-salmon lg:right-4 hover:text-white transition sm:ml-6 xs:ml-6 xxs:ml-6"
+      className="relative hover:bg-salmon lg:right-2 hover:text-white transition sm:ml-6 xs:ml-6 xxs:ml-6"
       ref={dropdownRef}
     >
       <button
