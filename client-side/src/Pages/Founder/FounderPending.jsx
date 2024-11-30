@@ -5,7 +5,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 const FounderPending = ({ posts, onRemovePost }) => {
-  const [posts, setPosts] = useState([]);
+  const [post, setPost] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const { userdata } = useAuth();
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
     const fetchPendingPosts = async () => {
       try {
         const response = await axios.get(`${API_URL}/adminpost/founderpending`);
-        setPosts(response.data);
+        setPost(response.data);
       } catch (error) {
         toast.error("Error fetching pending posts: " + error.message);
       }
@@ -76,7 +76,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {posts.map((post, index) => (
+              {post.map((post, index) => (
                 <tr key={post._id} className="hover:bg-gray-100">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {index + 1}
@@ -142,7 +142,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
           </Link>
           <Link to="/founderpending">
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a>Pending Posts</a>
+              <a>Pending </a>
             </li>
           </Link>
         </ul>
