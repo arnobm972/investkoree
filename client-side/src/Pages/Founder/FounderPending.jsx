@@ -26,7 +26,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
     // setSelectedPost(post); // Set the selected post (if needed)
     navigate(`/founderpostreview/${post._id}`, { state: { post } }); // Navigate with ID and post data
   };
-  const handleRemovePost = async (postId) => {
+  const handleRemovePost = async () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_URL}/adminpost/pending/${postId}`, {
@@ -34,7 +34,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      onRemovePost(postId); // Call the callback to update the state in the parent
+      onRemovePost(posts._id); // Call the callback to update the state in the parent
       toast.success("Post removed successfully");
     } catch (error) {
       toast.error("Error removing post: " + error.message);
@@ -76,7 +76,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {post.map((post, index) => (
+              {posts.map((post, index) => (
                 <tr key={post._id} className="hover:bg-gray-100">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {index + 1}
