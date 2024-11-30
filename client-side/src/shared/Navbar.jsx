@@ -77,7 +77,7 @@ const Navbar = () => {
                 className="hover:bg-salmon transition mt-2 hover:text-white p-2 rounded"
                 activeclassname="active"
               >
-                Start a Project
+                Get Funded
               </NavLink>
             </li>
             <li>
