@@ -1,7 +1,8 @@
 import { Link, Routes, Route } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import { useState, useEffect } from "react";
-
+import FounderPending from "./FounderPending";
+import FounderPostReview from "./FounderPostReview";
 const FounderDashboard = () => {
   const { userdata } = useAuth();
   const [posts, setPosts] = useState([]);
