@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const FounderPostReview = ({ onRemovePost }) => {
   const location = useLocation();
-  const { post } = location.state; // Get the post data
+  const { post } = location.state;
   const [formData, setFormData] = useState(post || null); // Initialize form data with post data
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const navigate = useNavigate();
