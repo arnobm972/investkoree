@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
-const FounderPending = ({ posts, onRemovePost }) => {
-  const [post, setPost] = useState([]);
+const FounderPending = () => {
+  const [posts, setPosts] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const { userdata } = useAuth();
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
     const fetchPendingPosts = async () => {
       try {
         const response = await axios.get(`${API_URL}/adminpost/founderpending`);
-        setPost(response.data);
+        setPosts(response.data);
       } catch (error) {
         toast.error("Error fetching pending posts: " + error.message);
       }
@@ -26,7 +26,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
     // setSelectedPost(post); // Set the selected post (if needed)
     navigate(`/founderpostreview/${post._id}`, { state: { post } }); // Navigate with ID and post data
   };
-  const handleRemovePost = async () => {
+  const handleRemovePost = async (postId) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_URL}/adminpost/pending/${postId}`, {
@@ -34,13 +34,12 @@ const FounderPending = ({ posts, onRemovePost }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      onRemovePost(posts._id); // Call the callback to update the state in the parent
+      setPosts(posts.filter((post) => post._id !== postId)); // Remove the deleted post from the state
       toast.success("Post removed successfully");
     } catch (error) {
       toast.error("Error removing post: " + error.message);
     }
   };
-
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -142,7 +141,7 @@ const FounderPending = ({ posts, onRemovePost }) => {
           </Link>
           <Link to="/founderpending">
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
-              <a>Pending </a>
+              <a>Pending Posts</a>
             </li>
           </Link>
         </ul>

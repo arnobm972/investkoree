@@ -4,14 +4,28 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const FounderPostReview = ({ onRemovePost }) => {
+const FounderPostReview = () => {
   const location = useLocation();
-  const { post } = location.state;
+  const [posts, setPosts] = useState([]);
+  const { post } = location.state; // Get the post data
   const [formData, setFormData] = useState(post || null); // Initialize form data with post data
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const navigate = useNavigate();
   const [otherOption, setOtherOption] = useState(false);
   const [otherDocumentation, setOtherDocumentation] = useState(false);
+  const handleRemovePost = async (postId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/adminpost/pending/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setPosts(posts.filter((post) => post._id !== postId)); // Remove the deleted post from the state
+    } catch (error) {
+      toast.error("Error removing post: " + error.message);
+    }
+  };
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -115,7 +129,7 @@ const FounderPostReview = ({ onRemovePost }) => {
         },
         timeout: 600000,
       });
-      onRemovePost(post._id);
+      await handleRemovePost(post._id);
       navigate("/founderpending");
       toast.success("Post has been Resubmitted Successfully");
     } catch (error) {

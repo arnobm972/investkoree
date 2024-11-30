@@ -1,8 +1,7 @@
-import { Link, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import { useState, useEffect } from "react";
-import FounderPending from "./FounderPending";
-import FounderPostReview from "./FounderPostReview";
+
 const FounderDashboard = () => {
   const { userdata } = useAuth();
   const [posts, setPosts] = useState([]);
@@ -19,7 +18,7 @@ const FounderDashboard = () => {
           }
           const data = await response.json();
           setPosts(data);
-          setError(null);
+          setError(null); // Reset error state on successful fetch
         } catch (error) {
           console.error("Error fetching user posts:", error);
           setError("Failed to load posts. Please try again later.");
@@ -29,14 +28,6 @@ const FounderDashboard = () => {
 
     fetchUserPosts();
   }, [userdata]);
-
-  const handleRemovePost = (postId) => {
-    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
-  };
-
-  const handleResubmitPost = (postId) => {
-    handleRemovePost(postId); // Remove the post from the state when resubmitted
-  };
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -194,24 +185,12 @@ const FounderDashboard = () => {
             </Link>
             <Link to="/founderpending">
               <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
-                <a>Pending Post</a>
+                <a>Pending Posts</a>
               </li>
             </Link>
           </ul>
         </div>
       </div>
-      <Routes>
-        <Route
-          path="/founderpending"
-          element={
-            <FounderPending posts={posts} onRemovePost={handleRemovePost} />
-          }
-        />
-        <Route
-          path="/founderpostreview/:id"
-          element={<FounderPostReview onRemovePost={handleResubmitPost} />}
-        />
-      </Routes>
     </div>
   );
 };
