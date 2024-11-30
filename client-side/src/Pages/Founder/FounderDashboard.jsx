@@ -19,7 +19,7 @@ const FounderDashboard = () => {
           }
           const data = await response.json();
           setPosts(data);
-          setError(null); // Reset error state on successful fetch
+          setError(null);
         } catch (error) {
           console.error("Error fetching user posts:", error);
           setError("Failed to load posts. Please try again later.");
