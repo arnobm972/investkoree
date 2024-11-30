@@ -270,6 +270,11 @@ form.sign-up-form {
 .logout-container {
   background-color: white !important;
 }
+.btn-disabled {
+  background-color: #d3d3d3; /* Light gray background */
+  cursor: not-allowed; /* Disable the pointer cursor */
+  opacity: 0.5; /* Make the button look faded */
+}
 
 .login-btn {
   width: 380px;

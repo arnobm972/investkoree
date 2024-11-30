@@ -3,6 +3,7 @@ import bannerpic from "../assets/banner.jpg";
 import mission1 from "../assets/add-1.png";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
+import "animate.css";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -28,18 +29,18 @@ const Home = () => {
         <div className="hero-content xs:w-[90%] xxs:w-[90%] sm:w-[90%] xs:mx-auto xxs:mx-auto sm:mx-auto  flex-col gap-8 lg:flex-row-reverse lg:gap-24 text-slate-800">
           <img
             src={bannerpic}
-            className="w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%]      lg:w-[800px] rounded-2xl shadow-2xl"
+            className="w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%] animate__bounceInRight animate__animated     lg:w-[800px] rounded-2xl shadow-2xl"
             alt="Banner"
           />
           <div className="xs:text-center xxs:text-center sm:text-center  lg:text-left">
-            <h1 className=" xs:text-2xl  xxs:text-2xl  sm:text-2xl lg:text-4xl text-white   font-bold ">
+            <h1 className=" xs:text-2xl  xxs:text-2xl  sm:text-2xl lg:text-4xl animate__animated animate__fadeInDownBig text-white   font-bold ">
               Welcome to <br /> InvestKoree.com
             </h1>
-            <p className="py-6 lg:text-lg xs:text-sm xxs:text-sm sm:text-sm  text-white ">
+            <p className="py-6 lg:text-lg xs:text-sm xxs:text-sm sm:text-sm animate__animated animate__fadeInUpBig text-white ">
               It's Easy and Fast to Invest. Get Profit Faster Here.
             </p>
             <Link to="/shariah">
-              <button className="btn btn-active sm:w-[250px] xs:w-[250px] xxs:w-[250px]  banner-btn btn-neutral">
+              <button className="btn btn-active sm:w-[250px] xs:w-[250px] xxs:w-[250px] animate__animated animate__fadeInUpBig banner-btn btn-neutral">
                 Get Started
               </button>
             </Link>

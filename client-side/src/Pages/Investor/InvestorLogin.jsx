@@ -5,6 +5,7 @@ import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const InvestorLogin = () => {
   const [showPassword, setShowPassword] = useState({
@@ -14,7 +15,7 @@ const InvestorLogin = () => {
   });
   const { createUser, investorsignIn } = useAuth();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
   const navigate = useNavigate();
@@ -53,6 +54,12 @@ const InvestorLogin = () => {
     const email = form.get("u_signup_email");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
+    if (!isTermsAccepted) {
+      // Check if terms are accepted
+      setError("You must accept the terms and conditions to register.");
+      setIsLoading((prev) => ({ ...prev, register: false }));
+      return;
+    }
 
     if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required");
@@ -221,11 +228,28 @@ const InvestorLogin = () => {
               </button>
               {isLoading.register && <Loader />}
             </div>
+            <div className="terms-container flex flex-row gap-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={isTermsAccepted}
+                onChange={() => setIsTermsAccepted((prev) => !prev)}
+              />
+              <label htmlFor="terms" className="text-sm font-light">
+                I have read and agreed to{" "}
+                <Link to="/terms" className="text-blue-500 hover:underline">
+                  terms and conditions
+                </Link>
+              </label>
+            </div>
+
             <input
               type="submit"
               value={isLoading.register ? "Signing up..." : "Sign up"}
-              className="login-btn lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 solid"
-              disabled={isLoading.register}
+              className={`login-btn lg:w-96 sm:w-36 xxs:w-24 xs:w-32 md:lg:w-80 solid ${
+                isLoading.register || !isTermsAccepted ? "btn-disabled" : ""
+              }`}
+              disabled={isLoading.register || !isTermsAccepted}
             />
           </form>
         </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { useAuth } from "../../providers/AuthProvider";
 import Chart from "chart.js/auto";
+import { Link } from "react-router-dom";
 
 const randomData = () => Math.floor(Math.random() * 100);
 
@@ -186,6 +187,11 @@ const InvestorDashboard = () => {
             <li className="font-bold hover:bg-salmon hover:text-white text-lg rounded-lg">
               <a>Rewards</a>
             </li>
+            <Link to="/terms">
+              <li className="font-bold hover:bg-salmon hover:text-white text-lg mb-2 rounded-lg">
+                <a>Terms and Conditions</a>
+              </li>
+            </Link>
           </ul>
         </div>
       </div>

@@ -22,6 +22,7 @@ import AdminPostDetail from "../Pages/AdminPanel/AdminPostDetail";
 import AdminPending from "../Pages/AdminPanel/AdminPending";
 import FounderPending from "../Pages/Founder/FounderPending";
 import FounderPostReview from "../Pages/Founder/FounderPostReview";
+import Terms from "../Pages/Terms";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
       {
         path: "/stocks",
         element: <Stocks></Stocks>,
+      },
+      {
+        path: "/terms",
+        element: <Terms></Terms>,
       },
       {
         path: "/getfunded",
