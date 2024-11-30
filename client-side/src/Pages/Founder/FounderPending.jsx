@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
-const FounderPending = () => {
+const FounderPending = ({ posts, onRemovePost }) => {
   const [posts, setPosts] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const { userdata } = useAuth();
@@ -34,12 +34,13 @@ const FounderPending = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setPosts(posts.filter((post) => post._id !== postId)); // Remove the deleted post from the state
+      onRemovePost(postId); // Call the callback to update the state in the parent
       toast.success("Post removed successfully");
     } catch (error) {
       toast.error("Error removing post: " + error.message);
     }
   };
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
