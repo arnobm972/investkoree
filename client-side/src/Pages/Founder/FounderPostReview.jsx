@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const FounderPostReview = () => {
+const FounderPostReview = ({ onRemovePost }) => {
   const location = useLocation();
   const { post } = location.state; // Get the post data
   const [formData, setFormData] = useState(post || null); // Initialize form data with post data
