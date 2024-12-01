@@ -5,6 +5,7 @@ import Footer from "../shared/Footer";
 import { ToastContainer } from "react-toastify";
 import AuthProvider from "../providers/AuthProvider";
 import { Outlet, useLocation } from "react-router-dom";
+import ScrollProgressBar from "../shared/ScroolProgressBar";
 
 const Main = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const Main = () => {
       <AuthProvider>
         <Navbar />
         <ToastContainer />
+        <ScrollProgressBar />
         <ReactLenis
           root
           options={{
