@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react"; // Import useState
+import { useState, useEffect, useRef } from "react";
 import logo from "../assets/ll.png";
-import { useNavigate, NavLink, Link } from "react-router-dom"; // Import Link
+import { useNavigate, NavLink, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import notification icon
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useAuth } from "../providers/AuthProvider";
 import Notifications from "./Notifications";
 
@@ -23,12 +23,20 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   const toggleMobileDropdown = (dropdownName) => {
     setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
   };
+
   const toggleDropdown = (dropdownName) => {
-    setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
+    // Add a delay before toggling the dropdown
+    setTimeout(() => {
+      setActiveDropdown((prev) =>
+        prev === dropdownName ? null : dropdownName
+      );
+    }, 250); // Adjust the delay time as needed (in milliseconds)
   };
+
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -39,6 +47,7 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
+
   return (
     <div className="sticky top-0 z-50 bg-white shadow-lg">
       <div className="navbar px-6 py-3 flex justify-between items-center">
@@ -60,7 +69,7 @@ const Navbar = () => {
         <div className={`hidden lg:flex flex-1 justify-center items-center`}>
           <ul
             ref={dropdownRef}
-            className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs :font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex"
+            className="lg:font-bold lg:text-lg sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium menu menu-horizontal gap-8 px-1 flex"
           >
             <li>
               <NavLink
@@ -87,6 +96,7 @@ const Navbar = () => {
               >
                 <summary
                   onClick={(e) => {
+                    e.preventDefault();
                     toggleDropdown("category");
                   }}
                   className="hover:bg-salmon mt-2 p-2 rounded hover:text-white"
@@ -99,7 +109,8 @@ const Navbar = () => {
                       <NavLink
                         to="/shariah"
                         className="hover:bg-salmon transition sm:mb-2 xs:mb-2 xxs:mb-2 hover:text-white p-2 rounded"
-                        activeclassname="active"
+                        active
+                        classname="active"
                       >
                         Shariah
                       </NavLink>
@@ -149,7 +160,7 @@ const Navbar = () => {
                     <NavLink
                       to="/admindashboard"
                       onClick={toggleMenu}
-                      className="hover:bg-salmon  hover:text-white transition p-2 rounded"
+                      className="hover:bg-salmon hover:text-white transition p-2 rounded"
                     >
                       MyProfile
                     </NavLink>
@@ -165,7 +176,7 @@ const Navbar = () => {
                 <details open={activeDropdown === "login"}>
                   <summary
                     onClick={(e) => {
-                      e.preventDefault(); // Prevent native toggle behavior
+                      e.preventDefault();
                       toggleDropdown("login");
                     }}
                     className="hover:bg-salmon mt-2 p-2 rounded hover:text-white"
@@ -210,7 +221,7 @@ const Navbar = () => {
           <div className="lg:hidden flex flex-col items-start p-4 bg-white shadow-lg">
             <ul
               ref={dropdownRef}
-              className=" flex sm:flex-col xs:flex-col xxs:flex-col  sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium lg:text-lg sm:gap-2 xs:gap-2 xxs:gap-2 "
+              className="flex sm:flex-col xs:flex-col xxs:flex-col sm:text-sm xs:text-sm xxs:text-sm sm:font-medium xs:font-medium xxs:font-medium lg:text-lg sm:gap-2 xs:gap-2 xxs:gap-2"
             >
               <li>
                 <NavLink
@@ -233,7 +244,7 @@ const Navbar = () => {
               <li>
                 <details
                   open={activeDropdown === "category"}
-                  onClick={(e) => e.preventDefault()} // Prevent default behavior
+                  onClick={(e) => e.preventDefault()}
                 >
                   <summary
                     onClick={() => toggleMobileDropdown("category")}
@@ -242,7 +253,7 @@ const Navbar = () => {
                     Category
                   </summary>
                   {activeDropdown === "category" && (
-                    <ul className="bg-base-100 sm:p-2 xs:p-2 xxs:p-2 flex flex-col gap-2 ">
+                    <ul className="bg-base-100 sm:p-2 xs:p-2 xxs:p-2 flex flex-col gap-2">
                       <li>
                         <NavLink
                           to="/shariah"
@@ -277,7 +288,7 @@ const Navbar = () => {
               <li>
                 <details
                   open={activeDropdown === "login"}
-                  onClick={(e) => e.preventDefault()} // Prevent default behavior
+                  onClick={(e) => e.preventDefault()}
                 >
                   <summary
                     onClick={() => toggleMobileDropdown("login")}
