@@ -6,9 +6,27 @@ import { ToastContainer } from "react-toastify";
 import AuthProvider from "../providers/AuthProvider";
 import { Outlet, useLocation } from "react-router-dom";
 import ScrollProgressBar from "../shared/ScroolProgressBar";
+import GoToTopButton from "../shared/GoTopButton";
+import { useEffect, useState } from "react";
 
 const Main = () => {
   const location = useLocation();
+  const [showGoToTop, setShowGoToTop] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowGoToTop(window.scrollY > 300); // Show button after scrolling 300px
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="roboto-regular ">
@@ -35,6 +53,7 @@ const Main = () => {
             </motion.div>
           </AnimatePresence>
         </ReactLenis>
+        <GoToTopButton showGoToTop={showGoToTop} scrollToTop={scrollToTop} />
         <Footer />
       </AuthProvider>
     </div>

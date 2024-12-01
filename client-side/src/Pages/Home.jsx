@@ -9,10 +9,10 @@ import mission1 from "../assets/add-1.png";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import "animate.css";
-import { FaArrowUp } from "react-icons/fa";
+
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
-  const [showGoToTop, setShowGoToTop] = useState(false);
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
   const controls = useAnimation();
@@ -104,20 +104,6 @@ const Home = () => {
       y: 0,
       transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.25 },
     },
-  };
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowGoToTop(window.scrollY > 300); // Show button after scrolling 300px
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -276,15 +262,6 @@ const Home = () => {
         <h1>Scroll to see the percentage bar</h1>
         <p>Scroll Percentage: {Math.round(scrollPercentage)}%</p>
       </div> */}
-      {showGoToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-4 right-4 bg-neutral-700 hover:bg-neutral-800 text-white p-3 rounded-full shadow-lg"
-          aria-label="Scroll to top"
-        >
-          <FaArrowUp size={24} />
-        </button>
-      )}
     </div>
   );
 };
