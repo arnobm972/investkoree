@@ -363,9 +363,21 @@ const FounderPost = () => {
             <option value="Clothing">Clothing</option>
             <option value="Financial">Financial</option>
             <option value="Retail">Retail</option>
-            <option value="Retail">Art</option>
-            <option value="Retail">Comics</option>
-            <option value="Retail">Crafts</option>
+            <option value="Art">Art</option>
+            <option value="Comics">Comics</option>
+            <option value="Crafts">Crafts</option>
+            <option value="Dance">Dance</option>
+            <option value="Design">Design</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Film">Film</option>
+            <option value="Food">Food</option>
+            <option value="Games">Games</option>
+            <option value="Journalism">Journalism</option>
+            <option value="Music">Music</option>
+            <option value="Photography">Photography</option>
+            <option value="Publishing">Publishing</option>
+            <option value="Technology">Technology</option>
+            <option value="Theater">Theater</option>
           </select>
         </label>
         {/* Investment Duration */}
