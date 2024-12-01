@@ -1,13 +1,44 @@
 import { useEffect, useState } from "react";
 import bannerpic from "../assets/banner.jpg";
-import mission1 from "../assets/add-1.png";
+import bannerpic2 from "../assets/banner2.jpg";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
 import "animate.css";
+import { Parallax } from "react-parallax";
+import mission1 from "../assets/add-1.png";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: 0.2 }); // Trigger animation when 20% is in view
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [controls, inView]);
+
+  // Handle responsive checks
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth <= 768); // Adjust breakpoint as needed
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  // Fetch posts and scroll percentage logic
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,42 +53,86 @@ const Home = () => {
 
     fetchPosts();
   }, []);
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.25 },
+    },
+  };
+  const textVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        delay: 0.05, // Set the delay you want for the text
+      },
+    },
+  };
+  const textVariants2 = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        delay: 0.25, // Set the delay you want for the text
+      },
+    },
+  };
   return (
     <div>
       {/* Hero Section */}
-      <div className="hero banner-img bg-salmon ">
-        <div className="hero-content xs:w-[90%] xxs:w-[90%] sm:w-[90%] xs:mx-auto xxs:mx-auto sm:mx-auto  flex-col gap-8 lg:flex-row-reverse lg:gap-24 text-slate-800">
-          <img
-            src={bannerpic}
-            className="w-full xs:w-[95%] xxs:w-[95%] sm:w-[95%] animate__bounceInRight animate__animated     lg:w-[800px] rounded-2xl shadow-2xl"
-            alt="Banner"
-          />
-          <div className="xs:text-center xxs:text-center sm:text-center  lg:text-left">
-            <h1 className=" xs:text-2xl  xxs:text-2xl  sm:text-2xl lg:text-4xl animate__animated animate__fadeInDownBig text-white   font-bold ">
-              Welcome to <br /> InvestKoree.com
-            </h1>
-            <p className="py-6 lg:text-lg xs:text-sm xxs:text-sm sm:text-sm animate__animated animate__fadeInUpBig text-white ">
-              It's Easy and Fast to Invest. Get Profit Faster Here.
-            </p>
-            <Link to="/shariah">
-              <button className="btn btn-active sm:w-[250px] xs:w-[250px] xxs:w-[250px] animate__animated animate__fadeInUpBig banner-btn btn-neutral">
-                Get Started
-              </button>
-            </Link>
+      <div>
+        <Parallax
+          bgImage={isSmallScreen ? bannerpic2 : bannerpic}
+          className="xs:h-96 xxs:h-96 sm:h-96 lg:h-full"
+          strength={300}
+        >
+          <div className="hero h-[400px] lg:h-[600px] flex items-center justify-center text-center text-slate-700">
+            <div className="hero-content xs:w-[90%] sm:w-[90%] flex-col lg:flex-row-reverse gap-8 lg:gap-24">
+              <div className="xs:text-center lg:text-left">
+                <h1 className="xs:text-2xl sm:text-2xl lg:text-6xl font-bold">
+                  Welcome to <br /> InvestKoree.com
+                </h1>
+                <p className="py-6 lg:text-2xl">
+                  It's Easy and Fast to Invest. Get Profit Faster Here.
+                </p>
+                <Link to="/shariah">
+                  <button className="btn btn-active btn-neutral">
+                    Get Started
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </Parallax>
 
-      {/* Currently Running Investments Section */}
-      <h5 className="text-center lg:mt-20 lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16     font-bold">
-        Currently Running Investments
-      </h5>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 xxs:gap-8 sm:gap-8 px-6 lg:px-20 cursor-pointer">
-        {latestPosts.map((item) => (
-          <LatestPost key={item._id} item={item} />
-        ))}
+        <motion.h5
+          className="text-center lg:mt-20 lg:text-3xl sm:text-xl xs:text-xl xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16 font-bold"
+          variants={textVariants}
+          initial="hidden"
+          animate={controls}
+        >
+          Currently Running Investments
+        </motion.h5>
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 px-6 lg:px-20 cursor-pointer"
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+        >
+          {latestPosts.map((item) => (
+            <LatestPost key={item._id} item={item} />
+          ))}
+        </motion.div>
       </div>
-
       {/* Mission Section */}
       <div className="mission-section my-20 flex flex-col lg:flex-row gap-10 justify-center lg:h-full items-center">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -150,6 +225,10 @@ const Home = () => {
           </div>
         </div>
       </section>
+      {/* <div style={{ height: "100vh", padding: "20px" }}>
+        <h1>Scroll to see the percentage bar</h1>
+        <p>Scroll Percentage: {Math.round(scrollPercentage)}%</p>
+      </div> */}
     </div>
   );
 };

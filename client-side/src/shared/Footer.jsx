@@ -49,7 +49,7 @@ function Footer() {
           <nav className="xxs:mx-auto xs:mx-auto sm-mx-auto lg:mx-0">
             <h6 className="footer-title opacity-100">Social</h6>
             <div className="flex flex-row gap-2">
-              <a href="https://www.facebook.com">
+              <a href="https://www.facebook.com/share/19XU41Z73E/?mibextid=LQQJ4d">
                 <SocialIcon url="https://www.facebook.com" />
               </a>
               <a href="https://www.linkedin.com">
