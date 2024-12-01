@@ -37,7 +37,7 @@ const Main = () => {
         <ReactLenis
           root
           options={{
-            lerp: 0.3, // Adjust the scrolling smoothness
+            lerp: 0.05, // Adjust the scrolling smoothness
             smooth: true, // Enable smooth scrolling
           }}
         >

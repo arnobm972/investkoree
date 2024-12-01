@@ -350,8 +350,30 @@ form.sign-up-form {
   cursor: pointer;
   transition: 0.5s;
 }
-html {
-  scroll-behavior: smooth !important;
+
+/* Add this to your CSS file */
+.dropdown-menu {
+  transition: all 0.3s ease-in-out; /* Smooth transition for dropdowns */
+  opacity: 0; /* Initially hidden */
+  transform: scaleY(0); /* Minimized size */
+  transform-origin: top; /* Animation starts from the top */
+}
+
+.dropdown-menu.active {
+  opacity: 1; /* Visible */
+  transform: scaleY(1); /* Full size */
+}
+
+/* Optional: Transition for mobile menus */
+.mobile-menu {
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.mobile-menu.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .scroll-progress-bar {
