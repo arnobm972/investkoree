@@ -141,7 +141,7 @@ const FounderLogin = () => {
     }
 
     try {
-      await createUser(name, email, password, phone, "founder");
+      await createUser(name, email, password, "founder", phone);
       toast.success("Registration successful");
       navigate("/founderdashboard");
     } catch (err) {
