@@ -74,7 +74,9 @@ export const AuthProvider = ({ children }) => {
         setToken(result.token);
         toast.success("Registration successful");
       } else {
-        throw new Error(result.message || "Registration failed");
+        throw new Error(
+          "Registration failed :Email or phone number already in used"
+        );
       }
     } catch (error) {
       if (
