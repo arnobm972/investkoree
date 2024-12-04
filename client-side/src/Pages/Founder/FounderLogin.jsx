@@ -145,10 +145,12 @@ const FounderLogin = () => {
 
     try {
       await createUser(name, email, password, "founder", phone);
-      toast.success("Registration successful You can signin now");
-      navigate("/founderlogin");
-      setPhoneNumber(phone); // Store the phone number to be used in OTP verification
-      setShowOTPModal(true);
+      if (!err) {
+        toast.success("Registration successful You can signin now");
+        navigate("/founderlogin");
+        setPhoneNumber(phone); // Store the phone number to be used in OTP verification
+        setShowOTPModal(true);
+      }
     } catch (err) {
       if (
         err.message.includes("duplicate key error") &&
