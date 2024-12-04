@@ -146,13 +146,6 @@ const FounderLogin = () => {
     }
 
     try {
-      const response = await checkDuplicateUser(email, phone);
-      if (response.duplicate) {
-        setError("Email or phone number already in use");
-        setIsLoading((prev) => ({ ...prev, register: false }));
-        return;
-      }
-
       // Only show success message if registration is successful
       await createUser(name, email, password, "founder", phone);
 
@@ -176,20 +169,20 @@ const FounderLogin = () => {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
   };
-  const checkDuplicateUser = async (email, phone) => {
-    try {
-      const response = await fetch("/api/check-duplicate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, phone }),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error checking duplicates:", error);
-      return { duplicate: false };
-    }
-  };
+  // const checkDuplicateUser = async (email, phone) => {
+  //   try {
+  //     const response = await fetch("/api/check-duplicate", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ email, phone }),
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error checking duplicates:", error);
+  //     return { duplicate: false };
+  //   }
+  // };
 
   const handleOTPSuccess = () => {
     toast.success("Phone number verified successfully!");
