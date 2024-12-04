@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const foundersignIn = async (email, password) => {
+  const foundersignIn = async (email, password, phone) => {
     setLoading(true); // Set loading to true when sign-in starts
     try {
       const response = await fetch(`${API_URL}/users/auth/login`, {
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, phone }),
       });
 
       const result = await response.json();
@@ -99,10 +99,12 @@ export const AuthProvider = ({ children }) => {
         const { userId, role } = result;
 
         if (role !== "founder") {
-          throw new Error("Access denied: Only founders can log in here.");
+          const errorMessage = `Access denied: Only ${role}s can log in here.`;
+          toast.error(errorMessage); // Show the toast with the error message
+          throw new Error(errorMessage); // Throw an error to stop further execution
         }
 
-        const userData = { email, userId, role };
+        const userData = { email, userId, phone, role };
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
@@ -118,6 +120,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false); // Set loading to false when sign-in completes
     }
   };
+
   const investorsignIn = async (email, password) => {
     setLoading(true); // Set loading to true when sign-in starts
     try {
@@ -134,7 +137,9 @@ export const AuthProvider = ({ children }) => {
         const { userId, role } = result;
 
         if (role !== "investor") {
-          throw new Error("Access denied: Only investors can log in here.");
+          const errorMessage = `Access denied: Only ${role}s can log in here.`;
+          toast.error(errorMessage); // Show the toast with the error message
+          throw new Error(errorMessage); // Throw an error to stop further execution
         }
 
         const userData = { email, userId, role };
@@ -153,6 +158,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false); // Set loading to false when sign-in completes
     }
   };
+
   const adminsignIn = async (email, password) => {
     setLoading(true); // Set loading to true when sign-in starts
     try {
@@ -169,7 +175,9 @@ export const AuthProvider = ({ children }) => {
         const { userId, role } = result;
 
         if (role !== "admin") {
-          throw new Error("Access denied: Only admins can log in here.");
+          const errorMessage = `Access denied: Only ${role}s can log in here.`;
+          toast.error(errorMessage); // Show the toast with the error message
+          throw new Error(errorMessage); // Throw an error to stop further execution
         }
 
         const userData = { email, userId, role };
@@ -188,6 +196,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false); // Set loading to false when sign-in completes
     }
   };
+
   const authInfo = {
     user,
     token,
