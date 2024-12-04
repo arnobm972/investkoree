@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { auth, RecaptchaVerifier, signInWithPhoneNumber } from '../Firebase/firebase.config.js';
+import {
+  auth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "../Firebase/firebase.config.js";
 import { toast } from "react-toastify";
 
 const OTPModal = ({ phoneNumber, onClose, onSuccess }) => {
