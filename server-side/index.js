@@ -19,7 +19,7 @@ import PendingPost from './models/pendingPost.js';
 import FounderPost from './models/founderFormPostModels.js';
 import Notification from './models/notification.js';
 import FounderPending from './models/founderpending.js';
-
+import CheckDuplicate from './routes/checkDuplicate.js'
 dotenv.config();
 
 // Initialize App
@@ -75,6 +75,7 @@ const upload = multer({
 
 // Routes
 app.use('/users', signupRoute);
+app.use('/api',CheckDuplicate)
 app.use('/founderpost', founderPostRoute);
 app.use('/users/auth', loginRoute);
 app.use('/api', userSpecificRoute);
