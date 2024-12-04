@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
 import OTPModal from "../../shared/OTPModal";
 import { toast } from "react-toastify";
@@ -21,8 +21,8 @@ const FounderLogin = () => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState({ login: false, register: false });
+  const [registrationSuccessful, setRegistrationSuccessful] = useState(false); // New state for registration success
   const navigate = useNavigate();
-  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -146,18 +146,15 @@ const FounderLogin = () => {
     }
 
     try {
-      // Only show success message if registration is successful
       await createUser(name, email, password, "founder", phone);
-
-      navigate("/founderlogin");
+      setRegistrationSuccessful(true); // Set registration success state
       setPhoneNumber(phone); // Store the phone number to be used in OTP verification
-      setShowOTPModal(true);
+      navigate("/founderlogin"); // Notify user
     } catch (err) {
       if (
         err.message.includes("duplicate key error") &&
         (err.message.includes("email") || err.message.includes("phone"))
       ) {
-        // Check if the error message contains 'duplicate key error' and either 'email' or 'phone'
         toast.error("Email or phone number already used");
       } else {
         toast.error(
@@ -169,25 +166,12 @@ const FounderLogin = () => {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
   };
-  // const checkDuplicateUser = async (email, phone) => {
-  //   try {
-  //     const response = await fetch("/api/check-duplicate", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ email, phone }),
-  //     });
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error checking duplicates:", error);
-  //     return { duplicate: false };
-  //   }
-  // };
 
   const handleOTPSuccess = () => {
     toast.success("Phone number verified successfully!");
     // Proceed with registration
   };
+
   return (
     <div className={`signcontainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
@@ -244,7 +228,7 @@ const FounderLogin = () => {
             onSubmit={handleRegister}
             className="sign-up-form xs:ml-4 sm:ml-4 xxs:ml-4"
           >
-            <h2 className="lg:text-4xl text-black mb-2 md:text-2xl sm:text-lg xxs:text-lg xs:text-lg">
+            <h2 className="lg:text-4xl text-black mb -2 md:text-2xl sm:text-lg xxs:text-lg xs:text-lg">
               Founder Sign up
             </h2>
             {error && <p className="error-message">{error}</p>}
@@ -339,6 +323,15 @@ const FounderLogin = () => {
               }`}
               disabled={isLoading.register || !isTermsAccepted}
             />
+            {registrationSuccessful && ( // Show button if registration was successful
+              <button
+                type="button"
+                onClick={() => setShowOTPModal(true)}
+                className="otp-btn mt-4"
+              >
+                Open OTP Modal
+              </button>
+            )}
           </form>
         </div>
       </div>
