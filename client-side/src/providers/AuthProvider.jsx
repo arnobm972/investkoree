@@ -72,17 +72,20 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
+        toast.success("Registration successful");
       } else {
         throw new Error(result.message || "Registration failed");
       }
     } catch (error) {
-      if (error.code === E11000) {
-        // Duplicate key error
-
+      if (
+        error.message.includes("duplicate key error") &&
+        (error.message.includes("email") || error.message.includes("phone"))
+      ) {
+        // Check if the error message contains 'duplicate key error' and either 'email' or 'phone'
         toast.error("Email or phone number already used");
       } else {
         console.error("Error creating user:", error);
-        throw error;
+        toast.error(error.message || "Something went wrong");
       }
     } finally {
       setLoading(false); // Set loading to false when registration completes
