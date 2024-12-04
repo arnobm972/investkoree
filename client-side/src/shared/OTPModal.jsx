@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   auth,
   RecaptchaVerifier,
@@ -6,12 +6,18 @@ import {
 } from "../Firebase/firebase.config.js";
 import { toast } from "react-toastify";
 
-const OTPModal = ({ phoneNumber, onClose, onSuccess }) => {
+const OTPModal = ({ phoneNumber, onClose, onSuccess, isOpen }) => {
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(30);
   const [otpSent, setOtpSent] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState(null);
-  const [otpVerified, setOtpVerified] = useState(false); // New state to track OTP verification status
+  const [otpVerified, setOtpVerified] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      sendOTP(); // Automatically send OTP when modal opens
+    }
+  }, [isOpen]);
 
   const setupRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -57,7 +63,7 @@ const OTPModal = ({ phoneNumber, onClose, onSuccess }) => {
   };
 
   const verifyOTP = () => {
-    if (otp.trim().length !== 6) {
+    if (otp.trim().length !== 6 || isNaN(otp)) {
       toast.error("Please enter a valid 6-digit OTP");
       return;
     }
@@ -66,7 +72,7 @@ const OTPModal = ({ phoneNumber, onClose, onSuccess }) => {
       .confirm(otp)
       .then((result) => {
         toast.success("Verification successful!");
-        setOtpVerified(true); // Set OTP as verified
+        setOtpVerified(true);
         onSuccess();
       })
       .catch((error) => {
@@ -84,30 +90,30 @@ const OTPModal = ({ phoneNumber, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Verify Phone Number</h2>
-        <p>Please enter the OTP sent to {phoneNumber}</p>
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-        />
-        <div id="recaptcha-container"></div>
-        <button onClick={verifyOTP} disabled={!otpSent}>
-          Verify OTP
-        </button>
-        <button onClick={handleResendOTP} disabled={timer > 0}>
-          Resend OTP {timer > 0 && `(${timer}s)`}
-        </button>
-        <button onClick={onClose} disabled={!otpVerified}>
-          {" "}
-          {/* Disable close until OTP is verified */}
-          Close
-        </button>
+    isOpen && (
+      <div className="modal">
+        <div className="modal-content">
+          <h2>Verify Phone Number</h2>
+          <p>Please enter the OTP sent to {phoneNumber}</p>
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
+          <div id="recaptcha-container"></div>
+          <button onClick={verifyOTP} disabled={!otpSent}>
+            Verify OTP
+          </button>
+          <button onClick={handleResendOTP} disabled={timer > 0}>
+            Resend OTP {timer > 0 && `(${timer}s)`}
+          </button>
+          <button onClick={onClose} disabled={!otpVerified}>
+            Close
+          </button>
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

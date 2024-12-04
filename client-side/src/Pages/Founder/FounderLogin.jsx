@@ -155,7 +155,7 @@ const FounderLogin = () => {
 
       // Only show success message if registration is successful
       await createUser(name, email, password, "founder", phone);
-      toast.success("Registration successful! You can sign in now.");
+
       navigate("/founderlogin");
       setPhoneNumber(phone); // Store the phone number to be used in OTP verification
       setShowOTPModal(true);

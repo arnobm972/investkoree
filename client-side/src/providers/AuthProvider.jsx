@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
         localStorage.setItem("token", result.token);
         setToken(result.token);
-        toast.success("Registration successful");
+        toast.success("Registration successful :You can Signin now");
       } else {
         throw new Error(
           "Registration failed :Email or phone number already in used"
