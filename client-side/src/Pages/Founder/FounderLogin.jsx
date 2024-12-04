@@ -150,14 +150,17 @@ const FounderLogin = () => {
       setPhoneNumber(phone); // Store the phone number to be used in OTP verification
       setShowOTPModal(true);
     } catch (err) {
-      if (err.code === 11000) {
-        // Duplicate key error
-        return res.status(400).json({
-          message: "Email or phone number already used",
-        });
+      if (
+        err.message.includes("duplicate key error") &&
+        (err.message.includes("email") || err.message.includes("phone"))
+      ) {
+        // Check if the error message contains 'duplicate key error' and either 'email' or 'phone'
+        toast.error("Email or phone number already used");
       } else {
-        toast.error(err.message || "Registration error");
-        setError(err.message || "Registration error");
+        toast.error(
+          "Registration failed :Email or phone number already in used"
+        );
+        setError("Registration failed :Email or phone number already in used");
       }
     } finally {
       setIsLoading((prev) => ({ ...prev, register: false }));
