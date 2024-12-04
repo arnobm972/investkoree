@@ -76,8 +76,15 @@ export const AuthProvider = ({ children }) => {
         throw new Error(result.message || "Registration failed");
       }
     } catch (error) {
-      console.error("Error creating user:", error);
-      throw error;
+      if (error.code === 11000) {
+        // Duplicate key error
+        return res.status(400).json({
+          message: "Email or phone number already used",
+        });
+      } else {
+        console.error("Error creating user:", error);
+        throw error;
+      }
     } finally {
       setLoading(false); // Set loading to false when registration completes
     }
