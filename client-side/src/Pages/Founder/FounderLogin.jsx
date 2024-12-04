@@ -323,15 +323,6 @@ const FounderLogin = () => {
               }`}
               disabled={isLoading.register || !isTermsAccepted}
             />
-            {registrationSuccessful && ( // Show button if registration was successful
-              <button
-                type="button"
-                onClick={() => setShowOTPModal(true)}
-                className="otp-btn mt-4"
-              >
-                Open OTP Modal
-              </button>
-            )}
           </form>
         </div>
       </div>
@@ -362,6 +353,15 @@ const FounderLogin = () => {
             >
               Log in
             </button>
+            {registrationSuccessful && ( // Show button if registration was successful
+              <button
+                type="button"
+                onClick={() => setShowOTPModal(true)}
+                className="otp-btn mt-4"
+              >
+                Open OTP Modal
+              </button>
+            )}
           </div>
           <img src="img/register.svg" className="image" alt="" />
         </div>
