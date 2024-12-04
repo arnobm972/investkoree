@@ -118,7 +118,7 @@ const Home = () => {
           <div className="hero h-[400px] lg:h-[600px] flex items-center justify-center text-center text-slate-700">
             <div className="hero-content xs:w-[90%] sm:w-[90%] flex-col lg:flex-row-reverse gap-8 lg:gap-24">
               <div className="xs:text-center lg:text-left">
-                <h1 className="xs:text-2xl sm:text-2xl lg:text-6xl  animate__animated animate__fadeInDownBig font-bold">
+                <h1 className="xs:text-2xl sm:text-2xl xxs:text-2xl lg:text-6xl  animate__animated animate__fadeInDownBig font-bold">
                   Welcome to <br /> InvestKoree.com
                 </h1>
                 <p className="py-6 lg:text-2xl animate__animated animate__fadeInUpBig ">
@@ -134,25 +134,40 @@ const Home = () => {
           </div>
         </Parallax>
 
-        <motion.h5
-          className="text-center lg:mt-20 lg:text-3xl sm:text-xl xs:text-xl xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16 font-bold"
-          variants={textVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          Currently Running Investments
-        </motion.h5>
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 px-6 lg:px-20 cursor-pointer"
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          {latestPosts.map((item) => (
-            <LatestPost key={item._id} item={item} />
-          ))}
-        </motion.div>
+        {isSmallScreen ? (
+          <>
+            <h5 className="text-center lg:mt-20 lg:text-3xl sm:text-xl xs:text-xl xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16 font-bold">
+              Currently Running Investments
+            </h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6  xxs:gap-8 xs:gap-8 px-6 lg:px-20 cursor-pointer">
+              {latestPosts.map((item) => (
+                <LatestPost key={item._id} item={item} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <motion.h5
+              className="text-center lg:mt-20 lg:text-3xl sm:text-xl xs:text-xl xxs:text-xl xs:mb-6 xxs:mb-6 sm:mb-6 xs:mt-16 xxs:mt-16 sm:mt-16 font-bold"
+              variants={containerVariants}
+              initial="hidden"
+              animate={controls}
+            >
+              Currently Running Investments
+            </motion.h5>
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:w-[1200px] lg:mx-auto sm:mx-auto lg:gap-6 xs:gap-8 px-6 lg:px-20 cursor-pointer"
+              ref={ref}
+              variants={containerVariants}
+              initial="hidden"
+              animate={controls}
+            >
+              {latestPosts.map((item) => (
+                <LatestPost key={item._id} item={item} />
+              ))}
+            </motion.div>
+          </>
+        )}
       </div>
       {/* Mission Section */}
       <motion.div
