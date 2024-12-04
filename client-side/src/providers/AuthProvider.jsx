@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
         throw new Error(result.message || "Registration failed");
       }
     } catch (error) {
-      if (error.code === 11000) {
+      if (error.code === E11000) {
         // Duplicate key error
         return res.status(400).json({
           message: "Email or phone number already used",
