@@ -142,8 +142,8 @@ const FounderLogin = () => {
 
     try {
       await createUser(name, email, password, "founder", phone);
-      toast.success("Registration successful");
-      navigate("/founderdashboard");
+      toast.success("Registration successful You can signin now");
+      navigate("/founderlogin");
     } catch (err) {
       toast.error(err.message || "Registration error");
       setError(err.message || "Registration error");

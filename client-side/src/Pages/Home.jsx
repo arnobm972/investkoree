@@ -115,14 +115,15 @@ const Home = () => {
           className="xs:h-96 xxs:h-96 sm:h-96 lg:h-full animate__fadeIn animate__animated  "
           strength={300}
         >
-          <div className="hero h-[400px] lg:h-[600px] flex items-center justify-center text-center text-slate-700">
+          <div className="hero h-[400px] lg:h-[600px] flex lg:items-center  text-slate-700">
             <div className="hero-content xs:w-[90%] sm:w-[90%] flex-col lg:flex-row-reverse gap-8 lg:gap-24">
-              <div className="xs:text-center lg:text-left">
-                <h1 className="xs:text-2xl sm:text-2xl xxs:text-2xl lg:text-6xl  animate__animated animate__fadeInDownBig font-bold">
+              <div className="xs:text-center lg:text-left ">
+                <h1 className="xs:text-2xl sm:text-2xl xxs:text-2xl lg:text-6xl   animate__animated animate__fadeInDownBig font-bold">
                   Welcome to <br /> InvestKoree.com
                 </h1>
-                <p className="py-6 lg:text-2xl animate__animated animate__fadeInUpBig ">
-                  It's Easy and Fast to Invest. Get Profit Faster Here.
+                <p className="py-3 lg:text-2xl animate__animated animate__fadeInUpBig flex lg:flex-row sm:flex-col xs:flex-col xxs:flex-col sm:text-sm xs:text-sm xxs:text-sm ">
+                  It's Easy and Fast to Invest.{" "}
+                  <span>Get Profit Faster Here.</span>
                 </p>
                 <Link to="/shariah">
                   <button className="btn btn-active btn-neutral animate__animated animate__fadeInUpBig ">
