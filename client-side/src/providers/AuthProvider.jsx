@@ -78,9 +78,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       if (error.code === E11000) {
         // Duplicate key error
-        return res.status(400).json({
-          message: "Email or phone number already used",
-        });
+
+        toast.error("Email or phone number already used");
       } else {
         console.error("Error creating user:", error);
         throw error;
