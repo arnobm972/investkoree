@@ -150,8 +150,15 @@ const FounderLogin = () => {
       setPhoneNumber(phone); // Store the phone number to be used in OTP verification
       setShowOTPModal(true);
     } catch (err) {
-      toast.error(err.message || "Registration error");
-      setError(err.message || "Registration error");
+      if (err.code === 11000) {
+        // Duplicate key error
+        return res.status(400).json({
+          message: "Email or phone number already used",
+        });
+      } else {
+        toast.error(err.message || "Registration error");
+        setError(err.message || "Registration error");
+      }
     } finally {
       setIsLoading((prev) => ({ ...prev, register: false }));
     }
