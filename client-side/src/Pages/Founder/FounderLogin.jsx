@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
+import OTPModal from "../../shared/OTPModal";
 import { toast } from "react-toastify";
 import Loader from "../../shared/Loader";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 
 const FounderLogin = () => {
+  const [phonenumber, setPhoneNumber] = useState("");
+  const [showOTPModal, setShowOTPModal] = useState(false);
   const [showPassword, setShowPassword] = useState({
     login: false,
     register: false,
@@ -144,6 +147,8 @@ const FounderLogin = () => {
       await createUser(name, email, password, "founder", phone);
       toast.success("Registration successful You can signin now");
       navigate("/founderlogin");
+      setPhoneNumber(phone); // Store the phone number to be used in OTP verification
+      setShowOTPModal(true);
     } catch (err) {
       toast.error(err.message || "Registration error");
       setError(err.message || "Registration error");
@@ -152,6 +157,10 @@ const FounderLogin = () => {
     }
   };
 
+  const handleOTPSuccess = () => {
+    toast.success("Phone number verified successfully!");
+    // Proceed with registration
+  };
   return (
     <div className={`signcontainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
@@ -337,6 +346,12 @@ const FounderLogin = () => {
           <img src="img/register.svg" className="image" alt="" />
         </div>
       </div>
+      <OTPModal
+        isOpen={showOTPModal}
+        onClose={() => setShowOTPModal(false)}
+        onSuccess={handleOTPSuccess}
+        phone={phonenumber}
+      />
     </div>
   );
 };
