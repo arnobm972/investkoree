@@ -81,8 +81,8 @@ const FounderLogin = () => {
     const phone = form.get("u_signup_number");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
+
     if (!isTermsAccepted) {
-      // Check if terms are accepted
       setError("You must accept the terms and conditions to register.");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
@@ -93,12 +93,14 @@ const FounderLogin = () => {
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
+
     const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isEmail) {
       setError("Please enter a valid email ");
-      setIsLoading((prev) => ({ ...prev, login: false }));
+      setIsLoading((prev) => ({ ...prev, register: false }));
       return;
     }
+
     const validatePhoneNumber = [
       {
         regex: /^01\d{9}$/, // Must start with 01 and have 11 digits
@@ -151,13 +153,12 @@ const FounderLogin = () => {
         return;
       }
 
+      // Only show success message if registration is successful
       await createUser(name, email, password, "founder", phone);
-      if (!err) {
-        toast.success("Registration successful You can signin now");
-        navigate("/founderlogin");
-        setPhoneNumber(phone); // Store the phone number to be used in OTP verification
-        setShowOTPModal(true);
-      }
+      toast.success("Registration successful! You can sign in now.");
+      navigate("/founderlogin");
+      setPhoneNumber(phone); // Store the phone number to be used in OTP verification
+      setShowOTPModal(true);
     } catch (err) {
       if (
         err.message.includes("duplicate key error") &&
@@ -167,9 +168,9 @@ const FounderLogin = () => {
         toast.error("Email or phone number already used");
       } else {
         toast.error(
-          "Registration failed :Email or phone number already in used"
+          "Registration failed: Email or phone number already in use"
         );
-        setError("Registration failed :Email or phone number already in used");
+        setError("Registration failed: Email or phone number already in use");
       }
     } finally {
       setIsLoading((prev) => ({ ...prev, register: false }));
