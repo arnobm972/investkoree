@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import User from "../models/userModel";
+import User from "../models/userModel.js";
 
 const router = express.Router();
 router.use(cors());
