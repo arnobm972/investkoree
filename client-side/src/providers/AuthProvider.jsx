@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     setUserData(null);
   };
 
-  const createUser = async (name, email, password, role) => {
+  const createUser = async (name, email, password, role, phone) => {
     setLoading(true); // Set loading to true when registration starts
     try {
       const response = await fetch(`${API_URL}/users/register`, {
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, name, password, role }),
+        body: JSON.stringify({ email, name, password, role, phone }),
       });
 
       const result = await response.json();

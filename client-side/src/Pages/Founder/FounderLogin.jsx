@@ -24,17 +24,39 @@ const FounderLogin = () => {
   const togglePasswordVisibility = (field) => {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, login: true }));
     setError(null);
 
     const form = new FormData(e.currentTarget);
-    const email = form.get("u_signin_email");
+    const loginInput = form.get("u_signin_email_or_phone");
     const password = form.get("u_signin_pass");
 
+    if (!loginInput || !password) {
+      setError("Email/Phone and Password are required");
+      setIsLoading((prev) => ({ ...prev, login: false }));
+      return;
+    }
+
+    const isPhoneNumber = /^01\d{9}$/.test(loginInput); // Validate phone number format
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginInput); // Validate email format
+
+    if (!isPhoneNumber && !isEmail) {
+      setError(
+        "Please enter a valid email or phone number containing 11 numbers and starting with 01"
+      );
+      setIsLoading((prev) => ({ ...prev, login: false }));
+      return;
+    }
+
     try {
-      await foundersignIn(email, password);
+      if (isPhoneNumber) {
+        await foundersignIn(null, password, loginInput); // Pass phone as the third parameter
+      } else {
+        await foundersignIn(loginInput, password, null); // Pass email as the first parameter
+      }
 
       toast.success("Login successful");
     } catch (err) {
@@ -44,6 +66,7 @@ const FounderLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
@@ -52,6 +75,7 @@ const FounderLogin = () => {
     const form = new FormData(e.currentTarget);
     const name = form.get("u_signup_name");
     const email = form.get("u_signup_email");
+    const phone = form.get("u_signup_number");
     const password = form.get("u_signup_password");
     const confirmPassword = form.get("u_signup_cpassword");
     if (!isTermsAccepted) {
@@ -61,10 +85,29 @@ const FounderLogin = () => {
       return;
     }
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !phone) {
       setError("All fields are required");
       setIsLoading((prev) => ({ ...prev, register: false }));
       return;
+    }
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!isEmail) {
+      setError("Please enter a valid email ");
+      setIsLoading((prev) => ({ ...prev, login: false }));
+      return;
+    }
+    const validatePhoneNumber = [
+      {
+        regex: /^01\d{9}$/, // Must start with 01 and have 11 digits
+        message: "Phone Number must contain 11 numbers and must start with 01",
+      },
+    ];
+    for (const validation of validatePhoneNumber) {
+      if (!validation.regex.test(phone)) {
+        setError(validation.message);
+        setIsLoading((prev) => ({ ...prev, register: false }));
+        return;
+      }
     }
 
     // Password validations
@@ -98,7 +141,7 @@ const FounderLogin = () => {
     }
 
     try {
-      await createUser(name, email, password, "founder"); // Use the createUser function from context
+      await createUser(name, email, password, phone, "founder");
       toast.success("Registration successful");
       navigate("/founderdashboard");
     } catch (err) {
@@ -125,9 +168,9 @@ const FounderLogin = () => {
             <div className="input-field">
               <i className="fas fa-envelope"></i>
               <input
-                type="email"
-                placeholder="Email Address"
-                name="u_signin_email"
+                type="text"
+                placeholder="Email Address or Phone Number"
+                name="u_signin_email_or_phone"
                 required
               />
             </div>
@@ -184,6 +227,15 @@ const FounderLogin = () => {
                 type="email"
                 placeholder="Email Address"
                 name="u_signup_email"
+                required
+              />
+            </div>
+            <div className="input-field">
+              <i className="fas fa-phone"></i>
+              <input
+                type="text"
+                placeholder="Phone Number"
+                name="u_signup_number"
                 required
               />
             </div>

@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 async function createUser(req, res) {
     res.setHeader('Content-Type', 'application/json');
     try {
-        const { name, email, password,role } = req.body;
+        const { name, email, password,role,phone } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -12,7 +12,8 @@ async function createUser(req, res) {
             name,
             email,
             password: hashedPassword,
-            role
+            role,
+            phone
         });
 
         const savedUser = await newUser.save();
