@@ -69,7 +69,6 @@ const FounderLogin = () => {
       setIsLoading((prev) => ({ ...prev, login: false }));
     }
   };
-
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
@@ -149,6 +148,7 @@ const FounderLogin = () => {
       await createUser(name, email, password, "founder", phone);
       setRegistrationSuccessful(true); // Set registration success state
       setPhoneNumber(phone); // Store the phone number to be used in OTP verification
+      setShowOTPModal(true); // Show OTP modal
       navigate("/founderlogin"); // Notify user
     } catch (err) {
       if (
@@ -366,12 +366,13 @@ const FounderLogin = () => {
           <img src="img/register.svg" className="image" alt="" />
         </div>
       </div>
-      <OTPModal
-        isOpen={showOTPModal}
-        onClose={() => setShowOTPModal(false)}
-        onSuccess={handleOTPSuccess}
-        phone={phonenumber}
-      />
+      {showOTPModal && (
+        <OTPModal
+          phonenumber={phone} // Pass phone number for OTP verification
+          onSuccess={handleOTPSuccess} // OTP success callback
+          onClose={() => setShowOTPModal(false)} // Close modal
+        />
+      )}
     </div>
   );
 };
