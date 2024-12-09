@@ -220,10 +220,10 @@ const Home = () => {
         <p className="text-center lg:text-3xl sm:text-xl  xs:text-xl  xxs:text-xl lg:text-bold  sm:text-bold  xs:text-bold  xxs:text-bold mb-16">
           What people say about us
         </p>
-        <div className="flex flex-col sm:flex-row  sm:mx-4 xs:mx-4 xxs:mx-4 gap-6 items-center justify-center">
+        <div className="flex flex-col  sm:flex-row  sm:mx-4 xs:mx-4 xxs:mx-4 gap-6 items-center justify-center">
           {/* Sample Testimonial 1 */}
-          <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg shadow-md p-6 group">
-            <div className="flex items-center">
+          <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg  testimonial-card shadow-md p-6 group">
+            <div className="flex items-center testimonial-card-content">
               <img
                 className="w-12 h-12 rounded-full mr-4"
                 src="https://via.placeholder.com/150"
@@ -238,7 +238,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 testimonial-card-content">
               <p className="text-gray-700 group-hover:text-white">
                 Campoal is great for people to bring changes to what they
                 believe in, it's nice to see some good morals and common sense
@@ -248,8 +248,8 @@ const Home = () => {
           </div>
 
           {/* Sample Testimonial 2 */}
-          <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg shadow-md p-6 group">
-            <div className="flex items-center ">
+          <div className="bg-white w-full sm:w-[35%] lg:w-[40%] hover:bg-salmon rounded-lg  testimonial-card shadow-md p-6 group">
+            <div className="flex items-center testimonial-card-content">
               <img
                 className="w-12 h-12 rounded-full mr-4"
                 src="https://via.placeholder.com/150"
@@ -264,7 +264,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 testimonial-card-content">
               <p className="text-gray-700 group-hover:text-white">
                 Campoal is great for people to bring changes to what they
                 believe in, it's nice to see some good morals and common sense

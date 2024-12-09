@@ -5,6 +5,7 @@ import {
   signInWithPhoneNumber,
 } from "../Firebase/firebase.config.js";
 import { toast } from "react-toastify";
+import { connectAuthEmulator } from "firebase/auth";
 
 const OTPModal = ({ phoneNumber, onClose, onSuccess, isOpen }) => {
   const [otp, setOtp] = useState("");
@@ -20,24 +21,29 @@ const OTPModal = ({ phoneNumber, onClose, onSuccess, isOpen }) => {
   }, [isOpen]);
 
   const setupRecaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response) => {
-          console.log("Recaptcha verified");
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible", // Invisible reCAPTCHA for OTP
+          callback: (response) => {
+            console.log("Recaptcha solved:", response);
+          },
+          "expired-callback": () => {
+            console.log("Recaptcha expired");
+          },
         },
-      },
-      auth
-    );
+        auth
+      );
+    }
   };
 
   const sendOTP = () => {
     setupRecaptcha();
     const appVerifier = window.recaptchaVerifier;
-
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmation) => {
+        console.log("Confirmation result:", confirmation);
         setConfirmationResult(confirmation);
         setOtpSent(true);
         toast.success("OTP sent successfully!");
@@ -47,6 +53,10 @@ const OTPModal = ({ phoneNumber, onClose, onSuccess, isOpen }) => {
         console.error("Error sending OTP:", error);
         toast.error("Failed to send OTP. Try again later.");
       });
+    if (process.env.NODE_ENV === "development") {
+      auth.settings.appVerificationDisabledForTesting = true; // Disable for testing
+      connectAuthEmulator(auth, "http://localhost:5173"); // Point to your emulator
+    }
   };
 
   const startTimer = () => {
