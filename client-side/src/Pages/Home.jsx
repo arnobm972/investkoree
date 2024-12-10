@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import bannerpic from "../assets/banner.jpg";
-import bannerpic2 from "../assets/banner2.jpg";
+import bannerpic from "../assets/bannernew.png";
+import bannerpic2 from "../assets/bannernew2.jpg";
 import LatestPost from "./LatestPost";
 import { Link } from "react-router-dom";
 import "animate.css";
 import { Parallax } from "react-parallax";
-import mission1 from "../assets/add-1.png";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import "animate.css";
+import mission2 from "../assets/mission2.jpg";
+import mission4 from "../assets/mission4.jpg";
 
 const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -180,13 +181,13 @@ const Home = () => {
       >
         <div className="flex flex-col lg:flex-row gap-8 animate__bounceInLeft  animate__animated">
           <img
-            className="rounded-xl sm:w-[250px] lg:h-[550px] lg:w-[300px]"
-            src={mission1}
+            className="rounded-xl sm:w-[250px] lg:h-[550px] lg:w-[400px]"
+            src={mission2}
             alt=""
           />
           <img
-            className="rounded-xl sm:w-[250px] lg:w-[300px] lg:h-[550px] lg:mt-8"
-            src={mission1}
+            className="rounded-xl sm:w-[250px] lg:w-[400px] lg:h-[550px] lg:mt-8"
+            src={mission4}
             alt=""
           />
         </div>
